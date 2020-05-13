@@ -46,7 +46,7 @@
 
     <h2>Les fonctions de rappel ou <em>callbacks</em></h2>
 
-    <h3>Le mot <em>callback’</em> ou <em>rappel</em></h3>
+    <h3>Les racines du mal : le mot <em>callback</em> et son contexte majoritaire d'application</h3>
 
     <p>
       Tout le monde est d’accord là dessus, les mots ont du sens. Nous pensons à partir des mots. Supprimer un mot et vous ne pourrez plus penser le concept ou la situation porté par ce mot. Le nom d’une chose est important pour penser. Nommez mal
@@ -57,31 +57,62 @@
     <p>
       Pour moi c’est ce mot, <em>callback</em>, qui m’a donné du fil à retordre en Javascript. Déjà, dans toute opération de traduction d’une langue à une autre il s’opère une perte de sens incompressible. <em>Callback</em> en anglais possède
       plusieurs sens en
-      fonction des contextes. En informatique, le sens qui nous intéresse est le suivant : <q> a function pointer passed to another function</q>, ou en français <q> un pointeur de fonction passé à une autre fonction</q>. Une fonction de rappel, ou
-      callback,
-      c’est une fonction passée en argument à une autre fonction. La définition ne nous dit pas ce que la fonction prenant en argument cette fonction en fait, comment elle l’appelle etc. Le terme « rappel » n’a ici aucun sens qui se rapproche du sens
-      commun et pour moi la confusion a pris racine ici.
+      fonction des contextes. En informatique, le sens qui nous intéresse est le suivant :
+
+    <blockquote>
+      <p> a callback, also known as a "call-after" function, is any executable code that is passed as an argument to other code</p>
+
+
+      <footer>
+        <cite><a href="https://en.wikipedia.org/wiki/Callback_(computer_programming)">source</a></cite>
+      </footer>
+    </blockquote>
+
+    ou en français <q> un code executable passé en argument à un autre code executable </q>. Une fonction de rappel, ou
+    callback,
+    c’est une fonction passée en argument à une autre fonction. La définition ne nous dit pas ce que la fonction prenant en argument cette fonction en fait, comment elle l’appelle etc.
     </p>
 
 
     <p><em>Callback</em> en anglais se traduit par rappel, rappeler. Et rappeler en français veut dire <q>action de faire revenir</q>. Le terme <em>fonction de rappel</em> porte donc avec lui, implicitement, l’idée selon laquelle la fonction sera
       rappelée ou reviendra,
-      <em>plus tard dans le temps</em>. Ce terme emporte donc, à tord, la notion d’action dans le futur, et recoupe la notion d’asynchrone, <q>qui ne suit pas le mouvement imposé</q>.</p>
+      <em>plus tard dans le temps</em>. Ce terme emporte donc la notion d’action dans le futur.</p>
+
+    <p>
+      <em>So far so good</em>, le problème c'est qu'en Javascript, les callbacks sont majoritairement utilisées dans le contexte de traitement asynchrone.
+    </p>
 
     <p>Un traitement asynchrone est nécessaire lorsqu’une fonction prend un temps jugé trop long à retourner et lorsqu’elle risque de bloquer le flot du programme (c’est à dire l’exécution de la fonction suivante) le temps de sa propre exécution. La
       tache peut alors prendre en argument une fonction de retour et être déléguée à un autre thread, qui nous préviendra lorsque son exécution sera terminée en éxecutant cette callback. Typiquement en Javascript si l’on souhaite faire une requête à
       une base données ou à un serveur, ce genre de requête pouvant prendre un certain temps, on le fera de manière asynchrone. Dans ce cas, nous perdons le contrôle sur le flot du programme mais nous serons avertis lors du retour de la fonction, à
-      un moment indéterminé dans le futur.</p>
+      un moment indéterminé dans le futur. D'où ce qualificatif <em>asynchrone</em>, c'est à dire, <q>qui ne suit pas le mouvement imposé</q></p>
 
-    <p>Ainsi, le mot <em>rappel</em>, qui éveille en nous le sens commun du mot, nous incite à donner à la fonction, inconsciemment, sans effort, une qualité asynchrone. Alors que non, pas du tout ! Pour moi la première difficulté réside là : le
-      terme de
-      callback, de rappel a été donné à toute fonction passée en paramètre d’une autre, en référence à son contexte d’utilisation le plus courant même lorsque ce contexte n'a rien d'asynchrone.</p>
+
+    <p>Pour résumer je peux trouver deux causes distinctes à l'origine de ma confusion sur le sujet:
+
+    <ul>
+      <li>Les callbacks sont majoritairement utilisées <strong>et discutées</strong> en Javascript dans un contexte asynchrone </li>
+      <li>Le mot <em>rappel</em> éveille en moi le sens commun du mot, et m'incite à donner à la fonction, inconsciemment, sans effort, une qualité asynchrone. </li>
+
+
+    </ul>
+
+    Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
+    La première rencontre avec le terme <em>callback</em> en Javascript n'est pas toujours une rencontre qui se passe bien. Il désigne toute fonction passée en paramètre d'une autre fonction, indépendamment du fait que le contexte soit synchrone ou
+    asynchrone. Le soucis, c'est qu'on le voit apparaitre <em>majoritairement</em>, dans les ressources, dans un contexte de traitement asynchrone. Et pour courroner le tout, on désigne <em>callback</em> la fonction passée en argument à une autre
+    fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar);</code>, <code>bar</code> est désignée comme étant une <em>callback</em> mais c'est
+    <code>foo</code> qui la <em>call back</em>, qui l'appelle en temps et en heure.</p>
 
     <p class="encart">Dans cet article je m'abstiendrai d'utiliser des métaphores et par extension des pseudo-codes métaphoriques. Les métaphores sont très utiles pour expliquer des concepts inconnus en les rattachant à des choses connues. Cependant,
       elles charrient avec elles des inconvénients : elles supposent la manière dont une chose est connue par l'autre et sont souvent plus agréables à énoncer pour celui/celle qui transmet qu'à entendre pour celui/celle qui reçoit. Lorsque je veux
       comprendre honnêtement un concept, le débarasser de toutes confusions, je n'ai pas envie d'entendre parler d'une commande de burger ou d'une analogie avec un restaurant. Une fois le concept compris les métaphores aident à le consolider mais
       souvent il y a le risque qu'elles ajoutent de la confusion à la confusion. Aussi, j'utiliserai dans cet article encore et encore un code complètement honnête, transparent et ennuyeux pour illustrer mes propos. N'hésitez pas à copier, coller
       modifier ce code à votre guise pour expérimenter. Tous les extraits de code compilent et produisent les sorties discutées dans l'article. </p>
+
+
+    <h3>Les callback n'ont rien à voir avec le traitement asynchrone</h3>
+
+
 
     <p>Regardons cet exemple de callback :</p>
 
@@ -104,7 +135,7 @@
   </pre>
     </div>
 
-    <p>La fonction bar, étant donnée qu’elle est passée à foo en argument, est par définition une fonction de rappel, un callback. Pourtant ce code donne évidemment le résultat suivant :</p>
+    <p>La fonction bar, étant donnée qu’elle est passée à foo en argument, est par définition une fonction de rappel, une callback. Ce code donne évidemment le résultat suivant</p>
 
     <div id="snpippet-node">
       <pre>
@@ -120,10 +151,10 @@
     <p>
       Rien de surprenant, l’ordre des appels est respecté. Tout est bien synchrone, le programme s’exécute de manière impérative, comme nous en avons l’habitude dans des langages de programmation conventionnel. Finalement <code>bar</code> est appelée
       comme <code>foo</code>
-      l’est. Elle est <em>appelée</em>, comme n’importe quelle fonction, elle n’est pas <em>rappelée</em>. Le sens commun de <em>rappel</em> ne s’applique pas ici, callback y signifie seulement <q>est passé en argument à une autre fonction</q>.
+      l’est. Elle est <em>appelée</em>, comme n’importe quelle fonction, elle est <em>rappelée</em> au sens où c'est <code>foo</code> qui la rappelle.
     </p>
 
-    <h3>Lorsque le terme <em>callback</em> correspond au sens commun</h3>
+    <h3>Utiliser des <em>callback</em> dans un contexte asynchrone et correspondance au sens commun du mot</h3>
 
     <p>Le problème c’est que dans son usage le plus courant en Javascript le terme <em>callback</em> signifie bien à la fois est <q> passé en argument à une autre fonction </q> et <q> est appelée plus tard dans le temps </q>. Par exemple, c’est ce
       qui arrive à chaque fois que nous
@@ -141,20 +172,20 @@ element.addEventListener(‘onClick’, bar) ;
 
 
     <p>
-      Ici la fonction <code>bar</code> est un <em>callback</em> à tous les sens affichés ou supposés du terme, car elle est passée en argument à la fonction addEventListener et elle sera effectivement rappelée <q>plus tard</q>, lorsque l’évènement
-      <em>onClick</em> sur l’élement aura lieu et sera traité. Ici, la notion de
-      rappel est respectée à la fois dans le sens commun et dans le sens informatique. Le fait que la fonction bar soit rappelée plus tard n’a rien à voir avec le fait qu’elle soit passée en argument, qu’elle soit une callback, c’est seulement parce
-      que la fonction addEventListener prend en argument une fonction pour l’executer, elle, de manière asynchrone.
+      Ici la fonction <code>bar</code> est un <em>callback</em> à tous les sens affichés ou supposés du terme, car elle est passée en argument à la fonction <foo>addEventListener</foo> qui en fera un traitement asynchrone : <code>bar</code>
+      <q>reviendra plus tard</q>, lorsque l’évènement
+      <em>onClick</em> sur <code>element</el></code> aura lieu et sera traité. Dans un contexte asynchrone, la terme de <code>callback</code> adhère sans friction au sens commun du mot et à sons sens restricif en informatique.
     </p>
 
     <p>
       En résumé de ce premier point, une fonction de rappel ou callback est une fonction passée en argument à une autre fonction. La convention de nommage callback n’a rien à voir avec le fait qu’une fonction soit traitée de manière synchrone ou non,
-      comme le suggère le sens commun du mot.
+      comme pourrait le suggèrer le sens commun du mot.
     </p>
 
     <p>
-      Cette dénomination <em>callback</em> est malheureuse car dans le cas de Javascript elle est bel et bien un exemple d’abus de langage. En effet, en programmation événementielle, il est courant de passer en argument une fonction à une autre, pour
-      qu’elle soit rappelée <em>plus tard</em>, au bon moment. Et par abus de langage toute fonction passée en argument finit par être nommée <em>callback</em>, même dans le cas où aucun traitement asynchrone n’a lieu.
+      Cette dénomination <em>callback</em> est trompeuse. En effet, en programmation événementielle, il est courant de passer en argument une fonction à une autre, pour
+      qu’elle soit rappelée au bon moment, de manière asynchrone. Cependant, toute fonction passée en argument à une autre est une <em>callback</em>, même dans le cas où aucun traitement asynchrone n’a lieu. Finalement, c'est bien la fonction à qui
+      on passe la callback en paramètre, celle qui <em>call back</em> qui définit ce contexte asynchrone ou synchrone.
     </p>
 
 
@@ -162,12 +193,7 @@ element.addEventListener(‘onClick’, bar) ;
 
     <p>
       Je suis peut-être idiot ou le seul à avoir pensé cela, mais cette confusion sur le lien entre callback et appel asynchrone m’a amené à penser que lorsque je passais une fonction en argument à autre fonction alors celle-ci, étant une callback,
-      serait <em>rappelée</em> plus tard. En somme, j’ai pensé que si passais une fonction en argument à une autre fonction, la callback serait traitée de manière asynchrone. Pour essayer de comprendre tout cela, je me suis retrouvé à écrire des
-      bouts de
-      code insensés à base de <code>setTimeout</code>, comme le propose beaucoup de tutos en ligne sur ces questions. Maintenant que tout est éclairci, je ne suis même plus capable de me rappeler ce que j’ai pu écrire pour mettre à l’épreuve ma
-      compréhension.
-      Je n’en ai pas gardé la trace, et peut-être est-ce mieux ainsi car cela aurait pu devenir embarrassant. Si ce que je viens de dire vous paraît insensé ce n’est pas grave, c’est juste pour vous montrer à quel niveau de confusion j’en étais
-      rendu.
+      serait <em>rappelée</em> plus tard. En somme, j’ai pensé que si passais une fonction en argument à une autre fonction, la callback serait traitée de manière asynchrone.
     </p>
 
 
@@ -336,7 +362,7 @@ element.addEventListener(‘onClick’, bar) ;
 
     <p>
       Nous l’avons vu, les exécutions asynchrones en Javascript ne se font pas à proprement parler « en » Javascript mais par l’intermédiaire d’un thread supplémentaire mis a disposition par le navigateur (ou par Node). Javascript est monothreadé et
-      son thread, en plus d’avoir sa propre autonomie est alimenté par l’Event loop de son environnement. L’Event-loop et la Callback queue forment les briques de base d’une architecture <em>programmation événementielle</em>.
+      son thread, en plus d’avoir sa propre autonomie est alimenté par l’Event loop et la Callback queue. L’Event-loop et la Callback queue forment les briques de base d’une architecture <em>programmation événementielle</em>.
     </p>
 
     <p>
@@ -345,12 +371,12 @@ element.addEventListener(‘onClick’, bar) ;
       d’un traitement asynchrone via la Callback queue.
     </p>
 
-    <p>Le mot <em>callback</em> est alors, par extension, toujours employé pour désigner une simple fonction passée en argument à une autre fonction. Par exemple, la <a
+    <p>Le mot <em>callback</em> est cependant employé, comme le veut sa définition, pour désigner une simple fonction passée en argument à une autre fonction. Par exemple, la <a
         href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/forEach">documentation</a> de la méthode <code>forEach</code>, du prototype d'<code>Array</code>, nous dit que <code>forEach</code> prend en
       argument une <em>callback</em>. Cette callback sera executée pour chaque élément du tableau sur lequel <code>forEach</code> est appliqué. Ici on dénomme <em>callback</em> cette fonction alors que <code>forEach</code> applique un traitement
       synchrone.
       Cette <em>callback</em> ne
-      passe jamais par la Web API ou par la Callback queue. Elle est executée directement sur la Stack. A nouveau, le mot est abusivement employé hors de son contexte d'origine, où il fait sens, et produit de la confusion.
+      passe jamais par la Web API ou par la Callback queue. Elle est executée directement sur la Stack. On a donc là une <em>callback</em>, au sens strict du terme mais sans lien avec ce mécanisme de Callback queue.
     </p>
 
 
@@ -358,21 +384,27 @@ element.addEventListener(‘onClick’, bar) ;
 
     <h2>Conclusion</h2>
 
-    <p>Nous avons vu que callback et traitements asynchrones sont deux concepts qui ne sont pas nécessairement liés. Le terme <em>callback</em> est utilisé pour désigner toute fonction passée en argument à une autre fonction, indépendamment de son
+    <p>Nous avons vu que callback et traitement asynchrone sont deux concepts qui n'ont aucun rapport par nature. Le terme <em>callback</em> est utilisé pour désigner toute fonction passée en argument à une autre fonction, indépendamment de son
       traitement
-      synchrone ou asynchrone. Par abus de langage, étant donné qu’en Javascript on passe régulièrement des fonctions à des fonctions dans le cas de traitement asynchrone (via la Web API), les callbacks sont souvent (et malheureusement) associées,
-      <em>dans leur
-        dénomination</em> au traitement asynchrone lui-même, et à l’idée d’un appel futur.
+      synchrone ou asynchrone.
+
+    </p>
+
 
     <p>
       La fonction passée en argument a hérité d'un nom qui se réfère à son contexte d'utilisation le plus courant <em>et ce, indépendamment du contexte</em>. Lorsque
-      l’on rencontre le terme <em>callback</em>, il ne faut pas penser asynchrone. Il faut penser à une fonction passée en argument à une autre fonction, sans
+      l’on rencontre le terme <em>callback</em>, il ne faut pas penser asynchrone. Il faut n'avoir
       aucun a priori
-      sur la manière dont elle sera appelée. La fonction à laquelle on passe notre callback fait peut-être du traitement asynchrone, mais pas nécessairement. </p>
+      sur la manière dont la fonction sera executée. La fonction à laquelle on passe notre callback fait peut-être du traitement asynchrone, mais pas nécessairement. </p>
     </p>
 
-    <p>Je reste tolérant à cet usage abusif du terme callback car tout abus de langage traduit un bénéfice en terme de communication, on ne peut pas le nier. Mais pour celui qui débarque, comme moi, et essaye de comprendre le sens de ces mots afin de
-      pouvoir penser correctement le fonctionnement de leur code, cet abus de langage est susceptible d'apporter beaucoup de confusion.</p>
+    <p>Comme nous l'avons vu, le terme de callback prend un sens tout particulier et naturel dans le cas du traitement asynchrone et du passage par la Callback queue. Et pourtant, une callback peut être executée, comme n'importe quelle fonction, de
+      manière synchrone. Sa <em>
+        dénomination</em>, qui adhère complètement au concept de traitement asynchrone lui-même, et à l’idée d’un appel futur, est trompeuse. Sous la même dénomination de callback des processus très différents peuvent avoir lieu sous le capot.</p>
+
+
+    <p> Pour celui qui débarque, comme moi, et essaye de comprendre le sens de ces mots afin de
+      pouvoir penser correctement le fonctionnement de son code, cet abus de langage est susceptible d'apporter beaucoup de confusion. Confusion que j'espère avoir éclaircie pour celles et ceux qui ont trébuché sur les <em>callbacks</em>.</p>
 
 
 
