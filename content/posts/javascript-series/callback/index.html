@@ -97,17 +97,22 @@
 
     </ul>
 
-    Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
-    La première rencontre avec le terme <em>callback</em> en Javascript n'est pas toujours une rencontre qui se passe bien. Il désigne toute fonction passée en paramètre d'une autre fonction, indépendamment du fait que le contexte soit synchrone ou
-    asynchrone. Le soucis, c'est qu'on le voit apparaitre <em>majoritairement</em>, dans les ressources, dans un contexte de traitement asynchrone. Et pour courroner le tout, on désigne <em>callback</em> la fonction passée en argument à une autre
+
+    <p>
+        Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
+    </p>
+
+
+<p>
+  La première rencontre avec le terme <em>callback</em> en Javascript n'est pas toujours une rencontre qui se passe bien car ce mot est un tapis sous lequel on met tout un tas de choses.  Il désigne toute fonction passée en paramètre d'une autre fonction, indépendamment du fait que le contexte soit synchrone ou
+  asynchrone. Le soucis, c'est qu'on le voit apparaitre <em>majoritairement</em>, dans les ressources, dans un contexte de traitement asynchrone.
+</p>
+
+    Et pour courroner le tout, on désigne <em>callback</em> la fonction passée en argument à une autre
     fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar);</code>, <code>bar</code> est désignée comme étant une <em>callback</em> mais c'est
     <code>foo</code> qui la <em>call back</em>, qui l'appelle en temps et en heure.</p>
 
-    <p class="encart">Dans cet article je m'abstiendrai d'utiliser des métaphores et par extension des pseudo-codes métaphoriques. Les métaphores sont très utiles pour expliquer des concepts inconnus en les rattachant à des choses connues. Cependant,
-      elles charrient avec elles des inconvénients : elles supposent la manière dont une chose est connue par l'autre et sont souvent plus agréables à énoncer pour celui/celle qui transmet qu'à entendre pour celui/celle qui reçoit. Lorsque je veux
-      comprendre honnêtement un concept, le débarasser de toutes confusions, je n'ai pas envie d'entendre parler d'une commande de burger ou d'une analogie avec un restaurant. Une fois le concept compris les métaphores aident à le consolider mais
-      souvent il y a le risque qu'elles ajoutent de la confusion à la confusion. Aussi, j'utiliserai dans cet article encore et encore un code complètement honnête, transparent et ennuyeux pour illustrer mes propos. N'hésitez pas à copier, coller
-      modifier ce code à votre guise pour expérimenter. Tous les extraits de code compilent et produisent les sorties discutées dans l'article. </p>
+    
 
 
     <h3>Les callback n'ont rien à voir avec le traitement asynchrone</h3>
