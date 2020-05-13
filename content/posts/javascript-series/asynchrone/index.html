@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<link href="prism.css" rel="stylesheet" />
+
+<body>
+
+  <div class="container-fluid">
+
+
+
+    <h1>Gestion des traitements asynchrones</h1>
+
+    <div id="intro">
+      <p>
+        Dans <a href="/content/posts/javascript-series/callback/">l'article sur la notion de callback et du traitement asynchrone</a>, nous avions vu que les traitements asynchrones en Javascript ne se font pas à proprement parler « en » Javascript
+        mais par l’intermédiaire d’un thread supplémentaire mis a disposition par le navigateur (ou par Node). Javascript est monothreadé et
+        son thread, en plus d’avoir sa propre autonomie est alimenté par l’Event loop de son environnement.
+      </p>
+
+      <div class="row justify-content-center" id="system">
+        <figure class="figure">
+          <img src="system.svg" class="figure-img img-fluid rounded" alt="" title="" width="600" />
+          <figcaption class="figure-caption text-center">Le traitement asynchrone est terminé, la Web API a placé la callback <br /><code>foo</code> dans la callback queue où elle finira par être poussée par l'Event Loop sur la Stack.</figcaption>
+        </figure>
+      </div>
+
+      <p>Lorsque nous faisons du traitement asynchrone, pour ne pas bloquer le thread de Javascript, nous déléguons une tâche à l'environnement d'execution (faire une requête à une base données, télécharger une ressource sur un serveur, ajouter des
+        écouteurs d'évènements...). Cette déléguation est réalisée en faisant appel à une fonction de la Web API, qui sert d'interface entre le thread Javascript et les ressources de son environnement d'execution (le navigateur ou Node.js).
+        Traditionnelement, lorsque nous appelons une fonction de la Web API nous lui passons en argument une callback. Celle-ci est placée dans la Callback queue lorsque la taĉhe à éxecuter est terminée. Cette callback patiente dans la queue jusqu'à
+        ce que l'Event loop finisse par la déplacer sur la Stack de Javascript où elle sera executée. </p>
+    </div>
+
+
+    <h2>Au retour sur la Stack</h2>
+    <p>
+      Les callbacks qui retombent sur la Stack doivent être traitées et gérées par le développeur pour faire tourner correctement son programme. Cependant dès que nous passons notre callback à la Wep API nous perdons le contrôle sur le flot de notre
+      programme et nous ne sommes plus sûrs de rien. Comment gérer alors le retour de nos callbacks sur la Stack ?
+    </p>
+
+
+    <h3>Callback hell</h3>
+
+    <p>
+      Nous l’avons compris maintenant, nous pouvons utiliser la fonction <code>setTimeout</code> pour simuler un traitement asynchrone qui prendrait un certain temps avant d'être terminé. Comment m’y prendre si je souhaite réagir
+      suite à l’execution de ma fonction asynchrone ? Par exemple, j'ai une fonction <code>foo</code> qui est déléguée à l'environnement d'execution pour être traitée de manière asynchrone.
+    </p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  setTimeout(function foo() {
+    //fait des trucs de manière asynchrone et fournit un resultat
+    let result = 'foo';
+    if (result = 'foo') {
+      console.log('foo succès');
+    } else {
+      console.log('foo échec')
+    }
+  }, 3000);
+</code>
+</pre>
+    </div>
+
+    <p>
+      Comment je m’y prends si je souhaite appeler une autre fonction uniquement <em>une fois que <code>  foo</code></em>
+      <code>foo</code> ait été
+      exécutée ? Et si en plus de cela je souhaite appeler une fonction différente selon que <code>foo</code> ait réussi ou échoué son execution?
+
+    </p>
+    <p>
+      Pour répondre à ces questions supposons que je veuille ici appeler une fonction <code>bar</code> aussitôt <code>foo succès</code> affiché dans la console. Je ne peux pas écrire du code à la suite de <code>setTimeout</code> car l’execution
+      de
+      <code>setTimeout</code> est immédiate. La
+      fonction <code>foo</code> est passée à la Web API et, après un délai, attend son tour dans la callback queue. Elle va retomber dans la Stack à un moment que je ne peux pas déterminer. Mon unique solution est donc d’appeler directement
+      <code>bar</code>
+      <em>depuis</em> <code>foo</code>.
+    </p>
+
+    <p>
+      Voici un exemple d’appels permettant d’enchainer les traitements asynchrones. Chaque traitement asynchrone renvoie la callback sur la Stack à un moment indéfini. Je suis donc obligé de passer à chaque traitement asynchrone une référence vers le
+      prochain traitement asynchrone ou, plus directement encore, de définir dans chaque traitement le prochain traitement. Dans chaque callback on définit une callback, puis encore une callback etc... En pratique voici ce que ça donne
+    </p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  setTimeout(function foo() {
+    //fait des trucs de manière asynchrone et fournit un resultat
+    let result1 = 'foo';
+    console.log('foo succès');
+    if (result1 === 'foo') {
+      setTimeout(function bar(){
+        //fait des trucs de manière asynchrone et fournit un resultat si foo a réussi
+        let result2 = 'bar';
+        console.log('bar succès');
+        if (result2 === 'bar') {
+          //fait des trucs de manière asynchrone et fournit un resultat si foo, puis bar a réussi
+          setTimeout(function foo-bar() {
+            console.log('foo-bar succès');
+          }, 1000);
+        } else {
+          console.log('bar échec');
+        }
+      }, 2000)
+    } else {
+      console.log('foo échec');
+    }
+  }, 3000);
+</code>
+</pre>
+    </div>
+
+
+    <p>Rien qu’à l’écriture, déjà, c’est pénible. Imaginez revenir à ce code dans 3 semaines pour le débugger ou le faire évoluer. C’est l’enfer, le fameux <em>Callback Hell</em>. Les callback sont définies récursivement les unes à l’intérieur des
+      autres. Ce bout de
+      code, pourtant gardé volontairement simple ici, ne dévoile pas ses intentions, ne dit pas comment il fonctionne ou ce qu’il fait. Ces symptômes sont une alerte. Et plus l’enchaînement des traitements augmente et plus cette suite d’appels sera
+      profonde et illisible. </p>
+
+    <p>Le problème c’est que jusqu’à l’arrivée du système de promesses il n’y avait aucun autre moyen d’écouter le retour sur la Stack d’un traitement asynchrone. Il fallait que le retour contienne lui même une référence vers la fonction à appeler en
+      cas de réussite ou d’échec du traitement.</p>
+
+    <h3> Les promesses</h3>
+
+    <p>Les promesses sont apparues avec la norme <a href="https://fr.wikipedia.org/wiki/ECMAScript">EcmaScript 6</a> (ou ES6) en 2015. Elles permettent de se débarrasser des structures récursives du <em>Callback Hell</em> et faire de la gestion de
+      traitement asynchrones de manière plus lisible et plus propre.</p>
+
+    <p>Cet article ne porte pas sur les promesses et n’a pas pour ambition de servir d’introduction à leur utilisation. Pour cela, vous pouvez vous reporter à la documentation ici [ref:] ou à de tres bons articles <a
+        href="https://itnext.io/javascript-promises-vs-rxjs-observables-de5309583ca2">ici</a> où <a href="https://medium.com/codebuddies/getting-to-know-asynchronous-javascript-callbacks-promises-and-async-await-17e0673281ee">là</a>. L’ambition est
+      plutot de faire sentir, de montrer en quoi l’usage des promesses se démarque, dans ses principes, de l’usage des callbacks. Les promesses <em>sont une feature</em> bienvenue en Javascript. Elles peuvent d’ailleurs être utilisées dans le cas de
+      traitement synchrone ou asynchrone. Seulement, leur utilisation prend tout son sens dans le second cas.
+
+    </p>
+
+    <p>
+      Avec les callbacks lorsqu’une fonction lance un traitement asynchrone, nous devons donner à cette fonction une nouvelle fonction pour lui dire quoi faire une fois le traitement terminé. Et éventuellement, à cette fonction une autre fonction et
+      ainsi de suite. Chaque fonction a dans ce cas <em>la responsabilité d’appeler la prochaine fonction</em>, de déclencher le prochain traitement à faire.
+    </p>
+
+
+    <p>
+      Avec les promesses on change de paradigme: une fonction executée de manière asynchrone n’a plus besoin de savoir <em>quoi faire</em> une fois son exécution terminée. <em>Ce n’est plus sa responsabilité</em>. Sa seule responsabilité est de
+      s’éxecuter. Dans un contexte
+      asynchrone, sa seule responsabilité est de lancer le traitement asynchrone. Cette fonction s’exécute d’abord, lance son traitement, puis retourne immédiatement une promesse (un objet Javascript). Le thread Javascript continue ainsi son flot.
+      La responsabilité de l’action à faire à la fin du traitement asynchrone revient dorénavant à cette promesse.
+    </p>
+
+
+    <p>Ré-écrivons notre fonction <code>foo</code> avec l’usage d’une promesse</p>
+
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  function foo() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        //fait des trucs de manière asynchrone et fournit un resultat
+        let result1 = 'foo';
+        if (result1 === 'foo')
+          resolve('foo succès');
+        else
+          reject('foo échec')
+      }, 3000);
+    });
+  }
+
+  foo() ;
+</code>
+</pre>
+    </div>
+
+
+    <p><code>foo</code> qui retourne à présent une promesse. La promesse prend en argument une fonction qui est immédiatement executée. Ici <code>setTimeout</code> s’exécute : elle passe la callback à l’environnement du navigateur. L’Event-loop
+      finira par la pousser de la callback queue sur la Stack. Remarquez que <code>foo</code> ne contient plus aucune référence ou une définition d’une callback a appeler à la fin de son exécution. Elle n’en a plus la charge. <code>foo</code>
+      retourne ici une promesse, elle
+      promet de retourner quelque chose, même si elle ne sait pas encore quoi et quand. La responsabilité du retour et de savoir quoi en faire revient donc à la promesse. </p>
+
+
+    <p>Pour que la promesse puisse faire son travail, elle prend en argument de son constructeur deux fonctions, deux callbacks : <code>resolve</code> et <code>reject</code>. Une seule des deux callbacks sera appelée à la fin du traitement :
+      <code>resolve</code> si le traitement réussit,
+      <code>reject</code> si le traitement échoue. On dit dans le premier cas que la promesse a été <em>tenue</em>, dans le second que la promesse a été <em>rejetée</em>. Et oui, nous sommes toujours obligés de passer des callbacks car nous devons
+      bien définir d’une manière ou
+      d’une autre si notre traitement a réussi ou échoué. Mais au lieu de dire à <code>foo</code> <em>quoi faire</em> en cas d’échec ou de réussite, nous disons à la promesse <em>quoi dire</em> en cas d’échec ou de réussite. </p>
+
+
+    <p>Lorsque le traitement asynchrone est terminé, la callback passée en argument à <code>setTimeout</code> revient sur la Stack, est executée et notifie la promesse. Nous pouvons alors interroger la promesse pour savoir comment notre traitement
+      s’est passé.
+      Pour cela, la promesse nous met à disposition deux méthodes : <code>then</code> et <code>catch</code></p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  foo().then((resultatSucces)=>{
+    console.log(resultatSucces);
+  })
+  .catch((resulatErreur)=>{
+    console.log(resulatErreur);
+  })
+</code>
+</pre>
+    </div>
+
+
+    <p>La méthode <code>then</code> est mappée à la fonction <code>resolve</code> passée au constructeur de la promesse. Si la promesse appelle <code>resolve</code> alors on tombera dans t<code>then</code>. La promesse est alors <em>tenue</em> ( ou
+      <em>fulfilled</em>). Si la promesse appelle <code>reject</code> alors on
+      tombera dans le <code>catch</code>, la promesse est <em>rejetée</em> (ou <em>rejected</em>). </p>
+
+    <p>Changer la valeur de <code>result1</code> dans le code précédent pour tomber alternativement dans le <code>then</code> ou dans le <code>catch</code>. </p>
+
+    <p>Vous voyez maintenant qu’à la place d’un simple log je pourrais décider d’appeler une autre fonction dans le <code>then</code> en cas de succès, ou une autre dans le <code>catch</code> en cas d’erreur. On remarque déjà que, contrairement à sa
+      première implémentation à
+      l’aide de callback, <code>foo</code> n’est plus responsable des actions à effectuer en cas de succès ou d’échec. Ces actions, ces appels de fonction se font dorénavant en dehors d’elle, à la suite. On ne fabrique plus des appels dans des appels
+      dans des
+      appels comme dans le <em>Callback Hell</em>, mais des appels à la suite les uns des autres. Grace aux promesses nous passons d’une structure d’appels imbriquée à une structure d’appels chaînée.</p>
+
+
+    <p>Si nous voulons reproduire l’exemple précédent et chaîner nos traitements les uns aux autres voici ce que nous aurons :</p>
+
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  foo()
+  //Appel de bar
+  .then((result) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log(result)
+        //fait des trucs de manière asynchrone et fournit un resultat
+        let result2 = 'bar2';
+        if (result2 === 'bar')
+          resolve('bar succès');
+        else
+          reject('bar echec');
+      }, 1000);
+    });
+  })
+  //Appel de foo-bar
+  .then((result) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log(result)
+        resolve('foo-bar succès');
+      }, 1000);
+    });
+  })
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+</code>
+</pre>
+    </div>
+
+
+    <p>Ce n’est pas encore la panacée, mais déjà c’est plus lisible. Les mots clefs <code>then</code> et <code>catch</code> me renseignent au premier coup d’oeil sur les intentions de ce code et sur sa logique. Cette séquence d’appels n’est plus
+      imbriquée. Chaque appel
+      successif est devenu un bloc autonome. Si je veux modifier un des traitements, je n’ai plus besoin de descendre dans l’enfer des callback et trouver le bon étage pour y apporter mes modifications. Je n’ai qu’à aller dans le block then
+      correspondant. Si je veux ajouter un traitement à la chaine, je n’ai qu’à ajouter un bloc sous un autre. La pyramide de callback est devenue une bien plus agréable chaîne de promesses.</p>
+
+
+
+    <h3>Syntaxic sugar : <code>async</code> et <code>await</code></h3>
+
+
+    <p>Nous avons vu, comment en principe, nous pouvons sortir de l’enfer des callback à l’aide des promesses et écrire du code plus lisible. Néanmoins, on l’a vu, la syntaxe est encore un peu lourde. L’enchainement des <code>then</code> et des
+      valeurs de retours
+      passant d’un <code>then</code> à l’autre peut devenir rapidement difficile à suivre.</p>
+
+
+    <p>En 2017 la norme EcmaScript8 arrive avec deux nouveaux mots clés : <code>async</code> et <code>await</code>. Contrairement au passage de l’utilisation des callback à celle des promesses dans la gestion de l’asynchrone, cette nouvelle norme
+      n’introduit aucune nouvelle
+      feature, sinon du sucre syntaxique. Cependant lorsqu’une syntaxe nouvelle arrive et permet d’écrire du code de manière plus transparente et lisible, et sauve ainsi beaucoup de temps au développeur, on peut la considérer comme une feature. C’est
+      plus agréable
+      à écrire et manipuler, mais sous le capot, le moteur reste celui des promesses.</p>
+
+    <p>Reprenons notre chaine d’appels. Nous allons l’encapsuler dans une fonction que l’on signalera faisant un traitemement asynchrone avec le mot clé <code>async</code></p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  async function maChaineDeTraitementsAsynchrones() {
+
+  	const result = await foo();
+  }
+</code>
+</pre>
+    </div>
+
+
+    <p> Cela nous permet d’utiliser le mot <code>await</code> à l’intérieur de la fonction déclarée avec <code>async</code>. Le mot clé <code>await</code> <strong>se place devant l’évaluation d’une fonction qui retourne une promesse</strong>. On peut
+      donc la placer devant l’appel de notre fonction <code>foo</code>. Si
+      nous voulons utiliser le résultat renvoyé par <code>foo</code>, par exemple le logger il suffit d’écrire </p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  async function maChaineDeTraitementsAsynchrones() {
+
+	const resultatSucces = await foo();
+	console.log(resultatSucces) ;
+}
+</code>
+</pre>
+    </div>
+
+
+    <p>Ce code est équivalent à notre code précédent</p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  foo().then((resultatSucces)=>{
+    console.log(resultatSucces);
+  })
+</code>
+</pre>
+    </div>
+
+    <p>Avec le mot clé <code>await</code>, l’instruction suivante de la fonction <code>maChaineDeTraitementsAsynchrones</code> (ici le <code>console.log</code>) est executée <strong>seulement si la promesse a été acquittée</strong>. Une promesse est
+      <em>acquitée</em> lorsqu’elle n’est plus en attente, et donc qu’elle
+      est <em>tenue</em> ou <em>rejetée</em>. Nous pouvons alors écrire notre chaine d’appels <em>comme si nous étions en train d’écrire du code de manière synchrone</em>, ce qui est beaucoup plus lisible que l’enchaînement des <code>then</code> et
+      des rebonds entre valeurs de retours et
+      appels suivants.
+
+    <p>Comme <code>foo</code> fait un travail asynchrone on ne sait pas quand <code>resultatSucces</code> sera obtenu, mais nous n’avons plus à nous en soucier, car async/await et les promesses s’en chargent pour nous. Une instruction marquée d’un
+      <code>await</code>
+      <q>semble  bloquer</q> l’éxecution de l’instruction qui la suit. En réalité, l’instruction suivante se comporte exactement <em>comme si elle se trouvait</em> dans le <code>then</code> de la promesse retournée.</p>
+    </p>
+
+
+    <p>Attention cependant, on ne passe à l’instruction suivante que si la promesse a été tenue. Pour lever les erreurs il faut entourer notre chaîne d’instructions par un classique try/catch. Si vous ne le faites et qu’une de vos promesses appelle
+      la méthode <code>reject</code> l’interpréteur Javascript vous renverra une erreur.</p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  async function maChaineDeTraitementsAsynchrones() {
+
+   try{
+  	const resultatSucces = await foo();
+  	console.log(resultatSucces) ;
+
+   } catch(erreur){
+  	console.log(erreur) ;
+   }
+  }
+</code>
+</pre>
+    </div>
+
+    <p>Le mot clef <code>async</code> ne signifie pas que votre fonction est devenue une fonction asynchrone, qu’elle lance des taches en parallèle etc.. Javascript est monothreadé ! Le mot clé dit seulement au développeur
+      « attention, ici il y’a du traitement asynchrone et un usage invisibles de promesses ». Aync et await masquent seulement aux yeux du développeur l’architecture des promesses, mais elle est bien présente. La succession des <code>then</code> est
+      invisible mais elle est
+      bien là. La fonction <code>maChaineDeTraitementsAsynchrones</code> n’est pas devenue une fonction asynchrone elle-même : chacune de ses instructions marqués du mot clé <code>await</code> retourne (une promesse), comme dans tout bon flot
+      synchrone.</p>
+
+    <p>Afin d’être complet voici notre code fil rouge écrit à l’aide de la syntaxe async/await. </p>
+
+    <div id="snpippet-node">
+      <pre>
+<code class="language-javascript">
+  async function maChaineDeTraitementsAsynchrones() {
+
+
+  try {
+
+    const result = await foo();
+
+    const result2 = await
+
+    function(result) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(result);
+          let result2 = 'bar';
+          if (result2 === 'bar')
+            resolve('bar succès');
+          else
+            reject('bar echec');
+        }, 1000);
+      });
+    }(result);
+
+    const result3 = await
+
+    function(result) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(result);
+          resolve('foo-bar succès');
+        }, 1000);
+      });
+    }(result2);
+
+    console.log(result3);
+
+
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+maChaineDeTraitementsAsynchrones();
+</code>
+</pre>
+    </div>
+
+    <p>On peut remarquer que la lisibilité est grandement améliorée : les mots async/await nous préviennent qu’il s’agit là d’un appel qui réalise du travail asynchrone. Cependant, les instructions à l’intérieur de cette méthode asynchrone se lisent
+      comme une suite d’instructions synchrones, sans difficultés.</p>
+
+
+    <h2>Conclusion</h2>
+
+
+    <p>Nous avons parcouru les différentes manières de faire de la gestion asynchrone à l’aide des callbacks, puis des promesses. Grâce aux promesses nous avons pu passer d’une structure d’appels imbriquée à une structure plus commode sous
+      forme de chaîne.
+    </p>
+    <p>
+      Enfin, les mots clés async et await, arrivés avec la norme ES8, masquent fortement la gestion asynchrone et permettent d’écrire et présenter le code à la manière d’un traitement synchrone. Ce confort supplémentaire augmente
+      fortement la lisibilité du code.
+    </p>
+
+    <h2>Aller plus loin</h2>
+
+    <dl>
+      <dt>Les différentes queues et l'Event loop</dt>
+      <dd>
+        <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">What the heck is the event loop anyway ?</a>, Philip Roberts
+      </dd>
+      <dd><a href="  https://www.youtube.com/watch?v=cCOL7MC4Pl0">In the loop</a>, Jake Archibald</p>
+      </dd>
+
+      <dt>Traitement asynchrone</dt>
+      <dd>
+        <a href="https://itnext.io/javascript-promises-vs-rxjs-observables-de5309583ca2">JavaScript Promises vs. RxJS Observables</a>, Daniel Weibel
+      </dd>
+
+      <dd>
+        <a href="https://medium.com/codebuddies/getting-to-know-asynchronous-javascript-callbacks-promises-and-async-await-17e0673281ee">Getting to know asynchronous JavaScript: Callbacks, Promises and Async/Await</a>, Sebastian Lindström
+      </dd>
+      <dd><a href="  https://frank.taillandier.me/2017/03/23/comprendre-les-promesses-en-javascript/">Un guide illustré pour comprendre les promesses en JavaScript</a>, Mariko Kosoka, traduit par Frank Taillandier</dd>
+    </dl>
+
+
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="prism.js"></script>
+
+
+
+
+</html>
