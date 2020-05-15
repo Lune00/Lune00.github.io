@@ -93,15 +93,11 @@
     <ul>
       <li>Les callbacks sont majoritairement utilisées <strong>et discutées</strong> en JavaScript dans un contexte asynchrone </li>
       <li>Le mot <em>rappel</em> éveille en moi le sens commun du mot, et m'incite à donner à la fonction, inconsciemment, sans effort, une qualité asynchrone. </li>
-
-
     </ul>
-
 
     <p>
         Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
     </p>
-
 
 <p>
   La première rencontre avec le terme <em>callback</em> en JavaScript n'est pas toujours une rencontre qui se passe bien car ce mot est un tapis sous lequel on met tout un tas de choses.  Il désigne toute fonction passée en paramètre d'une autre fonction, indépendamment du fait que le contexte soit synchrone ou
@@ -109,13 +105,10 @@
 </p>
 
     Et pour courroner le tout, on désigne <em>callback</em> la fonction passée en argument à une autre
-    fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar);</code>, <code>bar</code> est désignée comme étant une <em>callback</em> mais c'est
-    <code>foo</code> qui la <em>call back</em>, qui l'appelle en temps et en heure.</p>
+    fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar)</code>, <code>bar</code> est désignée comme étant une <em>callback</em> mais c'est
+    <code>foo</code> qui la <em>call back</em>, qui l'appelle en temps et en heure. Il y a matière à confusion.</p>
 
-
-
-
-    <h3>Les callback n'ont rien à voir avec le traitement asynchrone</h3>
+    <h3>Les callbacks n'ont rien à voir avec le traitement asynchrone</h3>
 
 
 
@@ -140,7 +133,7 @@
   </pre>
     </div>
 
-    <p>La fonction bar, étant donnée qu'elle est passée à foo en argument, est par définition une fonction de rappel, une callback. Ce code donne évidemment le résultat suivant</p>
+    <p>La fonction <code>bar</code>, étant donnée qu'elle est passée à <code>foo</code> en argument, est par définition une fonction de rappel, une callback. Ce code donne évidemment la sortie suivante</p>
 
     <div id="snpippet-node">
       <pre>
@@ -159,7 +152,7 @@
       l'est. Elle est <em>appelée</em>, comme n'importe quelle fonction, elle est <em>rappelée</em> au sens où c'est <code>foo</code> qui la rappelle.
     </p>
 
-    <h3>Utiliser des <em>callback</em> dans un contexte asynchrone et correspondance au sens commun du mot</h3>
+    <h3>Utiliser des <em>callbacks</em> dans un contexte asynchrone et correspondance au sens commun du mot</h3>
 
     <p>Le problème c'est que dans son usage le plus courant en JavaScript le terme <em>callback</em> signifie bien à la fois est <q> passé en argument à une autre fonction </q> et <q> est appelée plus tard dans le temps </q>. Par exemple, c'est ce
       qui arrive à chaque fois que nous
