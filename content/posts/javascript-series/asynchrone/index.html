@@ -62,9 +62,7 @@
     </p>
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  setTimeout(function foo() {
+      <pre><code class="language-javascript"> setTimeout(function foo() {
     //fait des trucs de manière asynchrone et fournit un resultat
     let result = 'foo';
     if (result = 'foo') {
@@ -78,9 +76,9 @@
     </div>
 
     <p>
-      Comment je m’y prends si je souhaite appeler une autre fonction uniquement <em>une fois que <code>  foo</code></em>
-      <code>foo</code> ait été
-      exécutée ? Et si en plus de cela je souhaite appeler une fonction différente selon que <code>foo</code> ait réussi ou échoué son execution?
+      Comment je m’y prends si je souhaite appeler une autre fonction uniquement <em>une fois que <code>foo</code></em>
+      ait été
+      exécutée ? Et si en plus de cela je souhaite appeler une fonction différente selon que <code>foo</code> ait réussi ou échoué son traitement?
 
     </p>
     <p>
@@ -98,9 +96,8 @@
     </p>
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  setTimeout(function foo() {
+      <pre class="language-javascript line-numbers">
+<code > setTimeout(function foo() {
     //fait des trucs de manière asynchrone et fournit un resultat
     let result1 = 'foo';
     console.log('foo succès');
@@ -121,9 +118,7 @@
     } else {
       console.log('foo échec');
     }
-  }, 3000);
-</code>
-</pre>
+  }, 3000);</code></pre>
     </div>
 
 
@@ -165,11 +160,10 @@
 
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  function foo() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
+      <pre class="language-javascript line-numbers">
+<code> function foo() {
+    return new Promise( (resolve, reject) => {
+      setTimeout( () => {
         //fait des trucs de manière asynchrone et fournit un resultat
         let result1 = 'foo';
         if (result1 === 'foo')
@@ -181,8 +175,7 @@
   }
 
   foo() ;
-</code>
-</pre>
+</code></pre>
     </div>
 
 
@@ -205,15 +198,13 @@
 
     <div id="snpippet-node">
       <pre>
-<code class="language-javascript">
-  foo().then((resultatSucces)=>{
+<code class="language-javascript">  foo().then((resultatSucces)=>{
     console.log(resultatSucces);
   })
   .catch((resulatErreur)=>{
     console.log(resulatErreur);
   })
-</code>
-</pre>
+</code></pre>
     </div>
 
 
@@ -234,9 +225,8 @@
 
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  foo()
+      <pre class="language-javascript line-numbers">
+<code >  foo()
   //Appel de bar
   .then((result) => {
     return new Promise((resolve, reject) => {
@@ -266,8 +256,7 @@
   .catch((error) => {
     console.log(error);
   });
-</code>
-</pre>
+</code></pre>
     </div>
 
 
@@ -295,51 +284,42 @@
     <p>Reprenons notre chaine d’appels. Nous allons l’encapsuler dans une fonction que l’on signalera faisant un traitemement asynchrone avec le mot clé <code>async</code></p>
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  async function maChaineDeTraitementsAsynchrones() {
-
-  	const result = await foo();
-  }
-</code>
-</pre>
+      <pre class="language-javascript">
+<code>async function maChaineDeTraitementsAsynchrones() {
+  const result = await foo();
+}
+</code></pre>
     </div>
 
 
-    <p> Cela nous permet d’utiliser le mot <code>await</code> à l’intérieur de la fonction déclarée avec <code>async</code>. Le mot clé <code>await</code> <strong>se place devant l’évaluation d’une fonction qui retourne une promesse</strong>. On peut
+    <p> Une fonction déclarée avec <code>async</code> nous permet d’utiliser le mot <code>await</code> dans son corps. Le mot clé <code>await</code> <strong>se place devant l’évaluation d’une fonction qui retourne une promesse</strong>. On peut
       donc la placer devant l’appel de notre fonction <code>foo</code>. Si
       nous voulons utiliser le résultat renvoyé par <code>foo</code>, par exemple le logger il suffit d’écrire </p>
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  async function maChaineDeTraitementsAsynchrones() {
-
-	const resultatSucces = await foo();
-	console.log(resultatSucces) ;
+      <pre class="language-javascript line-numbers">
+<code >async function maChaineDeTraitementsAsynchrones() {
+  const resultatSucces = await foo();
+  console.log(resultatSucces) ;
 }
-</code>
-</pre>
+</code></pre>
     </div>
 
 
     <p>Ce code est équivalent à notre code précédent</p>
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  foo().then((resultatSucces)=>{
-    console.log(resultatSucces);
-  })
-</code>
-</pre>
+      <pre  class="language-javascript">
+<code>foo().then( (resultatSucces) => {
+  console.log(resultatSucces);
+})
+</code></pre>
     </div>
 
-    <p>Avec le mot clé <code>await</code>, l’instruction suivante de la fonction <code>maChaineDeTraitementsAsynchrones</code> (ici le <code>console.log</code>) est executée <strong>seulement si la promesse a été acquittée</strong>. Une promesse est
+    <p>Avec le mot clé <code>await</code>, l’instruction suivante de la fonction <code>maChaineDeTraitementsAsynchrones</code> à la ligne 3 (ici le <code>console.log</code>) est executée <strong>seulement si la promesse renvoyée par <code>foo</code> a été acquittée</strong>. Une promesse est
       <em>acquitée</em> lorsqu’elle n’est plus en attente, et donc qu’elle
-      est <em>tenue</em> ou <em>rejetée</em>. Nous pouvons alors écrire notre chaine d’appels <em>comme si nous étions en train d’écrire du code de manière synchrone</em>, ce qui est beaucoup plus lisible que l’enchaînement des <code>then</code> et
-      des rebonds entre valeurs de retours et
-      appels suivants.
+      est <em>tenue</em> ou <em>rejetée</em>. Nous pouvons alors écrire notre chaîne d’appels <em>comme si nous étions en train d’écrire du code synchrone</em>, ce qui est beaucoup plus lisible que l’enchaînement des <code>then</code> et
+      des <em>rebonds</em> de valeurs de retours.
 
     <p>Comme <code>foo</code> fait un travail asynchrone on ne sait pas quand <code>resultatSucces</code> sera obtenu, mais nous n’avons plus à nous en soucier, car async/await et les promesses s’en chargent pour nous. Une instruction marquée d’un
       <code>await</code>
@@ -352,19 +332,15 @@
 
     <div id="snpippet-node">
       <pre>
-<code class="language-javascript">
-  async function maChaineDeTraitementsAsynchrones() {
-
-   try{
-  	const resultatSucces = await foo();
-  	console.log(resultatSucces) ;
-
+<code class="language-javascript">async function maChaineDeTraitementsAsynchrones() {
+  try{
+  	 const resultatSucces = await foo();
+  	 console.log(resultatSucces) ;
    } catch(erreur){
-  	console.log(erreur) ;
+  	 console.log(erreur) ;
    }
-  }
-</code>
-</pre>
+}
+</code></pre>
     </div>
 
     <p>Le mot clef <code>async</code> ne signifie pas que votre fonction est devenue une fonction asynchrone, qu’elle lance des taches en parallèle etc.. Javascript est monothreadé ! Le mot clé dit seulement au développeur
@@ -377,16 +353,12 @@
 
     <div id="snpippet-node">
       <pre>
-<code class="language-javascript">
-  async function maChaineDeTraitementsAsynchrones() {
-
-
+<code class="language-javascript">async function maChaineDeTraitementsAsynchrones() {
   try {
 
     const result = await foo();
-
+    
     const result2 = await
-
     function(result) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -401,7 +373,6 @@
     }(result);
 
     const result3 = await
-
     function(result) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -413,15 +384,12 @@
 
     console.log(result3);
 
-
   } catch (error) {
     console.log(error);
   }
-
 }
 maChaineDeTraitementsAsynchrones();
-</code>
-</pre>
+</code></pre>
     </div>
 
     <p>On peut remarquer que la lisibilité est grandement améliorée : les mots async/await nous préviennent qu’il s’agit là d’un appel qui réalise du travail asynchrone. Cependant, les instructions à l’intérieur de cette méthode asynchrone se lisent
