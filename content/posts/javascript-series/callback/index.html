@@ -10,7 +10,7 @@
 
 <link rel="stylesheet" type="text/css" href="style.css">
 
-<link href="https://myCDN.com/prism@v1.x/themes/prism.css" rel="stylesheet" />
+<link href="prism.css" rel="stylesheet" />
 
 <body>
 
@@ -96,13 +96,14 @@
     </ul>
 
     <p>
-        Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
+      Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
     </p>
 
-<p>
-  La première rencontre avec le terme <em>callback</em> en JavaScript n'est pas toujours une rencontre qui se passe bien car ce mot est un tapis sous lequel on met tout un tas de choses.  Il désigne toute fonction passée en paramètre d'une autre fonction, indépendamment du fait que le contexte soit synchrone ou
-  asynchrone. Le soucis, c'est qu'on le voit apparaitre <em>majoritairement</em>, dans les ressources, dans un contexte de traitement asynchrone.
-</p>
+    <p>
+      La première rencontre avec le terme <em>callback</em> en JavaScript n'est pas toujours une rencontre qui se passe bien car ce mot est un tapis sous lequel on met tout un tas de choses. Il désigne toute fonction passée en paramètre d'une autre
+      fonction, indépendamment du fait que le contexte soit synchrone ou
+      asynchrone. Le soucis, c'est qu'on le voit apparaitre <em>majoritairement</em>, dans les ressources, dans un contexte de traitement asynchrone.
+    </p>
 
     Et pour courroner le tout, on désigne <em>callback</em> la fonction passée en argument à une autre
     fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar)</code>, <code>bar</code> est désignée comme étant une <em>callback</em> mais c'est
@@ -115,34 +116,25 @@
     <p>Regardons cet exemple de callback :</p>
 
     <div id="snpippet-node">
-      <pre class="language-javascript line-numbers">
-    <code>
-      function bar() {
-        // vous pouvez mettre ici une boucle interminable
-        console.log('bar');
-      }
+<pre class="language-javascript line-numbers"><code>function bar() {
+  // vous pouvez mettre ici une boucle interminable
+  console.log('bar');
 
-      function foo(bar) {
-        console.log('foo');
-        bar();
-      }
+function foo(bar) {
+  console.log('foo');
+  bar();
+}
 
-      foo(bar);
-      console.log('ok');
-    </code>
-  </pre>
+foo(bar);
+console.log('ok');</code></pre>
     </div>
 
     <p>La fonction <code>bar</code>, étant donnée qu'elle est passée à <code>foo</code> en argument, est par définition une fonction de rappel, une callback. Ce code donne évidemment la sortie suivante</p>
 
     <div id="snpippet-node">
-      <pre>
-  <code class="language-javascript">
-    foo 
-    bar
-    ok
-  </code>
-</pre>
+      <pre><code class="language-javascript">foo 
+bar
+ok</code></pre>
     </div>
 
 
@@ -158,16 +150,10 @@
       qui arrive à chaque fois que nous
       déclarons des écouteurs d'évènement :</p>
 
-
-
     <div id="snpippet-node">
       <pre>
-        <code class="language-javascript">
-element.addEventListener('onClick', bar) ;
-        </code>
-      </pre>
+  <code class="language-javascript" >element.addEventListener('onClick', bar) ;</code></pre>
     </div>
-
 
     <p>
       Ici la fonction <code>bar</code> est un <em>callback</em> à tous les sens affichés ou supposés du terme, car elle est passée en argument à la fonction <foo>addEventListener</foo> qui en fera un traitement asynchrone : <code>bar</code>
@@ -227,18 +213,16 @@ element.addEventListener('onClick', bar) ;
 
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-  function bar(){
+      <pre class="language-javascript"><code >function bar(){
   	console.log('bar') ;
+}
 
-  function foo(bar){
+function foo(bar){
   	console.log('foo') ;
   	bar() ;
-  }
+}
 
-  foo(bar) ;
-</code>
+foo(bar) ;</code>
 </pre>
     </div>
 
@@ -254,7 +238,8 @@ element.addEventListener('onClick', bar) ;
 
     <p>
       Le navigateur, au moment du chargement du script JavaScript, initialise la Stack avec un contexte par défaut, le <em>global execution context</em>. Ce contexte existe sur toute la durée de vie du
-      thread. Le flot rencontre l'appel de <code>foo</code>, un nouveau contexte est poussé sur la Stack pour <code>foo</code>. Au sein de la fonction <code>foo</code> il y'a un appel a <code>console.log</code>, un nouveau contexte est crée pour cet appel. Il est
+      thread. Le flot rencontre l'appel de <code>foo</code>, un nouveau contexte est poussé sur la Stack pour <code>foo</code>. Au sein de la fonction <code>foo</code> il y'a un appel a <code>console.log</code>, un nouveau contexte est crée pour cet
+      appel. Il est
       exécuté et retiré de la Stack. Ensuite
       arrive l'appel de <code>bar</code>, un nouveau contexte est crée, <code>bar</code> est exécutée et retourne, son contexte est détruit. Enfin <code>foo</code> retourne, son contexte est détruit et la Stack revient à son état initial.
     </p>
@@ -263,7 +248,8 @@ element.addEventListener('onClick', bar) ;
       Ce qu'il faut retenir de cette abstraction de l'interpréteur JavaScript c'est qu'il est mono-threadé (il ne possède qu'une Stack) et que <strong>tout s'y exécute de manière synchrone</strong>. Une seule chose peut s'y passer à la fois.
     </p>
     <h3>Un thread unique partagé entre JavaScript et le rendering</h3>
-    <p>Ce même thread est également <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0 ">utilisé par le navigateur pour rafraichir la vue et repeindre son canvas</a>. Ce processus, ou <a href="https://fr.wikipedia.org/wiki/Moteur_de_rendu_HTML">rendering</a>, a
+    <p>Ce même thread est également <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0 ">utilisé par le navigateur pour rafraichir la vue et repeindre son canvas</a>. Ce processus, ou <a
+        href="https://fr.wikipedia.org/wiki/Moteur_de_rendu_HTML">rendering</a>, a
       lieu en général à intervales définis ou à un rythme défini par le navigateur lui même ( pour ne pas rafraichir pour
       rien ).
     </p>
@@ -296,10 +282,8 @@ element.addEventListener('onClick', bar) ;
     </p>
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javaScript line-numbers">
-setTimeout( function foo() { console.log('foo');}, 1000) ;
-</code>
+      <pre class="language-javaScript">
+<code >setTimeout( function foo() { console.log('foo');}, 1000) ;</code>
 </pre>
     </div>
 
@@ -337,10 +321,8 @@ setTimeout( function foo() { console.log('foo');}, 1000) ;
 
 
     <div id="snpippet-node">
-      <pre>
-<code class="language-javascript">
-element.addEventListener('onClick', bar) ;
-</code>
+      <pre class="language-javascript">
+<code >element.addEventListener('onClick', bar) ;</code>
 </pre>
     </div>
 
@@ -435,8 +417,7 @@ element.addEventListener('onClick', bar) ;
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-<script src="https://myCDN.com/prism@v1.x/components/prism-core.min.js"></script>
-<script src="https://myCDN.com/prism@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="prism.js"></script>
 
 
 
