@@ -263,7 +263,7 @@ element.addEventListener('onClick', bar) ;
       Ce qu'il faut retenir de cette abstraction de l'interpréteur JavaScript c'est qu'il est mono-threadé (il ne possède qu'une Stack) et que <strong>tout s'y exécute de manière synchrone</strong>. Une seule chose peut s'y passer à la fois.
     </p>
     <h3>Un thread unique partagé entre JavaScript et le rendering</h3>
-    <p>Ce même thread est également <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0 ">utilisé par le navigateur pour rafraichir la vue et repeindre son canvas</a>. Le <a href="https://fr.wikipedia.org/wiki/Moteur_de_rendu_HTML">rendering</a> a
+    <p>Ce même thread est également <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0 ">utilisé par le navigateur pour rafraichir la vue et repeindre son canvas</a>. Ce processus, ou <a href="https://fr.wikipedia.org/wiki/Moteur_de_rendu_HTML">rendering</a>, a
       lieu en général à intervales définis ou à un rythme défini par le navigateur lui même ( pour ne pas rafraichir pour
       rien ).
     </p>
