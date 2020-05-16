@@ -7,9 +7,6 @@ html {
 }
 
 
-body {
-}
-
 .encart{
   background-color: #e0e0e0;
   padding: 15px;
@@ -18,5 +15,9 @@ body {
 
 h1{
   margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#date{
   margin-bottom: 20px;
 }
