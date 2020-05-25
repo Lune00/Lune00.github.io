@@ -23,7 +23,7 @@
     <div class="row justify-content-center">
       <div class="col-md-4">
 
-        <h1>Callbacks et programmation asynchrone en JavaScript :
+        <h1>Callbacks et programmation asynchrone en JavaScript :
           dissiper les confusions</h1>
 
         <div class="row justify-content-center">
@@ -77,7 +77,7 @@
         <p>
           Pour moi c'est ce mot, <em>callback</em>, qui m'a donné du fil à retordre en JavaScript. Déjà, dans toute opération de traduction d'une langue à une autre il s'opère une perte de sens incompressible. <em>Callback</em> en anglais possède
           plusieurs sens en
-          fonction des contextes. En informatique, le sens qui nous intéresse est le suivant :
+          fonction des contextes. En informatique, le sens qui nous intéresse est le suivant :
 
         <blockquote>
           <p> a callback, also known as a "call-after" function, is any executable code that is passed as an argument to other code</p>
@@ -88,7 +88,7 @@
           </footer>
         </blockquote>
 
-        ou en français <q> un code executable passé en argument à un autre code executable </q>. Une fonction de rappel, ou
+        ou en français <q> un code executable passé en argument à un autre code executable </q>. Une fonction de rappel, ou
         callback,
         c'est une fonction passée en argument à une autre fonction. La définition ne nous dit pas ce que la fonction prenant en argument cette fonction en fait, comment elle l'appelle etc.
         </p>
@@ -138,7 +138,7 @@
 
 
 
-        <p>Regardons cet exemple de callback :</p>
+        <p>Regardons cet exemple de callback :</p>
 
         <div id="snpippet-node">
           <pre class="language-javascript line-numbers"><code>function bar() {
@@ -157,7 +157,7 @@ console.log('ok');</code></pre>
         <p>La fonction <code>bar</code>, étant donnée qu'elle est passée à <code>foo</code> en argument, est par définition une fonction de rappel, une callback. Ce code donne évidemment la sortie suivante</p>
 
         <div id="snpippet-node">
-          <pre><code class="language-javascript">foo 
+          <pre><code class="language-javascript">foo
 bar
 ok</code></pre>
         </div>
@@ -175,11 +175,11 @@ ok</code></pre>
         <p>Le problème c'est que dans son usage le plus courant en JavaScript le terme <em>callback</em> signifie bien à la fois est <q> passé en argument à une autre fonction </q> et <q> est appelée plus tard dans le temps </q>. Par exemple, c'est
           ce
           qui arrive à chaque fois que nous
-          déclarons des écouteurs d'évènement :</p>
+          déclarons des écouteurs d'évènement :</p>
 
         <div id="snpippet-node">
           <pre>
-  <code class="language-javascript" >element.addEventListener('onClick', bar) ;</code></pre>
+  <code class="language-javascript" >element.addEventListener('onClick', bar) ;</code></pre>
         </div>
 
         <p>
@@ -214,13 +214,13 @@ ok</code></pre>
         <p>
           J'ai compris ensuite, en descendant au niveau du fonctionnement général du moteur JavaScript qu'il n'était pas possible de développer en JavaScript ses propres fonctions asynchrones. <em>Que ça ne marchait pas comme ça.</em>
 
-          Pour éclaircir la situation je vais refaire le chemin que j'ai du faire alors : visiter les coulisses de JavaScript, du moins un modèle simplifié mais qui en préserve les ingrédients essentiels, en me servant de la fonction
+          Pour éclaircir la situation je vais refaire le chemin que j'ai du faire alors : visiter les coulisses de JavaScript, du moins un modèle simplifié mais qui en préserve les ingrédients essentiels, en me servant de la fonction
           <code>setTimeout</code> comme
           guide.
         </p>
 
 
-        <h2>Stack, Web API, Callback queue et Event-loop : au coeur de JavaScript</h2>
+        <h2>Stack, Web API, Callback queue et Event-loop : au coeur de JavaScript</h2>
 
 
         <p>Pour la suite je fais le choix de garder les mots anglais pour désigner les processus où les éléments techniques. Ces mots seront ceux rencontrés en permanence dans les documentations ou les ressources en ligne, et plutôt que d'en proposer
@@ -231,35 +231,35 @@ ok</code></pre>
 
         <p>L'interpréteur JavaScript dans le navigateur est <strong>mono-threadé</strong>, c'est à dire qu'il ne possède qu'une <strong>Stack mémoire</strong>. La Stack est une zone mémoire où les données sont ajoutées ou retirées suivant
           l'architecture
-          d'une pile : <a href="https://en.wikipedia.org/wiki/Stack-based_memory_allocation ">dernier entré, premier sorti.</a> </p>
+          d'une pile : <a href="https://en.wikipedia.org/wiki/Stack-based_memory_allocation ">dernier entré, premier sorti.</a> </p>
 
 
-        <p>A chaque appel de fonction rencontré par le flot du programme un contexte mémoire (ou <em>stackframe</em>) est créée sur la Stack. Le contexte contient toutes les informations nécessaires à l'exécution de la fonction  (arguments, variables
+        <p>A chaque appel de fonction rencontré par le flot du programme un contexte mémoire (ou <em>stackframe</em>) est créée sur la Stack. Le contexte contient toutes les informations nécessaires à l'exécution de la fonction (arguments, variables
           locales, références vers des fonctions appelées à l'intérieur, références vers des objets présents dans l'environnement d'exécution de la fonction, référence vers les objets dans le contexte global…) Je ne souhaite pas rentrer dans les
           détails
           sur ces aspects car ils ne servent pas mon propos, mais vous pouvez en apprendre plus <a href="http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/">ici</a> ou <a
             href="https://medium.com/@happymishra66/execution-context-in-javascript-319dd72e8e2c">là</a>.</p>
 
         <p>
-          Une fois que la fonction a fait son travail et a retourné son contexte est détruit et retiré de la Stack. Si l'on reprend l'exemple de tout à l'heure 
+          Une fois que la fonction a fait son travail et a retourné son contexte est détruit et retiré de la Stack. Si l'on reprend l'exemple de tout à l'heure
         </p>
 
 
         <div id="snpippet-node">
           <pre class="language-javascript"><code >function bar(){
-  	console.log('bar') ;
+  	console.log('bar') ;
 }
 
 function foo(bar){
-  	console.log('foo') ;
-  	bar() ;
+  	console.log('foo') ;
+  	bar() ;
 }
 
-foo(bar) ;</code>
+foo(bar) ;</code>
 </pre>
         </div>
 
-        <p>Voici schématiquement ce qu'il se passe dans la Stack </p>
+        <p>Voici schématiquement ce qu'il se passe dans la Stack </p>
 
         <div class="row justify-content-center" id="stacktrace">
           <figure class="figure">
@@ -293,20 +293,20 @@ foo(bar) ;</code>
           afin de laisser au navigateur la possibilité de se repeindre et de traiter les interactions utilisateurs.
         </p>
 
-        <h3>Traitements asynchrones et Web API</h3>
+        <h3>Traitements asynchrones et Web API</h3>
 
         <p>
-          Mais si JavaScript est monothreadé comment peut-on y faire du traitement asynchrone ? JavaScript est monothreadé mais son environnement d'execution lui est multi-threadé, que ce soit le navigateur ou l'écosystème de Node.js.
+          Mais si JavaScript est monothreadé comment peut-on y faire du traitement asynchrone ? JavaScript est monothreadé mais son environnement d'execution lui est multi-threadé, que ce soit le navigateur ou l'écosystème de Node.js.
         </p>
 
         <p>
           Pour pouvoir réaliser et gérer des traitements asynchrones le thread de JavaScript communique via la Web API (ou une api en C++ dans le cas de Node) avec son environnement d'execution et lui délègue des taches (faire des requetes à un
           serveur,
-          a une base données, ecriture/lecture de fichier etc...) La Web API désigne l'ensemble des ressources, données et méthodes mises à disposition par le navigateur au thread de JavaScript : le DOM, setTimeout, xmlhttprequest… La fonction
+          a une base données, ecriture/lecture de fichier etc...) La Web API désigne l'ensemble des ressources, données et méthodes mises à disposition par le navigateur au thread de JavaScript : le DOM, setTimeout, xmlhttprequest… La fonction
           <code>setTimeout</code>
           <em>ne fait pas partie de JavaScript</em>, c'est une api entre le thread JavaScript et l'écosystème du navigateur. Un traitement asynchrone en JavaScript se fait donc toujours en passant par l'api exposée du navigateur. Mais attention,
           nativement,
-          JavaScript ne délègue jamais du code JavaScript à un autre thread : JavaScript est mono-threadé !
+          JavaScript ne délègue jamais du code JavaScript à un autre thread : JavaScript est mono-threadé !
         </p>
 
 
@@ -318,7 +318,7 @@ foo(bar) ;</code>
 
         <div id="snpippet-node">
           <pre class="language-javaScript">
-<code >setTimeout( function foo() { console.log('foo');}, 1000) ;</code>
+<code >setTimeout( function foo() { console.log('foo');}, 1000) ;</code>
 </pre>
         </div>
 
@@ -360,13 +360,13 @@ foo(bar) ;</code>
 
         <div id="snpippet-node">
           <pre class="language-javascript">
-<code >element.addEventListener('onClick', bar) ;</code>
+<code >element.addEventListener('onClick', bar) ;</code>
 </pre>
         </div>
 
 
         <p>
-          on appelle l'api EventListener du navigateur et on lui dit «  lorsque l'élement du DOM sous ton contrôle recevra l'élement click, alors envoie moi sur la Stack JavaScript la fonction bar pour que je l'execute » . Lorsque l'élement est
+          on appelle l'api EventListener du navigateur et on lui dit «  lorsque l'élement du DOM sous ton contrôle recevra l'élement click, alors envoie moi sur la Stack JavaScript la fonction bar pour que je l'execute » . Lorsque l'élement est
           cliqué,
           le navigateur place la fonction <code>bar</code> dans la callback queue et lorsqu'elle arrive au début de la file d'attente, et que la Stack est vide, l'Event loop la pousse et <code>bar</code> est executée dans le thread JavaScript.
         </p>
@@ -381,14 +381,14 @@ foo(bar) ;</code>
         <h3>La Callback queue définit ce qu'est une <em>callback</em></h3>
 
         <p>
-          Nous l'avons vu, les exécutions asynchrones en JavaScript ne se font pas à proprement parler « en » JavaScript mais par l'intermédiaire d'un thread supplémentaire mis a disposition par le navigateur (ou par Node). JavaScript est monothreadé
+          Nous l'avons vu, les exécutions asynchrones en JavaScript ne se font pas à proprement parler « en » JavaScript mais par l'intermédiaire d'un thread supplémentaire mis a disposition par le navigateur (ou par Node). JavaScript est monothreadé
           et
           son thread, en plus d'avoir sa propre autonomie est alimenté par l'Event loop et la Callback queue. L'Event-loop et la Callback queue forment les briques de base d'une architecture <em>programmation événementielle</em>.
         </p>
 
         <p>
           On peut voir que dans le contexte d'execution asynchrone, à l'appel de la Web API (ou d'une api C++ avec Node), le terme de <em>callback</em> y a effectivement tout son sens. C'est d'aileurs ce contexte lui-même qui lui donne ce sens. Ces
-          fonctions sont « appelées plus tard », on les fait bien revenir au terme
+          fonctions sont « appelées plus tard », on les fait bien revenir au terme
           d'un traitement asynchrone via la Callback queue.
         </p>
 
@@ -436,7 +436,7 @@ foo(bar) ;</code>
         <dl>
           <dt>Les différentes queues et l'Event loop</dt>
           <dd>
-            <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">What the heck is the event loop anyway ?</a>, Philip Roberts. Un classique !
+            <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">What the heck is the event loop anyway ?</a>, Philip Roberts. Un classique !
           </dd>
           <dd><a href="  https://www.youtube.com/watch?v=cCOL7MC4Pl0">In the loop</a>, Jake Archibald. Pour aller plus loin que le classique.</p>
           </dd>
