@@ -24,7 +24,7 @@
       <div class="col-md-4">
 
         <h1>Callbacks et programmation asynchrone en JavaScript :
-          dissiper les confusions</h1>
+          un cas de confusion</h1>
 
         <div class="row justify-content-center">
           <div id="date"><i> Mai 2020</i></div>
@@ -51,32 +51,19 @@
             chemins.
           </p>
 
-
         </div>
-
-
-
-
-
-
-
-
 
         <h2>Les fonctions de rappel ou <em>callbacks</em></h2>
 
-        <commentaire>"contexte majoritaire d'application" -> "principal contexte d'application"</commentaire>
-
-        <h3>Les racines du mal : le mot <em>callback</em> et son contexte majoritaire d'application</h3>
+        <h3>Les racines du mal : le mot <em>callback</em> et son principal contexte d'application</h3>
 
         <p>
           Tout le monde est d'accord là dessus, les mots ont du sens. Nous pensons à partir des mots. Supprimer un mot et vous ne pourrez plus penser le concept ou la situation porté par ce mot. Le nom d'une chose est important pour penser. Nommez
           mal
           une chose et vous y penserez mal, et votre cerveau devra toujours faire un effort, nager un tout petit peu à contre courant, pour lever l'ambiguïté que ce mot porte avec lui. Ces faits se vérifient tous les jours en programmation où bien
           nommer
-          des choses est la première étape pour qu'un programme soit facile à comprendre et à maintenir. Car il est facile de penser à partir de choses bien nommées.
+          les choses est la première étape pour qu'un programme soit facile à comprendre et à maintenir. Car il est facile de penser à partir de choses bien nommées.
         </p>
-
-        <commentaire>C'est intéressant de parler de la sémantique des mots et c'est quelque chose qui est rarement abordée dans les articles autour de l'informatique. Je ne sais pas si tu connais la "novlangue" qui est un concept introduit dans le livre 1984. Ca illustre bien les problèmes qui viennent avec le manque de nuances d'une langue. Dans le doute, je te recommande la vidéo de Monsieur Phi sur le sujet: https://www.youtube.com/watch?v=EvUZ5eToi10</commentaire>
 
         <p>
           Pour moi c'est ce mot, <em>callback</em>, qui m'a donné du fil à retordre en JavaScript. Déjà, dans toute opération de traduction d'une langue à une autre il s'opère une perte de sens incompressible. <em>Callback</em> en anglais possède
@@ -85,21 +72,20 @@
 
         <blockquote>
           <p> a callback, also known as a "call-after" function, is any executable code that is passed as an argument to other code</p>
-
-
           <footer>
             <cite><a href="https://en.wikipedia.org/wiki/Callback_(computer_programming)">Wikipedia</a></cite>
           </footer>
         </blockquote>
 
         ou en français <q> un code executable passé en argument à un autre code executable </q>. Une fonction de rappel, ou
-        callback,
+        <em>callback</em>,
         c'est une fonction passée en argument à une autre fonction. La définition ne nous dit pas ce que la fonction prenant en argument cette fonction en fait, comment elle l'appelle etc.
         </p>
 
 
-        <p><em>Callback</em> en anglais se traduit par rappel, rappeler. Et rappeler en français veut dire <q>action de faire revenir</q>. Le terme <em>fonction de rappel</em> porte donc avec lui, implicitement, l'idée selon laquelle la fonction sera
-          rappelée ou reviendra,
+        <p><em>Callback</em> en anglais se traduit par <q>rappel, rappeler</q>. Et rappeler en français veut dire <q>action de faire revenir</q>. Le terme <em>fonction de rappel</em> porte donc avec lui, implicitement, l'idée selon laquelle la
+          fonction sera
+          rappelée, ou reviendra,
           <em>plus tard dans le temps</em>. Ce terme emporte donc la notion d'action dans le futur.</p>
 
         <p>
@@ -122,26 +108,24 @@
           <li>Le mot <em>rappel</em> éveille en moi le sens commun du mot, et m'incite à donner à la fonction, inconsciemment, sans effort, une qualité asynchrone. </li>
         </ul>
 
-        <commentaire>Est-ce que tu ne veux pas plutôt dire qu'il t'a fallut longtemps pour <em>dissocier</em> le concept de callback et d'asynchrone ?</commentaire>
+        <!-- <commentaire>Est-ce que tu ne veux pas plutôt dire qu'il t'a fallut longtemps pour <em>dissocier</em> le concept de callback et d'asynchrone ?</commentaire> -->
         <p>
-          Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
+          Voilà d'où je suis parti : armés de ces mots, et pensant à partir d'eux, il m'a fallu beaucoup d'effort pour <em>dissocier</em> les concepts de callback et d'asynchrone.
         </p>
 
         <p>
-          La première rencontre avec le terme <em>callback</em> en JavaScript n'est pas toujours une rencontre qui se passe bien car ce mot est un tapis sous lequel on met tout un tas de choses. Il désigne toute fonction passée en paramètre d'une
+          Ma première rencontre avec le terme <em>callback</em> en JavaScript ne s'est pas bien passé car ce mot est un tapis sous lequel on met tout un tas de choses. Il désigne toute fonction passée en argument d'une
           autre
           fonction, indépendamment du fait que le contexte soit synchrone ou
-          asynchrone. Le soucis, c'est qu'on le voit apparaitre <em>majoritairement</em>, dans les ressources, dans un contexte de traitement asynchrone.
+          asynchrone. Le soucis, c'est qu'on le voit apparaitre <em>majoritairement</em>, et notamment dans les exemples et documentations, dans un contexte de traitement asynchrone.
         </p>
 
         Et pour courroner le tout, on désigne <em>callback</em> la fonction passée en argument à une autre
-        fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar)</code>, <code>bar</code> est désignée comme étant une <em>callback</em> mais
+        fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar)</code>, <code>bar</code> est désignée <em>callback</em> mais
         c'est
         <code>foo</code> qui la <em>call back</em>, qui l'appelle en temps et en heure. Il y a matière à confusion.</p>
 
         <h3>Les callbacks n'ont rien à voir avec le traitement asynchrone</h3>
-
-
 
         <p>Regardons cet exemple de callback :</p>
 
@@ -176,7 +160,7 @@ ok</code></pre>
           l'est. Elle est <em>appelée</em>, comme n'importe quelle fonction, elle est <em>rappelée</em> au sens où c'est <code>foo</code> qui la rappelle.
         </p>
 
-        <h3>Utiliser des <em>callbacks</em> dans un contexte asynchrone et correspondance au sens commun du mot</h3>
+        <h3>Utiliser des <em>callbacks</em> dans un contexte asynchrone et adhérance au sens commun du mot</h3>
 
         <p>Le problème c'est que dans son usage le plus courant en JavaScript le terme <em>callback</em> signifie bien à la fois est <q> passé en argument à une autre fonction </q> et <q> est appelée plus tard dans le temps </q>. Par exemple, c'est
           ce
@@ -208,16 +192,52 @@ ok</code></pre>
         </p>
 
 
-        <h3>Naïveté, errance puis enfin le fond</h3>
+        <!-- <h3>Naïveté, errance puis enfin le fond</h3> -->
+        <h3>Autopsie d'une confusion: quand le modèle de représentation mental échoue </h3>
 
         <p>
-          Je suis peut-être idiot ou le seul à avoir pensé cela, mais cette confusion sur le lien entre callback et appel asynchrone m'a amené à penser que lorsque je passais une fonction en argument à autre fonction alors celle-ci, étant une
+          Je suis peut-être idiot ou le seul à avoir pensé cela, mais cette confusion sur le lien entre callback et appel asynchrone m'a amené à penser que lorsque je passais une fonction en argument à une autre fonction alors celle-ci, étant une
           callback,
           serait <em>rappelée</em> plus tard. En somme, j'ai pensé que si passais une fonction en argument à une autre fonction, la callback serait traitée de manière asynchrone.
         </p>
 
-        <commentaire>Ici, je pense que c'est vraiment une partie importante du message que tu veux faire passer dans l'article. Tu as donné les éléments qui t'ont mené vers la confusion entre callback et traitement asynchrone. Je pense que c'est le bon endroit pour généraliser le processus de confusion. Je m'explique. Quand il y a une confusion, pour moi c'est quand il y a un mismatch entre le modèle de représentation mental de quelqu'un et ce qu'il observe. C'est un peu le coeur de la méthode scientifique (bon sauf qu'en science, on cherche à comprendre le monde extérieur, alors qu'on informatique on a juste envie que le bordel marche). Quand il y a une dissonnance entre un modèle d'interprétation et ce qui se passe effectivement, c'est à ce moment que les choses se gâtent et qu'on commence à rager.
-          Je sais que ça fait un peu méta comme réflexion, et que tu n'auras pas d'exemple sous la main pour raconter ça, mais c'est vraiment la situation dans laquelle personne ne veux se retrouver et pourtant elle est très très fréquente en programmation. Je pense qu'un laïus sur le sujet serait bienvenu, et que ça sélerait une bonne fois pour toute l'explication de ces moments où on ne comprends pas ce que se passe.</commentaire>
+        <p>
+          Cette confusion illustre un phénomène récurrent et généralisable dans tout processus d'apprentissage. Il s'agit ici d'un écart entre le modèle de représentation mental d'un système et de son comportement réel. En informatique, lorsqu'un
+          défaut de conception est à l'origine du dysfonctionnement d'un programme, on appelle ça <q>un bug</q>. Dans mon cas, je me suis retrouvé face à un défaut de conceptualisation, qui se trouve être à l'origine de ma confusion. Un
+          <q>méta-bug</q> en quelque sorte.
+        </p>
+        <p>
+          En informatique, le processus d'apprentissage peut se résumer à une seule chose :
+          <q>comprendre un manuel</q>. Il arrive que dans cette phase d'apprentissage un système se comporte <em>exactement</em> comme il est supposé se comporter, et ne se comporte pas du tout comme il
+          est <em>censé</em> se comporter <em>pour vous</em>. La conclusion à laquelle vous arrivez est souvent sans appel : votre modèle, votre représentant mental, du système est faux. Tout programmeur a du connaître ce moment dans sa pratique, et
+          tout le monde, je pense, reconnaitra que <q>reconfigurer</q> un
+          modèle de représentation mental demande énormément d'effort et d'énergie. Il est très difficile à déconstruire car il est la première empreinte laissée par des concepts nouveaux, il est pour le moment le seul à exister pour vous en fournir
+          une forme de compréhension. Autrement dit, la première fois que l'on fait le chemin, c'est long, ça marque et ça résiste.
+        </p>
+        <p>
+          Le <em>job</em> d'un modèle c'est justement de nous permettre de ne plus jamais <em>refaire ce chemin-là</em>. Mon modèle mental du sytème est-il imparfait ? Absolument. Est-il simplifié ? Evidémment. Est-ce qu'un jour je l'approfondirai
+          ? Peut-être, si j'en ressens le besoin, ou si ça m'intéresse. Mais en attendant, il me va bien ce modèle. Car il a la force qu'ont tous les modèles : il est <em>faux mais il est utile</em>. Et l'assertion <q>est utile</q> est
+          importante. Car dans ma phase de confusion mon modèle aussi était faux, je l'ai écrit plus haut. Mais surtout il était <strong>complètement inutile !</strong> Pire même, il pouvait mettre en danger et contaminer les autres modèles présents
+          dans un coin de ma tête. Un modèle faux et inutile, il n'y a pas pire.
+
+        </p>
+
+        <p>
+          Ce modèle faux et inutile, ou on pourrait dire ce modèle <em>doublement faux</em>, c'est l'avatar de l'état de confusion. Le problème d'un modèle faux et inutile c'est que pour le reconfigurer il existe plusieurs solutions et il est
+          difficile de trouver la bonne. Les solutions sont les suivantes :
+        <ul>
+          <li>il y a un bug dans le code expérimental écrit pour tester le modèle. Dans ce cas, le modèle n'est pas faux, c'est l'expérience qui l'est ! Disons qu'il vaut mieux s'assurer que ce n'est pas le cas avant de remettre tout en cause ! </li>
+          <li>il <em>manque un truc</em>, une pièce, dans le modèle. C'est la solution ontologique</li>
+          <li>il <em>faut changer un truc</em> dans le modèle. Modifier un comportement, une loi. C'est la solution législative</li>
+        </ul>
+
+        Dans mon cas, pour sauver mon modèle, ce qui, je le rappelle, est une attitude sensée (quand votre voiture ne démarre plus la première chose à laquelle vous pensez ce n'est pas que les lois physiques ne fonctionnent plus !) j'ai choisi, en
+        <em>âme et conscience</em> une solution législative : <q>les callback doivent être liées au comportement asynchrones puisque c'est des callbacks, des fonctions de <em>rappel</em>. Elles sont rappelées, et puis, je les vois régulièrement mentionnées et définies dans le
+          contexte asynchrone. Oui ça doit être ça, <em>ça colle</em></q>. Le  Le modèle est sauvé ! La suite, vous la connaissez.
+        </p>
+
+        <h2>Stack, Web API, Callback queue et Event-loop : au coeur de JavaScript</h2>
+
 
         <p>
           J'ai compris ensuite, en descendant au niveau du fonctionnement général du moteur JavaScript qu'il n'était pas possible de développer en JavaScript ses propres fonctions asynchrones. <em>Que ça ne marchait pas comme ça.</em>
@@ -226,10 +246,6 @@ ok</code></pre>
           <code>setTimeout</code> comme
           guide.
         </p>
-
-
-        <h2>Stack, Web API, Callback queue et Event-loop : au coeur de JavaScript</h2>
-
 
         <p>Pour la suite je fais le choix de garder les mots anglais pour désigner les processus où les éléments techniques. Ces mots seront ceux rencontrés en permanence dans les documentations ou les ressources en ligne, et plutôt que d'en proposer
           des
@@ -267,7 +283,8 @@ foo(bar) ;</code>
 </pre>
         </div>
 
-        <commentaire>Je sais que ce commentaire va être relou, mais bon je le fais quand même. J'aurai bien voulu avoir des numéros dans les petites images pour avoir dans quel ordre s'enchaîne les différentes stack. Genre ajouter un numéro entouré en haut à gauche (par exemple) de chaque image de frame léverait toute ambiguité sur l'ordre d'exécution.</commentaire>
+        <commentaire>Je sais que ce commentaire va être relou, mais bon je le fais quand même. J'aurai bien voulu avoir des numéros dans les petites images pour avoir dans quel ordre s'enchaîne les différentes stack. Genre ajouter un numéro entouré
+          en haut à gauche (par exemple) de chaque image de frame léverait toute ambiguité sur l'ordre d'exécution.</commentaire>
 
         <p>Voici schématiquement ce qu'il se passe dans la Stack </p>
 
@@ -319,7 +336,10 @@ foo(bar) ;</code>
           JavaScript ne délègue jamais du code JavaScript à un autre thread : JavaScript est mono-threadé !
         </p>
 
-        <commentaire>Ce passage là est très éclairant, merci d'ailleurs, parce que j'en avais entendu parlé et maintenant que je me retrouve plus confronté à du JS, c'est essentiel d'avoir une idée de ce que c'est que la Web API. Je pense que tu devrais rajouter quelques lignes sur la Web API pour dire que c'est une norme ; elle est très bien documentée ici: https://developer.mozilla.org/en-US/docs/Web/API ; elle est implémentée par tout les navigateurs et si une fonctionnalité n'est pas disponible pour un navigateur donné, le site web de mozilla essaie de recencer le manque. C'est la base incourtournable pour développer réellement à travers le navigateur. C'est pas le propos principal de cette partie, mais ça vaut le coup de le dire, quitte à ce que ça soit mis dans un bloc style "aparté".</commentaire>
+        <commentaire>Ce passage là est très éclairant, merci d'ailleurs, parce que j'en avais entendu parlé et maintenant que je me retrouve plus confronté à du JS, c'est essentiel d'avoir une idée de ce que c'est que la Web API. Je pense que tu
+          devrais rajouter quelques lignes sur la Web API pour dire que c'est une norme ; elle est très bien documentée ici: https://developer.mozilla.org/en-US/docs/Web/API ; elle est implémentée par tout les navigateurs et si une fonctionnalité
+          n'est pas disponible pour un navigateur donné, le site web de mozilla essaie de recencer le manque. C'est la base incourtournable pour développer réellement à travers le navigateur. C'est pas le propos principal de cette partie, mais ça
+          vaut le coup de le dire, quitte à ce que ça soit mis dans un bloc style "aparté".</commentaire>
 
         <h3>Le rôle de la Callback queue et de l'Event Listener</h3>
 
@@ -355,7 +375,8 @@ foo(bar) ;</code>
           </figure>
         </div>
 
-        <commentaire>Juste au passage, pourquoi est-ce qu'il y a le logo de google chrome en bas de cette image ? Est-ce que c'est une image que tu as repiqué ? Si oui, je te conseille de citer la source en bas de l'image. Sinon, je trouve que le logo de google chrome n'est pas nécessaire, à supprimer.</commentaire>
+        <commentaire>Juste au passage, pourquoi est-ce qu'il y a le logo de google chrome en bas de cette image ? Est-ce que c'est une image que tu as repiqué ? Si oui, je te conseille de citer la source en bas de l'image. Sinon, je trouve que le
+          logo de google chrome n'est pas nécessaire, à supprimer.</commentaire>
 
         <p>
           On remarque au passage que le délai au bout duquel s'executera la fonction <code>foo</code> ne sera pas nécessairement égal à celui demandé à l'appel de setTimeout (soit 1 seconde). Lorsque la queue possède déjà des événements en attente
@@ -379,12 +400,13 @@ foo(bar) ;</code>
 
 
         <p>
-          on appelle l'api EventListener du navigateur et on lui dit «  lorsque l'élement du DOM sous ton contrôle recevra l'élement click, alors envoie moi sur la Stack JavaScript la fonction bar pour que je l'execute » . Lorsque l'élement est
+          on appelle l'api EventListener du navigateur et on lui dit « lorsque l'élement du DOM sous ton contrôle recevra l'élement click, alors envoie moi sur la Stack JavaScript la fonction bar pour que je l'execute » . Lorsque l'élement est
           cliqué,
           le navigateur place la fonction <code>bar</code> dans la callback queue et lorsqu'elle arrive au début de la file d'attente, et que la Stack est vide, l'Event loop la pousse et <code>bar</code> est executée dans le thread JavaScript.
         </p>
 
-        <commentaire>Au lieu de dire "l'écosystème du navigateur", j'aurai plutôt dit le modèle d'exécution du navigateur parce que c'est plus là dessus que tu t'es attardé dans les paragraphes précédents. Si t'avais passé du temps sur la Web API, j'aurai été d'accord pour l'utilisation de "l'écosystème du navigateur".</commentaire>
+        <commentaire>Au lieu de dire "l'écosystème du navigateur", j'aurai plutôt dit le modèle d'exécution du navigateur parce que c'est plus là dessus que tu t'es attardé dans les paragraphes précédents. Si t'avais passé du temps sur la Web API,
+          j'aurai été d'accord pour l'utilisation de "l'écosystème du navigateur".</commentaire>
 
         <p>
           C'est une vision très schématique de l'écosystème du navigateur mais qui en préserve les principes. En réalité <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0">il existe plusieurs queues</a>, chacune ayant sa dynamique propre vis à vis
@@ -448,7 +470,9 @@ foo(bar) ;</code>
 
         <h2>Aller plus loin</h2>
 
-        <commentaire>Alors je ne sais pas si tu devrais considérer ce commentaire dans la partie "Conclusion" ou "Aller plus loin" mais en tout cas, je pense que tu peux faire la pub de l'autre article. Tu peux dire que le mécanisme de callback date des débuts du javascript et qu'avec le temps on s'est rendu compte que l'utilisation de ce mécanisme rendu la lisibilité du code difficile. Des nouvelles fonctionnalités ont été introduites en JS pour améliorer la lisibilité et la programmation d'événement asynchrone. Pour en savoir plus, TADAAA !</commentaire>
+        <commentaire>Alors je ne sais pas si tu devrais considérer ce commentaire dans la partie "Conclusion" ou "Aller plus loin" mais en tout cas, je pense que tu peux faire la pub de l'autre article. Tu peux dire que le mécanisme de callback date
+          des débuts du javascript et qu'avec le temps on s'est rendu compte que l'utilisation de ce mécanisme rendu la lisibilité du code difficile. Des nouvelles fonctionnalités ont été introduites en JS pour améliorer la lisibilité et la
+          programmation d'événement asynchrone. Pour en savoir plus, TADAAA !</commentaire>
 
         <dl>
           <dt>Les différentes queues et l'Event loop</dt>
