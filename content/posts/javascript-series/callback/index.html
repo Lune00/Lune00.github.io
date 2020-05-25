@@ -283,9 +283,6 @@ foo(bar) ;</code>
 </pre>
         </div>
 
-        <commentaire>Je sais que ce commentaire va être relou, mais bon je le fais quand même. J'aurai bien voulu avoir des numéros dans les petites images pour avoir dans quel ordre s'enchaîne les différentes stack. Genre ajouter un numéro entouré
-          en haut à gauche (par exemple) de chaque image de frame léverait toute ambiguité sur l'ordre d'exécution.</commentaire>
-
         <p>Voici schématiquement ce qu'il se passe dans la Stack </p>
 
         <div class="row justify-content-center" id="stacktrace">
@@ -294,7 +291,6 @@ foo(bar) ;</code>
             <figcaption class="figure-caption text-center"></figcaption>
           </figure>
         </div>
-
 
         <p>
           Le navigateur, au moment du chargement du script JavaScript, initialise la Stack avec un contexte par défaut, le <em>global execution context</em>. Ce contexte existe sur toute la durée de vie du
@@ -366,17 +362,12 @@ foo(bar) ;</code>
           que la callback <code>foo</code>.
           L'Event loop est un processus qui tourne en permanence. Dès que la Stack est vide elle ramène un élément de la queue sur la Stack.</p>
 
-
-
         <div class="row justify-content-center" id="system">
           <figure class="figure">
             <img src="system.svg" class="figure-img img-fluid rounded" alt="" title="" width="600" />
             <figcaption class="figure-caption text-center"></figcaption>
           </figure>
         </div>
-
-        <commentaire>Juste au passage, pourquoi est-ce qu'il y a le logo de google chrome en bas de cette image ? Est-ce que c'est une image que tu as repiqué ? Si oui, je te conseille de citer la source en bas de l'image. Sinon, je trouve que le
-          logo de google chrome n'est pas nécessaire, à supprimer.</commentaire>
 
         <p>
           On remarque au passage que le délai au bout duquel s'executera la fonction <code>foo</code> ne sera pas nécessairement égal à celui demandé à l'appel de setTimeout (soit 1 seconde). Lorsque la queue possède déjà des événements en attente
@@ -405,11 +396,8 @@ foo(bar) ;</code>
           le navigateur place la fonction <code>bar</code> dans la callback queue et lorsqu'elle arrive au début de la file d'attente, et que la Stack est vide, l'Event loop la pousse et <code>bar</code> est executée dans le thread JavaScript.
         </p>
 
-        <commentaire>Au lieu de dire "l'écosystème du navigateur", j'aurai plutôt dit le modèle d'exécution du navigateur parce que c'est plus là dessus que tu t'es attardé dans les paragraphes précédents. Si t'avais passé du temps sur la Web API,
-          j'aurai été d'accord pour l'utilisation de "l'écosystème du navigateur".</commentaire>
-
         <p>
-          C'est une vision très schématique de l'écosystème du navigateur mais qui en préserve les principes. En réalité <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0">il existe plusieurs queues</a>, chacune ayant sa dynamique propre vis à vis
+          C'est une vision très schématique du modèle d'exécution du navigateur mais qui en préserve les principes. En réalité <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0">il existe plusieurs queues</a>, chacune ayant sa dynamique propre vis à vis
           de
           l'Event loop. La gestion des évènements est optimisée, par exemple, en leur assignant des priorités (certains évènements sont plus prioritaires que d'autres). Mais ça ne change pas grand-chose à ce qui nous intéresse ici.
         </p>
@@ -465,8 +453,6 @@ foo(bar) ;</code>
 
         <p> Pour celui qui débarque, comme moi, et essaye de comprendre le sens de ces mots afin de
           pouvoir penser correctement le fonctionnement de son code, cet abus de langage est susceptible d'apporter beaucoup de confusion. Confusion que j'espère avoir éclaircie pour celles et ceux qui ont trébuché sur les <em>callbacks</em>.</p>
-
-
 
         <h2>Aller plus loin</h2>
 
