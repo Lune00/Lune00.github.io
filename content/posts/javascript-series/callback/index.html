@@ -332,10 +332,10 @@ foo(bar) ;</code>
           JavaScript ne délègue jamais du code JavaScript à un autre thread : JavaScript est mono-threadé !
         </p>
 
-        <commentaire>Ce passage là est très éclairant, merci d'ailleurs, parce que j'en avais entendu parlé et maintenant que je me retrouve plus confronté à du JS, c'est essentiel d'avoir une idée de ce que c'est que la Web API. Je pense que tu
+        <!-- <commentaire>Ce passage là est très éclairant, merci d'ailleurs, parce que j'en avais entendu parlé et maintenant que je me retrouve plus confronté à du JS, c'est essentiel d'avoir une idée de ce que c'est que la Web API. Je pense que tu
           devrais rajouter quelques lignes sur la Web API pour dire que c'est une norme ; elle est très bien documentée ici: https://developer.mozilla.org/en-US/docs/Web/API ; elle est implémentée par tout les navigateurs et si une fonctionnalité
           n'est pas disponible pour un navigateur donné, le site web de mozilla essaie de recencer le manque. C'est la base incourtournable pour développer réellement à travers le navigateur. C'est pas le propos principal de cette partie, mais ça
-          vaut le coup de le dire, quitte à ce que ça soit mis dans un bloc style "aparté".</commentaire>
+          vaut le coup de le dire, quitte à ce que ça soit mis dans un bloc style "aparté".</commentaire> -->
 
         <h3>Le rôle de la Callback queue et de l'Event Listener</h3>
 
@@ -430,7 +430,7 @@ foo(bar) ;</code>
 
         <h2>Conclusion</h2>
 
-        <p>Nous avons vu que callback et traitement asynchrone sont deux concepts qui n'ont aucun rapport par nature. Le terme <em>callback</em> est utilisé pour désigner toute fonction passée en argument à une autre fonction, indépendamment de son
+        <p>Nous avons vu que callback et traitement asynchrone sont deux concepts qui n'ont <em>aucun rapport par nature</em>. Le terme <em>callback</em> est utilisé pour désigner toute fonction passée en argument à une autre fonction, indépendamment de son
           traitement
           synchrone ou asynchrone.
 
@@ -456,9 +456,9 @@ foo(bar) ;</code>
 
         <h2>Aller plus loin</h2>
 
-        <commentaire>Alors je ne sais pas si tu devrais considérer ce commentaire dans la partie "Conclusion" ou "Aller plus loin" mais en tout cas, je pense que tu peux faire la pub de l'autre article. Tu peux dire que le mécanisme de callback date
+        <!-- <commentaire>Alors je ne sais pas si tu devrais considérer ce commentaire dans la partie "Conclusion" ou "Aller plus loin" mais en tout cas, je pense que tu peux faire la pub de l'autre article. Tu peux dire que le mécanisme de callback date
           des débuts du javascript et qu'avec le temps on s'est rendu compte que l'utilisation de ce mécanisme rendu la lisibilité du code difficile. Des nouvelles fonctionnalités ont été introduites en JS pour améliorer la lisibilité et la
-          programmation d'événement asynchrone. Pour en savoir plus, TADAAA !</commentaire>
+          programmation d'événement asynchrone. Pour en savoir plus, TADAAA !</commentaire> -->
 
         <dl>
           <dt>Les différentes queues et l'Event loop</dt>
