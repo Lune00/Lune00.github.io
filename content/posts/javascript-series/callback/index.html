@@ -76,7 +76,7 @@
           des choses est la première étape pour qu'un programme soit facile à comprendre et à maintenir. Car il est facile de penser à partir de choses bien nommées.
         </p>
 
-        <commentaire>Si tu pars sur ce genre de considération, si je ne sais pas si tu connais la "novlangue" qui est instauré dans 1984 le bookin. Ca illustre bien les problèmes qu'il y a si y'a pas de nuance dans une langue.</commentaire>
+        <commentaire>C'est intéressant de parler de la sémantique des mots et c'est quelque chose qui est rarement abordée dans les articles autour de l'informatique. Je ne sais pas si tu connais la "novlangue" qui est un concept introduit dans le livre 1984. Ca illustre bien les problèmes qui viennent avec le manque de nuances d'une langue. Dans le doute, je te recommande la vidéo de Monsieur Phi sur le sujet: https://www.youtube.com/watch?v=EvUZ5eToi10</commentaire>
 
         <p>
           Pour moi c'est ce mot, <em>callback</em>, qui m'a donné du fil à retordre en JavaScript. Déjà, dans toute opération de traduction d'une langue à une autre il s'opère une perte de sens incompressible. <em>Callback</em> en anglais possède
@@ -88,7 +88,7 @@
 
 
           <footer>
-            <cite><a href="https://en.wikipedia.org/wiki/Callback_(computer_programming)">source</a></cite>
+            <cite><a href="https://en.wikipedia.org/wiki/Callback_(computer_programming)">Wikipedia</a></cite>
           </footer>
         </blockquote>
 
@@ -112,7 +112,7 @@
           requête à
           une base données ou à un serveur, ce genre de requête pouvant prendre un certain temps, on le fera de manière asynchrone. Dans ce cas, nous perdons le contrôle sur le flot du programme mais nous serons avertis lors du retour de la fonction,
           à
-          un moment indéterminé dans le futur. D'où ce qualificatif <em>asynchrone</em>, c'est à dire, <q>qui ne suit pas le mouvement imposé</q></p>
+          un moment indéterminé dans le futur. D'où ce qualificatif <em>asynchrone</em>, c'est à dire, <q>qui ne suit pas le mouvement imposé</q>.</p>
 
 
         <p>Pour résumer je peux trouver deux causes distinctes à l'origine de ma confusion sur le sujet:
@@ -122,6 +122,7 @@
           <li>Le mot <em>rappel</em> éveille en moi le sens commun du mot, et m'incite à donner à la fonction, inconsciemment, sans effort, une qualité asynchrone. </li>
         </ul>
 
+        <commentaire>Est-ce que tu ne veux pas plutôt dire qu'il t'a fallut longtemps pour <em>dissocier</em> le concept de callback et d'asynchrone ?</commentaire>
         <p>
           Voilà d'où je suis parti, il n'a pas fallu longtemps pour que mon cerveau fasse l'association entre callback et asynchrone.
         </p>
@@ -148,6 +149,7 @@
           <pre class="language-javascript line-numbers"><code>function bar() {
   // vous pouvez mettre ici une boucle interminable
   console.log('bar');
+}
 
 function foo(bar) {
   console.log('foo');
@@ -214,6 +216,8 @@ ok</code></pre>
           serait <em>rappelée</em> plus tard. En somme, j'ai pensé que si passais une fonction en argument à une autre fonction, la callback serait traitée de manière asynchrone.
         </p>
 
+        <commentaire>Ici, je pense que c'est vraiment une partie importante du message que tu veux faire passer dans l'article. Tu as donné les éléments qui t'ont mené vers la confusion entre callback et traitement asynchrone. Je pense que c'est le bon endroit pour généraliser le processus de confusion. Je m'explique. Quand il y a une confusion, pour moi c'est quand il y a un mismatch entre le modèle de représentation mental de quelqu'un et ce qu'il observe. C'est un peu le coeur de la méthode scientifique (bon sauf qu'en science, on cherche à comprendre le monde extérieur, alors qu'on informatique on a juste envie que le bordel marche). Quand il y a une dissonnance entre un modèle d'interprétation et ce qui se passe effectivement, c'est à ce moment que les choses se gâtent et qu'on commence à rager.
+          Je sais que ça fait un peu méta comme réflexion, et que tu n'auras pas d'exemple sous la main pour raconter ça, mais c'est vraiment la situation dans laquelle personne ne veux se retrouver et pourtant elle est très très fréquente en programmation. Je pense qu'un laïus sur le sujet serait bienvenu, et que ça sélerait une bonne fois pour toute l'explication de ces moments où on ne comprends pas ce que se passe.</commentaire>
 
         <p>
           J'ai compris ensuite, en descendant au niveau du fonctionnement général du moteur JavaScript qu'il n'était pas possible de développer en JavaScript ses propres fonctions asynchrones. <em>Que ça ne marchait pas comme ça.</em>
@@ -245,7 +249,7 @@ ok</code></pre>
             href="https://medium.com/@happymishra66/execution-context-in-javascript-319dd72e8e2c">là</a>.</p>
 
         <p>
-          Une fois que la fonction a fait son travail et a retourné son contexte est détruit et retiré de la Stack. Si l'on reprend l'exemple de tout à l'heure
+          Une fois que la fonction a fait son travail et a retourné, son contexte est détruit et retiré de la Stack. Si l'on reprend l'exemple de tout à l'heure
         </p>
 
 
@@ -262,6 +266,8 @@ function foo(bar){
 foo(bar) ;</code>
 </pre>
         </div>
+
+        <commentaire>Je sais que ce commentaire va être relou, mais bon je le fais quand même. J'aurai bien voulu avoir des numéros dans les petites images pour avoir dans quel ordre s'enchaîne les différentes stack. Genre ajouter un numéro entouré en haut à gauche (par exemple) de chaque image de frame léverait toute ambiguité sur l'ordre d'exécution.</commentaire>
 
         <p>Voici schématiquement ce qu'il se passe dans la Stack </p>
 
@@ -304,15 +310,16 @@ foo(bar) ;</code>
         </p>
 
         <p>
-          Pour pouvoir réaliser et gérer des traitements asynchrones le thread de JavaScript communique via la Web API (ou une api en C++ dans le cas de Node) avec son environnement d'execution et lui délègue des taches (faire des requetes à un
+          Pour pouvoir réaliser et gérer des traitements asynchrones le thread de JavaScript communique via la Web API (ou une api en C++ dans le cas de Node) avec son environnement d'execution et lui délègue des tâches (faire des requêtes à un
           serveur,
-          a une base données, ecriture/lecture de fichier etc...) La Web API désigne l'ensemble des ressources, données et méthodes mises à disposition par le navigateur au thread de JavaScript : le DOM, setTimeout, xmlhttprequest… La fonction
+          a une base données, écriture/lecture de fichier etc...). La Web API désigne l'ensemble des ressources, données et méthodes mises à disposition par le navigateur au thread de JavaScript : le DOM, setTimeout, xmlhttprequest… La fonction
           <code>setTimeout</code>
           <em>ne fait pas partie de JavaScript</em>, c'est une api entre le thread JavaScript et l'écosystème du navigateur. Un traitement asynchrone en JavaScript se fait donc toujours en passant par l'api exposée du navigateur. Mais attention,
           nativement,
           JavaScript ne délègue jamais du code JavaScript à un autre thread : JavaScript est mono-threadé !
         </p>
 
+        <commentaire>Ce passage là est très éclairant, merci d'ailleurs, parce que j'en avais entendu parlé et maintenant que je me retrouve plus confronté à du JS, c'est essentiel d'avoir une idée de ce que c'est que la Web API. Je pense que tu devrais rajouter quelques lignes sur la Web API pour dire que c'est une norme ; elle est très bien documentée ici: https://developer.mozilla.org/en-US/docs/Web/API ; elle est implémentée par tout les navigateurs et si une fonctionnalité n'est pas disponible pour un navigateur donné, le site web de mozilla essaie de recencer le manque. C'est la base incourtournable pour développer réellement à travers le navigateur. C'est pas le propos principal de cette partie, mais ça vaut le coup de le dire, quitte à ce que ça soit mis dans un bloc style "aparté".</commentaire>
 
         <h3>Le rôle de la Callback queue et de l'Event Listener</h3>
 
@@ -331,7 +338,7 @@ foo(bar) ;</code>
           Son contexte est retiré de
           la Stack et l'interpréteur peut continuer à exécuter du code sur la Stack.
         </p>
-        <p><code>setTimeout</code> a lancé une tâche prise en charge par le navigateur : celle d' imposer un délai de 1s à l'execution de <code>foo</code>. Une fois ce délai passé
+        <p><code>setTimeout</code> a lancé une tâche prise en charge par le navigateur : celle d'imposer un délai de 1s à l'execution de <code>foo</code>. Une fois ce délai passé
           le navigateur
           place la
           fonction <code>foo</code> dans la <strong>Callback queue</strong>. Lorsque la Stack de JavaScript est vide, <strong>l'Event loop</strong> prend la première tâche dans la queue et la pousse sur la Stack JavaScript. Cette tache n'est rien
@@ -347,6 +354,8 @@ foo(bar) ;</code>
             <figcaption class="figure-caption text-center"></figcaption>
           </figure>
         </div>
+
+        <commentaire>Juste au passage, pourquoi est-ce qu'il y a le logo de google chrome en bas de cette image ? Est-ce que c'est une image que tu as repiqué ? Si oui, je te conseille de citer la source en bas de l'image. Sinon, je trouve que le logo de google chrome n'est pas nécessaire, à supprimer.</commentaire>
 
         <p>
           On remarque au passage que le délai au bout duquel s'executera la fonction <code>foo</code> ne sera pas nécessairement égal à celui demandé à l'appel de setTimeout (soit 1 seconde). Lorsque la queue possède déjà des événements en attente
@@ -375,10 +384,12 @@ foo(bar) ;</code>
           le navigateur place la fonction <code>bar</code> dans la callback queue et lorsqu'elle arrive au début de la file d'attente, et que la Stack est vide, l'Event loop la pousse et <code>bar</code> est executée dans le thread JavaScript.
         </p>
 
+        <commentaire>Au lieu de dire "l'écosystème du navigateur", j'aurai plutôt dit le modèle d'exécution du navigateur parce que c'est plus là dessus que tu t'es attardé dans les paragraphes précédents. Si t'avais passé du temps sur la Web API, j'aurai été d'accord pour l'utilisation de "l'écosystème du navigateur".</commentaire>
+
         <p>
           C'est une vision très schématique de l'écosystème du navigateur mais qui en préserve les principes. En réalité <a href="https://www.youtube.com/watch?v=cCOL7MC4Pl0">il existe plusieurs queues</a>, chacune ayant sa dynamique propre vis à vis
           de
-          l'Event loop. La gestion des évènements est optimisée, par exemple, en leur assignant des priorités (certains évènements sont plus prioritaires que d'autres). Mais ça ne change pas grand-chose à ce qui nous intéresse ici
+          l'Event loop. La gestion des évènements est optimisée, par exemple, en leur assignant des priorités (certains évènements sont plus prioritaires que d'autres). Mais ça ne change pas grand-chose à ce qui nous intéresse ici.
         </p>
 
 
@@ -436,6 +447,8 @@ foo(bar) ;</code>
 
 
         <h2>Aller plus loin</h2>
+
+        <commentaire>Alors je ne sais pas si tu devrais considérer ce commentaire dans la partie "Conclusion" ou "Aller plus loin" mais en tout cas, je pense que tu peux faire la pub de l'autre article. Tu peux dire que le mécanisme de callback date des débuts du javascript et qu'avec le temps on s'est rendu compte que l'utilisation de ce mécanisme rendu la lisibilité du code difficile. Des nouvelles fonctionnalités ont été introduites en JS pour améliorer la lisibilité et la programmation d'événement asynchrone. Pour en savoir plus, TADAAA !</commentaire>
 
         <dl>
           <dt>Les différentes queues et l'Event loop</dt>
