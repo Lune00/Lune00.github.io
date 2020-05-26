@@ -1,0 +1,7 @@
+.mainTitle{
+  color: #20FF3E;
+}
+
+#mainNav .navbar-nav > li.nav-item > a:hover {
+    color: #20FF3E;
+}

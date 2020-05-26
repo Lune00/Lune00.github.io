@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Schuhmacher">
+
+  <title>StepByStep</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="/css/clean-blog.css" rel="stylesheet">
+  <link href="/css/perso.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">StepByStep</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/index.html">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about.html">À propos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact.html">Me contacter</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('img/quadtree-bg.png')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Quadtree</h1>
+            <h2 class="subheading">Le construire et s'en servir, avec démos interactives</h2>
+            <span class="meta">Posté par
+              <a href="#">Paul Schuhmacher</a>
+              le ???</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <h1>Introduction</h1>
+
+          <p>
+            Les <a href="https://fr.wikipedia.org/wiki/Quadtree">Quadtrees</a> sont des structures de données qui peuvent être très utiles pour résoudre certains types de problèmes. Précisons d'emblée que cet article ne cherche pas à couvrir de
+            manière
+            exhaustive tous les usages et les contextes d'application des Quadtrees. Nous nous nous restreindrons à son usage principal, celui du partitionnement d'un espace à deux dimensions.
+            Au lieu de partir de considérations théoriques et générales nous allons plutôt aborder les Quadtrees d'un point de vue pratique en tachant de répondre à ces questions : à quoi un Quadtree peut-il servir ? Qu'est ce qu'un Quadtree ?
+            Comment le
+            construire ? Comment l'interroger ? Comment s'en servir ?
+            Nous allons donc commencer par proposer une définition d'un Quadtree. Puis, à l'aide de notre définition, nous allons le construire et l'implémenter (en JavaScript ici mais facilement
+            reproductible dans n'importe quel langage de programmation). Nous allons ensuite voir comment nous en servir pour manipuler ou interroger efficacement nos données.
+            Finalement, nous allons l'utiliser dans un cas pratique où le Quadtree fait largement ses preuves : la détection de collisions.
+
+          </p>
+
+          <h3>Dans quel cas les Quadtrees sont-ils utiles?</h3>
+
+          <p>
+           Avant même de définir ce qu'est un Quadtree, il paraît intéressant de voir à quoi il peut servir et à quels types de questions il permet de répondre.
+          </p>
+
+          <p>
+            Pour nous servir des Quadtrees nous avons besoin d'un espace à deux dimensions (un écran, un sous-espace d'un espace plus grand, une scène où se déplacent des objets, une image etc...)
+            et que cet espace contienne des points. Ces points peuvent représenter n'importe quoi, la seule chose qui importe c'est que les <strong>coordonnées de ces points représentent
+              quelque-chose</strong>. Par exemple ces points pourraient représenter des particules, les pixels d'une image, les villes d'un pays etc... Les coordonnées ont du sens : deux particules veulent savoir si elles sont en contact ou non, le
+            sens
+            d'une image est
+            contenu dans les positions relatives de ses pixels, les villes ne sont pas n'importe où !
+            Par exemple, un sytème de coordonées peut être défini de sorte à ce qu'un axe représente la distance vers l'avant par rapport à
+            l'origine choisie,
+            et l'autre celle vers la gauche. La particule pourrait être représentée dans cet espace par un couple de deux valeurs mesurant la position du centre géometrique de la particule. Mais la distance mesurée entre deux points dans un système
+            de
+            coordonnées ne se restreint pas
+            à
+            la mesure d'une distance <i>strictement spatiale</i> : on pourrait tout aussi bien définir un espace avec un axe <i>proportion de voyelles</i> et y représenter des chaînes de caractère. Cet espace permettrait de définir une mesure de
+            proximité
+            entre des mots ou
+            des phrases par exemple. On pourrait également représenter des points dans un espace où une dimension mesure la position et l'autre le temps etc.
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+            <li class="list-inline-item">
+              <a href="#">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;2020 StepByStep</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

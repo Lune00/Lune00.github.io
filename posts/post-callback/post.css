@@ -1,0 +1,15 @@
+.encart{
+  background-color: #C6C6C6;
+  border-radius: 10px;
+}
+
+blockquote {
+    padding: 12px;
+    background: #eee;
+    border-radius: 5px;
+    margin:5px;
+}
+
+.snippet-code{
+  margin-bottom:10px;
+}
