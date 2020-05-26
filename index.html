@@ -13,68 +13,80 @@
 
 <body>
 
-  <div class="container-fluid">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-      <a class="navbar-brand" href="/index.html"><img src="/media/logo.png" height="42" width="42" /></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="/index.html">Accueil <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/content/apropos.html">A propos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/content/cv.html">CV</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <div class="container-fluid ">
 
+
+
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/index.html"><img src="/media/logo.png" height="42" width="42" /></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/index.html">Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/content/apropos.html">A propos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/content/cv.html">CV</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
 
     <h1>Bienvenue</h1>
 
-    <div class="card">
-      <div class="card-header">
-        <h2><a href="#">QuadTree</a></h2>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Construire et utiliser un quadtree</h5>
-        <p class="card-text">Dans cet article nous allons construire un quadtree et s'en servir pour la détection de collisions</p>
-        <a href="#" class="btn btn-primary">Accéder à l'article</a>
-        <a href="#" class="btn btn-secondary">Accéder au code source</a>
-      </div>
-    </div>
 
-    <div class="card">
-      <div class="card-header">
-        <h2><a href="/content/posts/javascript-series/callback/index.html">Callbacks et programmation asynchrone en JavaScript :
-          analyse d'un cas de confusion</a></h2>
-      </div>
-      <div class="card-body">
-        <!-- <h5 class="card-title">Callbacks et programmation asynchrone en JavaScript :
+
+
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+
+        <div class="card">
+            <div class="card-header">
+              <h2><a href="#">QuadTree</a></h2><span class="badge badge-secondary">Algorithme et datastructure</span>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Construire et utiliser un quadtree</h5>
+              <p class="card-text">Dans cet article nous allons construire un quadtree et s'en servir pour la détection de collisions</p>
+              <a href="#" class="btn btn btn-light">Accéder à l'article</a>
+              <a href="#" class="btn btn btn-light">Accéder au code source</a>
+            </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2><a href="/content/posts/javascript-series/callback/index.html">Callbacks et programmation asynchrone en JavaScript :
+                analyse d'un cas de confusion</a></h2>
+            <span class="badge badge-warning">JavaScript</span>
+          </div>
+          <div class="card-body">
+            <!-- <h5 class="card-title">Callbacks et programmation asynchrone en JavaScript :
           analyse d'un cas de confusion</h5> -->
-        <p class="card-text">Dans cet article nous parlons de la notion de callback et de ses liens avec le traitement asynchrone. Au passage on en profite pour décortiquer un état de confusion</p>
-        <a href="/content/posts/javascript-series/callback/index.html" class="btn btn-primary">Accéder à l'article</a>
+            <p class="card-text">Dans cet article nous parlons de la notion de callback et de ses liens avec le traitement asynchrone. Au passage on en profite pour décortiquer un état de confusion</p>
+            <a href="/content/posts/javascript-series/callback/index.html" class="btn  btn-light">Accéder à l'article</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2><a href="/content/posts/javascript-series/asynchrone/index.html">Apprendre Javascript : gestion des traitements asynchrones, callback et promesses</a></h2>
+            <span class="badge badge-warning">JavaScript</span>
+          </div>
+          <div class="card-body">
+            <!-- <h5 class="card-title">Gérer les traitements asynchrones :callbacks et promesses</h5> -->
+            <p class="card-text">Dans cet article nous parlons de la gestion du traitement asynchrone, et pourquoi il vaut mieux préférer les promesses aux callbacks</p>
+            <a href="/content/posts/javascript-series/asynchrone/index.html" class="btn  btn-light">Accéder à l'article</a>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-header">
-        <h2><a href="/content/posts/javascript-series/asynchrone/index.html">Apprendre Javascript : gestion des traitements asynchrones, callback et promesses</a></h2>
-      </div>
-      <div class="card-body">
-        <!-- <h5 class="card-title">Gérer les traitements asynchrones :callbacks et promesses</h5> -->
-        <p class="card-text">Dans cet article nous parlons de la gestion du traitement asynchrone, et pourquoi il vaut mieux préférer les promesses aux callbacks</p>
-        <a href="/content/posts/javascript-series/asynchrone/index.html" class="btn btn-primary">Accéder à l'article</a>
-      </div>
-    </div>
-
-
   </div>
 
 </body>
