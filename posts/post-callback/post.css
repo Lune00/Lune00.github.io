@@ -10,10 +10,18 @@ blockquote {
     margin:5px;
 }
 
+footer.quote{
+  padding:5px;
+}
+
 .snippet-code{
   margin-bottom:10px;
 }
 
 .figure{
   margin:6px;
+}
+
+dd a {
+  text-decoration: underline;
 }

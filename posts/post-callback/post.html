@@ -118,14 +118,14 @@
           <h3>Les racines du mal : le mot <em>callback</em></h3>
 
           <p>
-            <em>Callback</em>, ce mot m'a donné du fil à retordre en JavaScript. Déjà, dans toute opération de traduction d'une langue à une autre il s'opère une perte de sens incompressible. <em>Callback</em> en anglais possède
+            Le mot <em>callback</em> m'a donné du fil à retordre en JavaScript. Premièrement, dans toute opération de traduction d'une langue à une autre il s'opère une perte de sens incompressible. <em>Callback</em> en anglais possède
             plusieurs sens en
             fonction des contextes. En informatique, le sens qui nous intéresse est le suivant :
           </p>
 
           <blockquote>
             <p> a callback, also known as a "call-after" function, is any executable code that is passed as an argument to other code</p>
-            <footer>
+            <footer class="quote">
               <cite><a href="https://en.wikipedia.org/wiki/Callback_(computer_programming)">Wikipedia</a></cite>
             </footer>
           </blockquote>
@@ -144,7 +144,7 @@
             <em>plus tard dans le temps</em>. Ce terme emporte donc la notion d'action dans le futur.</p>
 
           <p>
-            <em>So far so good</em>, le problème c'est qu'en JavaScript, les callbacks sont majoritairement utilisées dans le contexte de traitement asynchrone.
+            <em>So far so good</em>, les ennuis arrivent maintenant. En JavaScript, les callbacks sont majoritairement utilisées dans le contexte de traitement asynchrone.
           </p>
 
           <p>Un traitement asynchrone est nécessaire lorsqu'une fonction prend un temps jugé trop long à retourner et lorsqu'elle risque de bloquer le flot du programme (c'est à dire l'exécution de la fonction suivante) le temps de sa
@@ -157,21 +157,11 @@
             à
             un moment indéterminé dans le futur. D'où ce qualificatif <em>asynchrone</em>, c'est à dire, <q>qui ne suit pas le mouvement imposé</q>.</p>
 
-
-          <p>Pour résumer je peux trouver deux causes distinctes à l'origine de ma confusion sur le sujet :
-
-          <ul>
-            <li>Les callbacks sont majoritairement utilisées <strong>et discutées</strong> en JavaScript dans un contexte asynchrone </li>
-            <li>Le mot <em>rappel</em> éveille en moi le sens commun du mot, et m'incite à donner à la fonction, sans effort, une qualité asynchrone. </li>
-          </ul>
-
-          <p>
-            Voilà d'où je suis parti, et il m'a fallu beaucoup d'efforts pour <em>dissocier</em> les concepts de callback et d'asynchrone.
-          </p>
+          <p>Il n'a pas fallu d'effort pour que mon esprit, aprenant et naïf, fasse la jointure malheureuse des deux concepts : avec les callbacks, d'une manière ou d'une autre, je fabrique du traitement asynchrone. Par contre, il m'a fallu beaucoup d'efforts pour les <em>dissocier</em> car je ne comprenais pas <em>comment</em> je pouvais le faire. </p>
 
           <p>
             Enfin, on désigne <em>callback</em> la fonction passée en argument à une autre
-            fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple si j'écris <code>foo(bar)</code>, <code>bar</code> est désignée <em>callback</em> mais
+            fonction alors que c'est la fonction qui là reçoit en argument qui est responsable de son appel, qui la <em>call back</em>. Par exemple, si j'écris <code>foo(bar)</code>, <code>bar</code> est désignée <em>callback</em> mais
             c'est
             <code>foo</code> qui la <em>call back</em>, qui l'appelle en temps et en heure. Il y a matière à confusion.
           </p>
@@ -545,7 +535,7 @@ foo(bar);</code></pre>
 
           <p>
             Le mécanisme de callback a été intensivement utilisé dans les premières versions de JavaScript pour faire du traitement asynchrone. Ce mécanisme rend pourtant la lisibilité du code difficile et de nouvelles fonctionnalités ont été
-            introduites pour améliorer la programmation d'évènements asynchrones. Ce sujet fait l'objet du prochain article : <a class="ref" href="../asynchrone/index.html">JavaScript : gestion des traitements asynchrones</a>
+            introduites pour améliorer la programmation d'évènements asynchrones. Ce sujet fait l'objet du prochain article : <a href="../asynchrone/index.html">JavaScript : gestion des traitements asynchrones</a>
           </p>
 
 
