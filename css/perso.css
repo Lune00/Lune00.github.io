@@ -1,7 +1,11 @@
 .mainTitle{
-  color: #20FF3E;
+  color: #06FF27;
 }
 
 #mainNav .navbar-nav > li.nav-item > a:hover {
     color: #20FF3E;
+}
+
+#mainNav .navbar-nav > li.nav-item > a {
+  font-size: 14px;
 }
