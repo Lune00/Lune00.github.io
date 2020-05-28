@@ -1,0 +1,19 @@
+.contact-flex{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start ;
+  align-items: center;
+}
+
+.contact-flex:first-child{
+  flex: 0 0 40%;
+}
+.contact-flex:last-child{
+  flex: 0 0 60%;
+}
+
+
+.techno{
+  color: #20FF3E;
+}
