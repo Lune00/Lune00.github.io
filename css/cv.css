@@ -1,19 +1,124 @@
-.contact-flex{
+.contact-flex {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start ;
+  flex-flow: row wrap;
   align-items: center;
+  margin-left: 10px;
+  flex-basis: auto;
 }
 
-.contact-flex:first-child{
+.label {
+  margin-right: 10px;
+}
+
+.contact-flex:first-child {
   flex: 0 0 40%;
 }
-.contact-flex:last-child{
+
+.contact-flex:last-child {
   flex: 0 0 60%;
 }
 
-
-.techno{
+.techno {
   color: #0085A1;
+}
+
+section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+section:last-child {
+  border-bottom: none;
+}
+
+section>div {
+  width: 90%;
+}
+
+section h2 {
+  margin: 20px 0;
+  width: 90%;
+  color: #5744CF;
+}
+
+.exp {
+  display: flex;
+  flex-flow: row wrap;
+  padding-bottom: 10px;
+  align-items: center;
+  /* border-bottom: 1px solid #bbb; */
+  margin-bottom: 20px;
+  margin:10px;
+}
+
+.exp-logo {
+  flex: 0 0 25%;
+  max-width: 100px;
+}
+
+.exp-info {
+  flex: 0 0 70%;
+  margin-left: auto;
+}
+
+.exp img {
+  width: 100%;
+  /* border-radius: 50%; */
+  box-shadow: 0px 0px 5px #555;
+}
+
+.exp>.exp-info-without-logo {
+  flex: 0 0 100%;
+}
+
+p {
+  font-size: 1em;
+  margin: 0;
+}
+
+.competences-info {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.languages {
+  flex: 0 0 50%;
+}
+
+.frameworks {
+  flex: 0 0 50%;
+}
+
+.methodes {
+  flex: 0 0 50%;
+}
+
+.cms {
+  flex: 0 0 50%;
+}
+
+.interets {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+
+.exp h3 {
+  margin-bottom: 10px;
+  margin-top: 5px;
+  font-size:1em;
+}
+
+.exp h4 {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  font-size: .9em;
+  font-weight: normal;
 }
