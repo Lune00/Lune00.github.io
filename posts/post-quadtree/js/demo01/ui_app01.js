@@ -90,8 +90,8 @@ export const uiApp01 = {
       document.getElementById('nbPointsGaussianValue').value = this.value;
     });
 
-    document.getElementById('groupNbPoitnsEvaluated').style.color = colors.colorPointLooked;
-    document.getElementById('groupNbPoitnsSelected').style.color = colors.colorPointSelected;
+    // document.getElementById('groupNbPoitnsEvaluated').style.color = colors.colorPointLooked;
+    // document.getElementById('groupNbPoitnsSelected').style.color = colors.colorPointSelected;
   },
 
   update: function() {
