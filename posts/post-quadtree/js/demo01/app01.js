@@ -15,7 +15,7 @@ export default function demo01(sketch){
 
     console.log('setup demo01');
 
-    sketch.createCanvas(1024, 600);
+    sketch.createCanvas(800, 600);
 
     rootNode = new NodePedagogic(sketch.width / 2, sketch.height / 2, sketch.width / 2, sketch.height / 2);
 

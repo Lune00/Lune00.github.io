@@ -128,7 +128,7 @@
             Mais prenons l'exemple classique d'un espace à deux dimensions peuplé d'objets, représenté chacun par un point. Pour des raisons pratiques nous appelerons <strong>point</strong> la représentation de l'objet dans notre espace par ses
             coordonnées.
 
-          <div class="row justify-content-center">
+          <div>
             <figure class="figure">
               <img src="img/figure01.png" class="figure-img img-fluid rounded" alt="un espace bidimensionnel peuplé d'objets représentés par des points" title="un espace bidimensionnel peuplé d'objets représentés par des points" width="452"
                 height="328" />
@@ -143,7 +143,7 @@
           elles trouvent leurs réponses dans les mesures des distances entre les points. Elles ont un caractère <i>géometrique</i>.
           </p>
 
-          <div class="row justify-content-center" id="figure02">
+          <div id="figure02">
             <figure class="figure">
               <img src="img/figure02.png" class="figure-img img-fluid rounded" alt="un espace bidimensionnel peuplé d'objets représentés par des points. Un cercle rouge défini un sous-espace"
                 title="Combien de points se trouvent dans le sous-espace défini par le cercle rouge?" width="452" height="328" />
@@ -653,7 +653,7 @@ query(zoneInspection){}
             à revenir expérimenter avec cette démo.
           </p>
 
-          <div class="row demo1-container"  id="demo01">
+          <div class="row demo1-container" id="demo01">
             <div class="insertion-informations">
               <div class="container-insertion">
                 <h4>Insertion</h4>
@@ -711,19 +711,7 @@ query(zoneInspection){}
                       </tr>
                     </tbody>
                   </table>
-                  <table class="table table-striped table-hover table-sm ">
-                    <tbody>
-
-                    </tbody>
-                  </table>
-
-
                 </div>
-
-                <div class="right">
-
-                </div>
-
               </div>
             </div>
 
@@ -753,25 +741,29 @@ query(zoneInspection){}
           <h2>Se servir (enfin) du Quadtree</h2>
 
           <h3>Rappel</h3>
-<p>
-  La question que nous nous posions à la base était la suivante : quels sont les points, sur la <a href="#figure02">figure 2</a>, présents à l'interieur du cercle rouge ? Et nous voulions y répondre sans devoir interroger l'intégralité des points
-  et
-  écopper de la complexité <code>0(n)</code>. Pour cela nous avons ré-organisé nos données dans une structure Quadtree. Comment récupérer les points que nous cherchons ?
-</p>
+          <p>
+            La question que nous nous posions à la base était la suivante : quels sont les points, sur la <a href="#figure02">figure 2</a>, présents à l'interieur du cercle rouge ? Et nous voulions y répondre sans devoir interroger l'intégralité des
+            points
+            et
+            écopper de la complexité <code>0(n)</code>. Pour cela nous avons ré-organisé nos données dans une structure Quadtree. Comment récupérer les points que nous cherchons ?
+          </p>
 
-<h3>Pseudo-code d'une requête</h3>
-<p>
-  Nous devons définir notre zone d'inspection, notre cercle rouge, comme dans <a href="#demo01">la démo</a>. Dans ce cas ci la zone d'inspection est vraiment très simple: elle est définie par les coordonnées de son centre et par un rayon. Nous
-  allons initialiser notre requête au Quadtree en demandant à la racine si notre cercle recouvre, même partiellement, l'espace mis sous sa reponsabilité. Si c'est le cas, et si la racine a des noeuds enfants, alors le cercle doit nécessairement
-  recouvrir au moins une des sous-régions à la charge de l'un de ses enfants. Récursivement nous allons donc interroger les enfants recouverts jusqu'à arriver sur les feuilles. Les feuilles sont les noeuds les plus profonds de l'arbre, il n'y a
-  rien en dessous, mis à
-  part nos points. Les enfants des feuilles sont les points que nous cherchons. Nous n'avons plus qu'à remonter tous les points contenus dans les feuilles recouvertes par notre cercle. Le pseudo-code est de la forme :
-</p>
+          <h3>Pseudo-code d'une requête</h3>
+          <p>
+            Nous devons définir notre zone d'inspection, notre cercle rouge, comme dans <a href="#demo01">la démo</a>. Dans ce cas ci la zone d'inspection est vraiment très simple: elle est définie par les coordonnées de son centre et par un rayon.
+            Nous
+            allons initialiser notre requête au Quadtree en demandant à la racine si notre cercle recouvre, même partiellement, l'espace mis sous sa reponsabilité. Si c'est le cas, et si la racine a des noeuds enfants, alors le cercle doit
+            nécessairement
+            recouvrir au moins une des sous-régions à la charge de l'un de ses enfants. Récursivement nous allons donc interroger les enfants recouverts jusqu'à arriver sur les feuilles. Les feuilles sont les noeuds les plus profonds de l'arbre, il
+            n'y a
+            rien en dessous, mis à
+            part nos points. Les enfants des feuilles sont les points que nous cherchons. Nous n'avons plus qu'à remonter tous les points contenus dans les feuilles recouvertes par notre cercle. Le pseudo-code est de la forme :
+          </p>
 
 
 
-<div>
-  <pre class="language-javascript">
+          <div>
+            <pre class="language-javascript">
   <code><span class="variable">racine</span>.<span class="function">query</span>(cercle_rouge){
 
     <span class="if-else">if !</span><span class="statement">cercle_rouge</span>.<span class="function">recouvre</span>(<span class="variable">racine.region</span>)
@@ -785,44 +777,52 @@ query(zoneInspection){}
           <span class="if-else">if</span> <span class="statement">cercle_rouge</span>.<span class="function">contient</span>(<span class="variable">point</span>)
             garder <span class="variable">point</span>
  }</code></pre>
-</div>
+          </div>
 
-<p>
-  Nous profitons ici de l'architecture en arbre. Le fait d'avoir partionné l'espace de manière récursive nous permet de changer la manière dont nous posons notre question : nous ne demandons plus "parmi tous les points quels sont ceux qui se
-  trouvent dans le cercle rouge ?". La complexité <code>0(n)</code> est loin maintenant. L'espace étant divisé et mis sous la reponsabilité d'une multitude de noeuds, nous n'avons plus qu'à descendre l'arbre étage par étage. Tant qu'un noeud nous
-  répond "oui, vous me recouvrez" nous continuons à poser encore et toujours la même question. Jusqu'à arriver au dernier noeud, à la feuille qui nous dit "oui, vous me recouvrez, tenez, voici les points que j'ai sous ma responsabilité". Et là,
-  seulement à ce moment là, on peut tester si le point est contenu dans le cercle rouge.
-
-
-<div class="row justify-content-center" id="figure06">
-  <figure class="figure">
-    <img src="img/requete.svg" class="figure-img img-fluid rounded" alt="" title="" width="800" />
-    <figcaption class="figure-caption text-center">Figure 6 :</figcaption>
-  </figure>
-</div>
+          <p>
+            Nous profitons ici de l'architecture en arbre. Le fait d'avoir partionné l'espace de manière récursive nous permet de changer la manière dont nous posons notre question : nous ne demandons plus "parmi tous les points quels sont ceux qui
+            se
+            trouvent dans le cercle rouge ?". La complexité <code>0(n)</code> est loin maintenant. L'espace étant divisé et mis sous la reponsabilité d'une multitude de noeuds, nous n'avons plus qu'à descendre l'arbre étage par étage. Tant qu'un
+            noeud nous
+            répond "oui, vous me recouvrez" nous continuons à poser encore et toujours la même question. Jusqu'à arriver au dernier noeud, à la feuille qui nous dit "oui, vous me recouvrez, tenez, voici les points que j'ai sous ma responsabilité". Et
+            là,
+            seulement à ce moment là, on peut tester si le point est contenu dans le cercle rouge.
 
 
-<p>
-  En somme, grâce au travail préalable de division de l'espace et de construction de l'arbre nous avons déplacé ce sur quoi porte notre question : nous ne demandons plus aux points "êtes vous dans le cercle?", nous demandons aux noeuds "êtes vous
-  dans le cercle?" Et si un noeud nous répond non, nous n'irons pas poser la question à ses noeuds enfants. Nous pouvons alors tout simplement abandonner les recherches dans la région sous sa reponsabilité, il n'y aucune chance qu'un de ses points
-  se trouve dans notre cercle. Un pan entier de l'espace est soustrait à nos efforts de recherche.
-</p>
-
-<h3>Complexité d'une reqûete</h3>
-<p>
-  Analyser la complexité d'une requête dans un Quadtree n'est pas évidente car elle dépend de la requête elle même et de la structure de l'arbre. Cependant nous pouvons estimer les complexité aux cas limites : si tous les points sont présents dans
-  notre cercle rouge alors nous retombons sur la pire complexité, en <code>0(n)</code>. Si cette situation se présente majoritairement cela ne signifie pas que le Quadtree est à blâmer, mais plutôt qu'il y'a un problème en terme de design au niveau
-  de votre programme. Si 99% des points sont systématiquement candidats à votre requête alors l'utilisation d'un Quadtree n'est pas nécessairement pertinent. A l'inverse, si la requête est très ciblée, et qu'une seule feuille est recouverte par le
-  cercle, elle va traverser l'arbre directement de la racine à la feuille et la complexité sera de <code>0(p)</code>, où p est la profondeur de la feuille. On peut donc au moins garantir que la complexité de notre requête est comprise entre
-  <code>0(p)</code> et <code>0(n)</code>. C'est déjà une grande nouvelle, car la complexité <code>0(n)</code> qui était garantie à 100% par notre solution naïve est désormais devenue celle du cas le plus extrême.
-</p>
+          <div class="row justify-content-center" id="figure06">
+            <figure class="figure">
+              <img src="img/requete.svg" class="figure-img img-fluid rounded" alt="" title="" width="800" />
+              <figcaption class="figure-caption text-center">Figure 6 :</figcaption>
+            </figure>
+          </div>
 
 
-Voyons à présent les détails de l'implémentation de la requête.
-</p>
-<h2 id="implementation">Implémentation de l'interrogation du Quadtree : <code>query()</code></h2>
+          <p>
+            En somme, grâce au travail préalable de division de l'espace et de construction de l'arbre nous avons déplacé ce sur quoi porte notre question : nous ne demandons plus aux points "êtes vous dans le cercle?", nous demandons aux noeuds
+            "êtes vous
+            dans le cercle?" Et si un noeud nous répond non, nous n'irons pas poser la question à ses noeuds enfants. Nous pouvons alors tout simplement abandonner les recherches dans la région sous sa reponsabilité, il n'y aucune chance qu'un de ses
+            points
+            se trouve dans notre cercle. Un pan entier de l'espace est soustrait à nos efforts de recherche.
+          </p>
 
-<pre id="query" class="language-javascript line-numbers">
+          <h3>Complexité d'une reqûete</h3>
+          <p>
+            Analyser la complexité d'une requête dans un Quadtree n'est pas évidente car elle dépend de la requête elle même et de la structure de l'arbre. Cependant nous pouvons estimer les complexité aux cas limites : si tous les points sont
+            présents dans
+            notre cercle rouge alors nous retombons sur la pire complexité, en <code>0(n)</code>. Si cette situation se présente majoritairement cela ne signifie pas que le Quadtree est à blâmer, mais plutôt qu'il y'a un problème en terme de design
+            au niveau
+            de votre programme. Si 99% des points sont systématiquement candidats à votre requête alors l'utilisation d'un Quadtree n'est pas nécessairement pertinent. A l'inverse, si la requête est très ciblée, et qu'une seule feuille est recouverte
+            par le
+            cercle, elle va traverser l'arbre directement de la racine à la feuille et la complexité sera de <code>0(p)</code>, où p est la profondeur de la feuille. On peut donc au moins garantir que la complexité de notre requête est comprise entre
+            <code>0(p)</code> et <code>0(n)</code>. C'est déjà une grande nouvelle, car la complexité <code>0(n)</code> qui était garantie à 100% par notre solution naïve est désormais devenue celle du cas le plus extrême.
+          </p>
+
+
+          Voyons à présent les détails de l'implémentation de la requête.
+          </p>
+          <h2 id="implementation">Implémentation de l'interrogation du Quadtree : <code>query()</code></h2>
+
+          <pre id="query" class="language-javascript line-numbers">
   <code class="language-javascript">query(circleProbe, points = []) {
 
       let boundingBox = {
@@ -848,184 +848,214 @@ Voyons à présent les détails de l'implémentation de la requête.
       return points;
   }</code></pre>
 
-<p>
-  La méthode <code>query</code>, tout comme la méthode <code>insert</code>, fonctionne de manière récursive et est appelée sur le noeud racine. Elle prend en argument la zone d'inspection circulaire <code>circleProbe</code> et <code>points</code>,
-  le tableau de points contenant le résultat de notre requête, à savoir l'ensemble des points contenus dans <code>circleProbe</code>. Ici la subtilité c'est que <code>query</code> est une fonction récursive et qu'elle doit retourner un résultat,
-  comme ici
-</p>
-<pre class="language-javascript">
+          <p>
+            La méthode <code>query</code>, tout comme la méthode <code>insert</code>, fonctionne de manière récursive et est appelée sur le noeud racine. Elle prend en argument la zone d'inspection circulaire <code>circleProbe</code> et
+            <code>points</code>,
+            le tableau de points contenant le résultat de notre requête, à savoir l'ensemble des points contenus dans <code>circleProbe</code>. Ici la subtilité c'est que <code>query</code> est une fonction récursive et qu'elle doit retourner un
+            résultat,
+            comme ici
+          </p>
+          <pre class="language-javascript">
 <code class="language-javascript"> let pointsInsideCircleProbe = rootNode.query(circleProbe);</code></pre>
 
-<p>La méthode est donc appelée sans l'argument optionnel <code>points</code>, <code>points</code> aura donc pour valeur <code>undefined</code> lors du premier appel sur le noeud racine. Dans ce cas, nous assignons à <code>points</code> un tableau
-  vide. La variable <code>points</code> va servir de <em>variable globale</em> à l'ensemble des appels récursifs de <code>query</code>.</p>
-<p>
-  Nous regardons d'abord, à la ligne 14, si la zone d'inspection recouvre la zone sous la responsabilité du noeud courant. Si ce n'est pas le cas, alors on retourne, il n'y a rien à voir. Si c'est le cas, on parcourt les enfants du noeud :
-<ul>
-  <li>si l'enfant est un noeud, le noeud courant est une branche. <code>circleProbe</code> pourrait recouvrir ce noeud enfant et la méthode <code>query</code> est appelée </li> sur lui.
-  <li>si l'enfant n'est pas un noeud, le noeud courant est une feuille. <code>circleProbe</code> pourrait alors contenir un ou plusieurs points portés par ses enfants. On parcourt les points attachés à la feuille (ligne 22) : si un point est
-    contenu dans <code>circleProble</code> on l'ajoute à <code>points</code>.</li>
-</ul>
-</p>
+          <p>La méthode est donc appelée sans l'argument optionnel <code>points</code>, <code>points</code> aura donc pour valeur <code>undefined</code> lors du premier appel sur le noeud racine. Dans ce cas, nous assignons à <code>points</code> un
+            tableau
+            vide. La variable <code>points</code> va servir de <em>variable globale</em> à l'ensemble des appels récursifs de <code>query</code>.</p>
+          <p>
+            Nous regardons d'abord, à la ligne 14, si la zone d'inspection recouvre la zone sous la responsabilité du noeud courant. Si ce n'est pas le cas, alors on retourne, il n'y a rien à voir. Si c'est le cas, on parcourt les enfants du noeud :
+          <ul>
+            <li>si l'enfant est un noeud, le noeud courant est une branche. <code>circleProbe</code> pourrait recouvrir ce noeud enfant et la méthode <code>query</code> est appelée </li> sur lui.
+            <li>si l'enfant n'est pas un noeud, le noeud courant est une feuille. <code>circleProbe</code> pourrait alors contenir un ou plusieurs points portés par ses enfants. On parcourt les points attachés à la feuille (ligne 22) : si un point
+              est
+              contenu dans <code>circleProble</code> on l'ajoute à <code>points</code>.</li>
+          </ul>
+          </p>
 
-<p> Remarquez qu'à la ligne 22, on retrouve le parcours de tous les points contenus dans la région sous la responsabilité de la feuille. On voit ici clairement le bénéfice du Quadtree: au lieu d'interroger tous les points de l'espace, comme dans la
-  solution naïve, on interroge ici <strong>seulement les points contenus dans cette sous-région</strong>.</p>
+          <p> Remarquez qu'à la ligne 22, on retrouve le parcours de tous les points contenus dans la région sous la responsabilité de la feuille. On voit ici clairement le bénéfice du Quadtree: au lieu d'interroger tous les points de l'espace, comme
+            dans la
+            solution naïve, on interroge ici <strong>seulement les points contenus dans cette sous-région</strong>.</p>
 
-<p>Enfin, le premier appel de <code>query</code> sur le noeud racine retourne <code>points</code>. </p>
+          <p>Enfin, le premier appel de <code>query</code> sur le noeud racine retourne <code>points</code>. </p>
 
-<p>Visualisez la méthode <code>query</code> sur la <a href="#demo01">demo 1</a>. La zone circulaire autour du pointeur de la souris représente <code>circleProbe</code>. Vous pouvez alors visualiser l'ensemble des points à l'intérieur mais également
-  l'ensemble des points candidats à la requête. Vous pouvez voir que le nombre de points parcourus et évalués n'est pas systématiquement égal au nombre de points total, comme dans le cas de la solution naïve. Ce cas se présente d'ailleurs très
-  rarement et généralement le nombre de points évalués lors de la requête est une petite fraction du nombre de points total.</p>
+          <p>Visualisez la méthode <code>query</code> sur la <a href="#demo01">demo 1</a>. La zone circulaire autour du pointeur de la souris représente <code>circleProbe</code>. Vous pouvez alors visualiser l'ensemble des points à l'intérieur mais
+            également
+            l'ensemble des points candidats à la requête. Vous pouvez voir que le nombre de points parcourus et évalués n'est pas systématiquement égal au nombre de points total, comme dans le cas de la solution naïve. Ce cas se présente d'ailleurs
+            très
+            rarement et généralement le nombre de points évalués lors de la requête est une petite fraction du nombre de points total.</p>
 
-<p>On peut enfin goûter ici à la puissance et à l'intérêt du Quadtree.</p>
+          <p>On peut enfin goûter ici à la puissance et à l'intérêt du Quadtree.</p>
 
 
-<h2>L'intérêt des branches et des feuilles</h2>
+          <h2>L'intérêt des branches et des feuilles</h2>
 
 
-<p>
-  Vous vous demandez peut-être à ce stade pourquoi avoir pris la peine de distinguer les noeuds en branches et en feuilles.
-</p>
-<p>
-  Le fait qu'un noeud, une fois atteint sa capacité maximale, se divise et ne compte parmi ses enfants que d'autres noeuds a un intérêt. Le concept de <em>branche</em> a un intérêt. Imaginons qu'un noeud ait à la fois des points et des noeuds pour
-  enfants, et que nous ne faisions pas la distinction entre branche et feuille. Si nous interrogeons ce noeud et que notre zone d'inspection l'intersecte alors nous n'aurions pas d'autre choix que d'évaluer tous ses enfants points, peut importe où
-  ils
-  se trouvent, à la <a href="#query">ligne 22 du code précédent</a>. Imposer à un noeud d'avoir que des enfants noeuds (branche) ou que des enfants points (feuille) nous préserve d'évaluations inutiles.
-</p>
-<p>
-  Enfin, le fait qu'un noeud qui devient branche ne se subdivise pas automatiquement en 4 feuilles mais uniquement en autant de feuilles que nécessaire, nous permet d'éviter des appels inutiles de <code>query</code>. En effet, si nous divisions
-  automatiquement en 4 chaque noeud en surcapacité, celui-ci pourrait créer des feuilles vides. <a href="#query">Aux lignes 19 et 20</a> nous ferions alors des appels inutiles de <code>query</code> sur ces noeuds enfants vides.
-</p>
+          <p>
+            Vous vous demandez peut-être à ce stade pourquoi avoir pris la peine de distinguer les noeuds en branches et en feuilles.
+          </p>
+          <p>
+            Le fait qu'un noeud, une fois atteint sa capacité maximale, se divise et ne compte parmi ses enfants que d'autres noeuds a un intérêt. Le concept de <em>branche</em> a un intérêt. Imaginons qu'un noeud ait à la fois des points et des
+            noeuds pour
+            enfants, et que nous ne faisions pas la distinction entre branche et feuille. Si nous interrogeons ce noeud et que notre zone d'inspection l'intersecte alors nous n'aurions pas d'autre choix que d'évaluer tous ses enfants points, peut
+            importe où
+            ils
+            se trouvent, à la <a href="#query">ligne 22 du code précédent</a>. Imposer à un noeud d'avoir que des enfants noeuds (branche) ou que des enfants points (feuille) nous préserve d'évaluations inutiles.
+          </p>
+          <p>
+            Enfin, le fait qu'un noeud qui devient branche ne se subdivise pas automatiquement en 4 feuilles mais uniquement en autant de feuilles que nécessaire, nous permet d'éviter des appels inutiles de <code>query</code>. En effet, si nous
+            divisions
+            automatiquement en 4 chaque noeud en surcapacité, celui-ci pourrait créer des feuilles vides. <a href="#query">Aux lignes 19 et 20</a> nous ferions alors des appels inutiles de <code>query</code> sur ces noeuds enfants vides.
+          </p>
 
-<h2>Paramètres du Quadtree : capacité et profondeur</h2>
+          <h2>Paramètres du Quadtree : capacité et profondeur</h2>
 
-<p>
-  Ces paramètres permettent <strong>d'optimiser les performances du Quadtree</strong> en insertion (<code>insert</code>) ou en recherche (<code>query</code>). Ces considérations dépassent l'ambition de cet article, mais il est néanmoins utile de
-  les mentionner.
-</p>
+          <p>
+            Ces paramètres permettent <strong>d'optimiser les performances du Quadtree</strong> en insertion (<code>insert</code>) ou en recherche (<code>query</code>). Ces considérations dépassent l'ambition de cet article, mais il est néanmoins
+            utile de
+            les mentionner.
+          </p>
 
-<p>
-  Le Quadtree possède deux paramètres ajustables par l'utilisateur : la capacité et la profondeur. La capacité est le nombre de points maximal que peut porter une feuille, la profondeur (ou aussi appelée <em>taille</em> de l'arbre) est une mesure
-  de la récursivité de l'arbre. Plus il est profond plus il est nécessaire de faire des appels récursifs pour récupérer les points. On remarque que ces deux paramètres sont corrélés : plus la capacité des noeuds est grande, moins il sera profond et
-  inversement.
-</p>
+          <p>
+            Le Quadtree possède deux paramètres ajustables par l'utilisateur : la capacité et la profondeur. La capacité est le nombre de points maximal que peut porter une feuille, la profondeur (ou aussi appelée <em>taille</em> de l'arbre) est une
+            mesure
+            de la récursivité de l'arbre. Plus il est profond plus il est nécessaire de faire des appels récursifs pour récupérer les points. On remarque que ces deux paramètres sont corrélés : plus la capacité des noeuds est grande, moins il sera
+            profond et
+            inversement.
+          </p>
 
-<h3>Définir une profondeur maximale</h3>
-<p>
-  Dans cette implémentation il n'y a aucune restriction sur la profondeur de l'arbre. Chaque noeud peut se diviser et donner naissance à d'autres noeuds plus profonds. On pourrait très facilement rajouter cette fonctionalité en définissant une
-  profondeur maximal <code>MAX_DEPTH</code> mettant une condition sur la méthode <code>branch()</code> :
-</p>
-<div>
-  <pre class="language-javascript line-numbers">
+          <h3>Définir une profondeur maximale</h3>
+          <p>
+            Dans cette implémentation il n'y a aucune restriction sur la profondeur de l'arbre. Chaque noeud peut se diviser et donner naissance à d'autres noeuds plus profonds. On pourrait très facilement rajouter cette fonctionalité en définissant
+            une
+            profondeur maximal <code>MAX_DEPTH</code> mettant une condition sur la méthode <code>branch()</code> :
+          </p>
+          <div>
+            <pre class="language-javascript line-numbers">
   <code>insert(point) {
         ...
         if (this.hasReachedMaxCapacity() && this.depth < MAX_DEPTH)
           this.branch();
       }
     }</code></pre>
-</div>
+          </div>
 
-<p>
-  Ainsi, l'arbre aura une taille maximale qu'il ne peut pas dépasser, et les feuilles a la profondeur maximale porteront un nombre indeterminé de points (au delà de leur capacité), ceux-ci <em>s'entasseront au fond</em> de l'arbre.
-</p>
-<p>
-  Y'a-t-il un intérêt à définir une profondeur maximale ? Cela dépend des cas mais c'est un choix judicieux lorsqu'on souhaite avoir un peu de contrôle sur les appeles récursifs. Par exemple, dans le cas où vous avez une scène remplie de points
-  infinement proches (séparés de quelques pixels). Ces points très proches pourraient être le centre d'objets superposés. Sans profondeur maximale imposée votre Quadtree risque d'avoir des profondeurs localisées très importantes là où les points
-  sont infiniment proches. Cette <em>surpartition</em> de l'espace n'est pas très utile car en pratique, si vous voulez faire de la détection de voisinage de l'un de ces points, toutes ces feuilles seront de toute manière inspectées.
-</p>
+          <p>
+            Ainsi, l'arbre aura une taille maximale qu'il ne peut pas dépasser, et les feuilles a la profondeur maximale porteront un nombre indeterminé de points (au delà de leur capacité), ceux-ci <em>s'entasseront au fond</em> de l'arbre.
+          </p>
+          <p>
+            Y'a-t-il un intérêt à définir une profondeur maximale ? Cela dépend des cas mais c'est un choix judicieux lorsqu'on souhaite avoir un peu de contrôle sur les appeles récursifs. Par exemple, dans le cas où vous avez une scène remplie de
+            points
+            infinement proches (séparés de quelques pixels). Ces points très proches pourraient être le centre d'objets superposés. Sans profondeur maximale imposée votre Quadtree risque d'avoir des profondeurs localisées très importantes là où les
+            points
+            sont infiniment proches. Cette <em>surpartition</em> de l'espace n'est pas très utile car en pratique, si vous voulez faire de la détection de voisinage de l'un de ces points, toutes ces feuilles seront de toute manière inspectées.
+          </p>
 
-<h3>Quelle valeurs choisir pour la capacité et la profondeur maximale?</h3>
+          <h3>Quelle valeurs choisir pour la capacité et la profondeur maximale?</h3>
 
-<p>
-  La réponse à cette question n'est pas évidente mais elle pourrait être <q>cela dépend de ce que vous voulez</q>. Notez que ces paramètres n'auront pas un effet considérable en soi sur les performances du QuadTree. Un choix minutieux pour ces
-  paramètres implique
-</p>
+          <p>
+            La réponse à cette question n'est pas évidente mais elle pourrait être <q>cela dépend de ce que vous voulez</q>. Notez que ces paramètres n'auront pas un effet considérable en soi sur les performances du QuadTree. Un choix minutieux pour
+            ces
+            paramètres implique
+          </p>
 
-<p>
-  Si vous voulez construire rapidement le QuadTree alors vous avez besoin d'un <code>insert</code> rapide. Pour cela, il suffit d'augmenter la capacité de l'arbre : plus une feuille pourra porter de points, moins elle aura de chance de se
-  subdiviser. Ainsi, augmenter la capacité diminue le nombre d'appels récursifs d'<code>insert</code> et diminue le nombre d'appels à <code>branch</code>. Cela dit, en gagnant de l'efficacité en construction vous en perdez nécessairement en
-  recherche, car il faudra évaluer plus de points à chaque appel de <code>query</code>.
-</p>
+          <p>
+            Si vous voulez construire rapidement le QuadTree alors vous avez besoin d'un <code>insert</code> rapide. Pour cela, il suffit d'augmenter la capacité de l'arbre : plus une feuille pourra porter de points, moins elle aura de chance de se
+            subdiviser. Ainsi, augmenter la capacité diminue le nombre d'appels récursifs d'<code>insert</code> et diminue le nombre d'appels à <code>branch</code>. Cela dit, en gagnant de l'efficacité en construction vous en perdez nécessairement en
+            recherche, car il faudra évaluer plus de points à chaque appel de <code>query</code>.
+          </p>
 
-<p>
-  Évidemment, jouer seulement sur la valeur de ces paramètres ne va pas avoir des répercussions importantes sur les performances du QuadTree. Ce choix doit être soutenu par une architecture optimisée en mémoire des fonctions <code>insert</code> et
-  <code>querry</code> et surtout d'une optimisation de la gestion de la mémoire.
-</p>
-<p>
-  Dans un premier temps, il est inutile de trop s'attarder sur ces paramètres, car choisir leurs valeurs fait partie d'un processus plus large qui est celui de l'optimisation. Et L'optimisation vient toujours après. Si vous voulez en savoir plus
-  sur ce sujet des liens sont proposés à
-  la fin de l'article sur l'optimisation des Quadtrees.
-</p>
+          <p>
+            Évidemment, jouer seulement sur la valeur de ces paramètres ne va pas avoir des répercussions importantes sur les performances du QuadTree. Ce choix doit être soutenu par une architecture optimisée en mémoire des fonctions
+            <code>insert</code> et
+            <code>querry</code> et surtout d'une optimisation de la gestion de la mémoire.
+          </p>
+          <p>
+            Dans un premier temps, il est inutile de trop s'attarder sur ces paramètres, car choisir leurs valeurs fait partie d'un processus plus large qui est celui de l'optimisation. Et L'optimisation vient toujours après. Si vous voulez en savoir
+            plus
+            sur ce sujet des liens sont proposés à
+            la fin de l'article sur l'optimisation des Quadtrees.
+          </p>
 
-<p>
-  Dans cette implémentation nous avons choisi une valeur de 4, ce qui est un choix totalement arbitraire, mais élégant.
-</p>
-
-
-<h2>Démo interactive : profondeur du QuadTree</h2>
-
-<p>Pour avoir une meilleur idée de la manière dont évolue la profondeur de l'arbre vous avez, ci-dessous, une démo interactive. Vous pouvez ajouter des points (individuellement ou par paquet) et regarder la profondeur d'une feuille sous le curseur.
-  La profondeur maximale de l'arbre est également affichée. Le gradient de couleur vous donne une idée de la dispersion des profondeurs des feuilles au sein de l'arbre.</p>
-
-
-<h4>Insertion</h4>
-
-<div id="demo02">
-  <div id="radioContainer-demo02">
-
-    <input type="radio" id="normal-demo02" name="insertionModeGroup-demo02" value="point" checked="checked">
-    <label for="point"><acronym title="Insère un unique point à chaque clic">Point</acronym></label>
-
-    <input type="radio" id="gaussian-demo02" name="insertionModeGroup-demo02" value="gaussian">
-    <label for="gaussian"><acronym title="Insère un nuage gaussien de points à chaque clic">Nuage de points</acronym></label>
-
-    <label for="nbPointsGaussian-demo02">Nombre de points à insérer</label>
-    <input type="range" id="nbPointsGaussian-demo02" name="nbPointsGaussian-demo02" value="100" min="10" max="250" disabled="">
-    <output id="nbPointsGaussianValue-demo02"></output>
-  </div>
-
-  <h4>Infos</h4>
-  <div class="highlightContainer">
-
-    <label for="depth_current" <acronym title="Profondeur du noeud sous la souris">Profondeur sous le curseur: </label>
-    <span id="depth_current" name="depth_current"></span>
-
-    <label for="depth_max" <acronym title="Profondeur maximale observée dans le Quadtree">Profondeur maximale de l'arbre: </label>
-    <span id="depth_max" name="depth_max"></span>
-
-    <div>
-      <label for="nbPointsTotal-demo02">Points insérés : </label>
-      <span id="nbPointsTotal-demo02" name="nbPointsTotal-demo02">0</span>
-    </div>
-
-  </div>
-  <div class="resetButtonContainer_demo02">
-    <!-- <input type="button" value="reset"> -->
-    <button type="button" class="btn btn-primary btn-sm" id="resetButton-demo02" disabled>Réinitialiser</button>
-    <input id="switch-demo02" type="checkbox" data-toggle="toggle" data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="sm" class="switch-demo">
-  </div>
-
-  <div>Naviguer vers la démo: <a href="#demo01">1</a> - <a href="#demo02">2</a> - <a href="#demo03">3</a></div>
-  <div id="canvas-demo02-depth" class="myCanvas">
-
-  </div>
-
-</div>
-
-<p>
-  Comme vous pouvez le constater, dans cette application ci la profondeur maximale se stabilise assez rapidement autour de 8, et il n'est pas nécessaire d'implémenter une profondeur maximale.
-</p>
+          <p>
+            Dans cette implémentation nous avons choisi une valeur de 4, ce qui est un choix totalement arbitraire, mais élégant.
+          </p>
 
 
-<h2>Lier notre QuadTree à nos données réelles ou comment attacher des données aux feuilles</h2>
+          <h2>Démo interactive : profondeur du QuadTree</h2>
 
-<p>Jusqu'ici nous avons inséré ou récupéré des points à l'aide de notre QuadTree. C'est bien gentil et intéressant, mais où sont passées nos données ? Ici nous allons voir comment nous allons connecter notre QuadTree à nos données réelles. C'est
-  l'ultime étape pour rendre tous nos efforts utiles et notre QuadTree intéressant.</p>
-<p>
-  Le principe est très simple et élégant : chaque point inséré dans le QuadTree garde une référence (ou un pointeur) vers la donnée qu'il est supposé représenter. Et c'est tout ! Regardons la structure <code>Point</code>
-</p>
+          <p>Pour avoir une meilleur idée de la manière dont évolue la profondeur de l'arbre vous avez, ci-dessous, une démo interactive. Vous pouvez ajouter des points (individuellement ou par paquet) et regarder la profondeur d'une feuille sous le
+            curseur.
+            La profondeur maximale de l'arbre est également affichée. Le gradient de couleur vous donne une idée de la dispersion des profondeurs des feuilles au sein de l'arbre.</p>
 
-<div>
-  <pre class="language-javascript line-numbers">
+
+          <h4>Insertion</h4>
+
+          <div id="demo02">
+            <div id="radioContainer-demo02">
+
+              <input type="radio" id="normal-demo02" name="insertionModeGroup-demo02" value="point" checked="checked">
+              <label for="point"><acronym title="Insère un unique point à chaque clic">Point</acronym></label>
+
+              <input type="radio" id="gaussian-demo02" name="insertionModeGroup-demo02" value="gaussian">
+              <label for="gaussian"><acronym title="Insère un nuage gaussien de points à chaque clic">Nuage de points</acronym></label>
+
+              <label for="nbPointsGaussian-demo02">Nombre de points à insérer</label>
+              <input type="range" id="nbPointsGaussian-demo02" name="nbPointsGaussian-demo02" value="100" min="10" max="250" disabled="">
+              <output id="nbPointsGaussianValue-demo02"></output>
+
+              <label for="nbPointsTotal-demo02">Points insérés : </label>
+              <span id="nbPointsTotal-demo02" name="nbPointsTotal-demo02">0</span>
+            </div>
+            <div class="highlightContainer">
+
+              <table class="table table-striped table-hover table-sm table-dark">
+                <tbody>
+                  <tr>
+                    <th scope="row"> <label for="depth_current" <acronym title="Profondeur du noeud sous la souris">Profondeur sous le curseur: </label></th>
+                    <td class="candidats"><span id="depth_current" name="depth_current"></span></td>
+                  </tr>
+                  <tr>
+                  <tr>
+                    <th scope="row"> <label for="depth_max" <acronym title="Profondeur maximale observée dans le Quadtree">Profondeur maximale de l'arbre: </label></th>
+                    <td class="candidats"><span id="depth_max" name="depth_max"></span>
+                  </tr>
+                  <tr>
+                </tbody>
+              </table>
+
+              <div>
+
+              </div>
+
+            </div>
+            <div class="resetButtonContainer_demo02">
+              <!-- <input type="button" value="reset"> -->
+              <button type="button" class="btn btn-primary btn-sm" id="resetButton-demo02" disabled>Réinitialiser</button>
+              <input id="switch-demo02" type="checkbox" data-toggle="toggle" data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="sm" class="switch-demo">
+            </div>
+
+            <div>Naviguer vers la démo: <a href="#demo01">1</a> - <a href="#demo02">2</a> - <a href="#demo03">3</a></div>
+            <div id="canvas-demo02-depth" class="myCanvas">
+
+            </div>
+
+          </div>
+
+          <p>
+            Comme vous pouvez le constater, dans cette application ci la profondeur maximale se stabilise assez rapidement autour de 8, et il n'est pas nécessaire d'implémenter une profondeur maximale.
+          </p>
+
+
+          <h2>Lier notre QuadTree à nos données réelles ou comment attacher des données aux feuilles</h2>
+
+          <p>Jusqu'ici nous avons inséré ou récupéré des points à l'aide de notre QuadTree. C'est bien gentil et intéressant, mais où sont passées nos données ? Ici nous allons voir comment nous allons connecter notre QuadTree à nos données réelles.
+            C'est
+            l'ultime étape pour rendre tous nos efforts utiles et notre QuadTree intéressant.</p>
+          <p>
+            Le principe est très simple et élégant : chaque point inséré dans le QuadTree garde une référence (ou un pointeur) vers la donnée qu'il est supposé représenter. Et c'est tout ! Regardons la structure <code>Point</code>
+          </p>
+
+          <div>
+            <pre class="language-javascript line-numbers">
   <code>class Point {
     constructor(x, y, data) {
       this.x = x;
@@ -1033,63 +1063,362 @@ Voyons à présent les détails de l'implémentation de la requête.
       this.data = data;
     }
   }</code></pre>
-</div>
+          </div>
 
-<p>Elle possède trois propriétés : <code>x</code> et <code>y</code> les coordonnées du point, et <code>data</code> qui est une référence vers la donnée que ce point représente, peut importe sa nature.</p>
+          <p>Elle possède trois propriétés : <code>x</code> et <code>y</code> les coordonnées du point, et <code>data</code> qui est une référence vers la donnée que ce point représente, peut importe sa nature.</p>
 
-<p>L'intérêt de cette façon de faire c'est que notre structure (ou classe, appelez ça comme vous voulez) <code>Point</code> agit comme une interface qui masque les détails du fonctionnement de notre QuadTree et <strong>découple</strong> la donnée
-  (qui peut être absolument tout ce que vous voulez) de la représentation qu'a cette donnée dans l'implémentation du QuadTree. Autrement dit, nous n'aurons plus jamais à modifier notre implémentation du QuadTree maintenant que nous avons notre
-  structure <code>Point</code>.</p>
-<p>
-  Maintenant que chaque point porte une référence sur la donnée qu'il représente, il suffit d'en construire un pour chaque donnée et lui assigner des coordonnées. Ces coordonées peuvent être intrinsèques à la donnée (si votre donnée est une
-  particule alors elle possède naturellement des coordonées spatiales par exemple) ou
-  calculées au moment de la création de <code>Point</code> (par exemple le nombre de voyelles dans un mot peut agir comme une coordonée dans un espace à une dimension pour ma donnée <q>mot</q>).
-</p>
+          <p>L'intérêt de cette façon de faire c'est que notre structure (ou classe, appelez ça comme vous voulez) <code>Point</code> agit comme une interface qui masque les détails du fonctionnement de notre QuadTree et <strong>découple</strong> la
+            donnée
+            (qui peut être absolument tout ce que vous voulez) de la représentation qu'a cette donnée dans l'implémentation du QuadTree. Autrement dit, nous n'aurons plus jamais à modifier notre implémentation du QuadTree maintenant que nous avons
+            notre
+            structure <code>Point</code>.</p>
+          <p>
+            Maintenant que chaque point porte une référence sur la donnée qu'il représente, il suffit d'en construire un pour chaque donnée et lui assigner des coordonnées. Ces coordonées peuvent être intrinsèques à la donnée (si votre donnée est une
+            particule alors elle possède naturellement des coordonées spatiales par exemple) ou
+            calculées au moment de la création de <code>Point</code> (par exemple le nombre de voyelles dans un mot peut agir comme une coordonée dans un espace à une dimension pour ma donnée <q>mot</q>).
+          </p>
 
-<p>
-  Par exemple, si j'ai une structure <code>data</code> et que je souhaite l'insérer dans mon QuadTree il faut que j'instancie un <code>Point</code>. Le QuadTree ne connait pas d'autres formes de données que des <code>Point</code>, vos données ne
-  l'intéresse pas. Au passage, <code>Point</code> n'est qu'une structure qui possède deux coordonnées <code>x</code> et <code>y</code>. C'est tout ce dont a besoin le QuadTree pour fonctionner. Voici comment on pourrait s'y prendre :
-</p>
+          <p>
+            Par exemple, si j'ai une structure <code>data</code> et que je souhaite l'insérer dans mon QuadTree il faut que j'instancie un <code>Point</code>. Le QuadTree ne connait pas d'autres formes de données que des <code>Point</code>, vos
+            données ne
+            l'intéresse pas. Au passage, <code>Point</code> n'est qu'une structure qui possède deux coordonnées <code>x</code> et <code>y</code>. C'est tout ce dont a besoin le QuadTree pour fonctionner. Voici comment on pourrait s'y prendre :
+          </p>
 
-<div>
-  <pre class="language-javascript line-numbers">
+          <div>
+            <pre class="language-javascript line-numbers">
   <code>let point = new Point(data.x(), data.y(), data)
   rootNode.insert(point);</code></pre>
-</div>
-<p>
-  Ici <code>data</code> fournit des coordonnées <code>x</code> et <code>y</code> par des méthodes pour rester le plus général possible, au cas où vos données ne contiennent pas <em>naturellement</em> de coordonnées dans un espace bidimensionnel.
-  Remarquez
-  que le troisième argument est <code>data</code> lui-même. </p>
-<p>On instancie un point, on le lie à sa donnée et on l'insert dans le QuadTree.</p>
+          </div>
+          <p>
+            Ici <code>data</code> fournit des coordonnées <code>x</code> et <code>y</code> par des méthodes pour rester le plus général possible, au cas où vos données ne contiennent pas <em>naturellement</em> de coordonnées dans un espace
+            bidimensionnel.
+            Remarquez
+            que le troisième argument est <code>data</code> lui-même. </p>
+          <p>On instancie un point, on le lie à sa donnée et on l'insert dans le QuadTree.</p>
 
-<p>
-  Comment récupérer nos données ? Un appel à <code>query</code> sur notre QuadTree nous renverra une liste de points et non une liste de données. Il suffit simplement d'accèder à la donnée portée par le point : <code>point.data</code>, ou alors
-  dans
-  le cas d'une liste :
-</p>
+          <p>
+            Comment récupérer nos données ? Un appel à <code>query</code> sur notre QuadTree nous renverra une liste de points et non une liste de données. Il suffit simplement d'accèder à la donnée portée par le point : <code>point.data</code>, ou
+            alors
+            dans
+            le cas d'une liste :
+          </p>
 
-<div>
-  <pre class="language-javascript line-numbers">
+          <div>
+            <pre class="language-javascript line-numbers">
   <code>const points = rootNode.query(probe);
   const datas = points.map(point => point.data)</code></pre>
-</div>
+          </div>
 
-<p>
-  Sur la première ligne nous récupérons la liste des points correspondant à notre requête. A la deuxième ligne, on récupère ce qu'on veut vraiment : un tableau des données portées par ces points, grâce à la méthode <a
-    href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/map">map</a>.
-</p>
+          <p>
+            Sur la première ligne nous récupérons la liste des points correspondant à notre requête. A la deuxième ligne, on récupère ce qu'on veut vraiment : un tableau des données portées par ces points, grâce à la méthode <a
+              href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/map">map</a>.
+          </p>
 
-<p>
-  En résumé de cette partie, nous avons vu comment lier nos données aux points manipulés par le QuadTree. Grâce à cette implémentation nous pouvons désormais représenter n'importe quelle donnée dans notre QuadTree et nous en servir pour interroger
-  efficacement nos données. La structure <code>Point</code> sert <strong>d'interface</strong> et permet de découpler les données de leur représentation dans le QuadTree. Nous n'aurons donc jamais à toucher à notre implémentation du QuadTree lorsque
-  nous voudrons l'utiliser pour interroger des nouveaux types de données.
-</p>
+          <p>
+            En résumé de cette partie, nous avons vu comment lier nos données aux points manipulés par le QuadTree. Grâce à cette implémentation nous pouvons désormais représenter n'importe quelle donnée dans notre QuadTree et nous en servir pour
+            interroger
+            efficacement nos données. La structure <code>Point</code> sert <strong>d'interface</strong> et permet de découpler les données de leur représentation dans le QuadTree. Nous n'aurons donc jamais à toucher à notre implémentation du QuadTree
+            lorsque
+            nous voudrons l'utiliser pour interroger des nouveaux types de données.
+          </p>
 
-<p>Notre QuadTree est enfin devenu utile ! Dans la prochaine partie, en guise d'illustration, nous allons nous servir du QuadTree pour faire de la détection de collisions entre particules dans une simulation 2D.</p>
+          <p>Notre QuadTree est enfin devenu utile ! Dans la prochaine partie, en guise d'illustration, nous allons nous servir du QuadTree pour faire de la détection de collisions entre particules dans une simulation 2D.</p>
 
-<h2>Utiliser la puissance du QuadTree pour la détection de collisions</h2>
+          <h2>Utiliser la puissance du QuadTree pour la détection de collisions</h2>
 
-          <!-- Fin -->
+
+
+
+          <p>Supposons que nous ayons un ensemble de particules circulaires qui se déplacent dans un espace en deux dimensions. Nous voudrions savoir quand ces particules rentrent en collision pour y appliquer un traitement. Par exemple, nous
+            souhaiterions
+            appliquer des
+            forces de répulsion pour qu'elles rebondissent les unes sur les autres. Ou encore, dans le cas d'un jeu de shoot, nous voudrions que deux particules se détruisent lorsqu'elles rentrent en contact. Ce que vous voulez faire du résultat de
+            cette
+            détection,
+            c'est votre problème. Détecter les collisions en revanche, c'est un problème qu'un QuadTree sait très bien gérer, et de manière efficace.</p>
+          <p>
+
+          <h3>Définir une collision</h3>
+
+          Pour savoir si deux particules circulaires entrent en collision il suffit de déterminer si ces deux particules se recouvrent ou non. Prenons deux particules de rayon <code>r<sub>1</sub></code> et <code>r<sub>2</sub></code>. Pour déterminer
+          si ces
+          deux particules se chevauchent il suffit de calculer la distance entre leurs centres et de regarder si cette distance est inférieure à la somme de leurs rayons respectifs, soit <code>d<sub>1-2</sub></code>
+          < <code>r<sub>1</sub></code> + <code>r<sub>2</sub></code>. Si cette évaluation est vraie, alors les particules sont en collision. On pourrait implémenter une fonction <code>overlap</code> qui prend en argument les deux particules et renvoie
+            vrai
+            si elles se chevauchent, faux sinon :
+            </p>
+
+            <div>
+              <pre class="language-javascript line-numbers">
+    <code>overlap(particule1, particule2){
+      const distanceSquared = (particule1.x - particule2.x) * (particule1.x - particule2.x) + (particule1.y - particule2.y) * (particule1.y - particule2.y);
+      return distanceSquared < (particule1.r + particule2.r) * (particule1.r + particule2.r);
+    }</code></pre>
+            </div>
+
+            <p>Ici on manipule tout <em>au carré</em> pour éviter de faire des appels coûteux de <code>Math.sqrt()</code> et <code>Math.pow()</code>. C'est une petite optimisation qui a son importance car cette fonction va être appelée de manière
+              intensive.
+            </p>
+
+            <h3>Détecter une collision, quand le QuadTree rentre en scène</h3>
+            <p>
+              Prenons une particule. Quelles particules doit-elle considérer comme étant potentiellement en collision avec elle ?
+            </p>
+            <h4>Toutes, la solution naïve</h4>
+
+            <p>Souvenez vous, au début de cet article nous avons parlé d'une approche directe, sans structure de données efficace, pour résoudre ce genre de problème. Dans le cas où nous n'avons rien préparé en amont nous devons checker toutes les
+              paires
+              possibles de particules. Une procédure qui hérite en temps d'une complexité <code>O(n<sup>2</sup>)</code> car il faut parcourir, pour chaque particule, toutes les autres particules.</p>
+
+            <h4>La solution QuadTree</h4>
+            <p>
+              Nous pouvons faire mieux à présent ! Nous allons toujours parcourir toutes les particules, ça malheureusement nous avons pas le choix (même s'il est possible de penser ici à faire des optimisations mais ce n'est pas le programme).
+              Seulement à
+              présent, nous allons <em>uniquement</em> tester celles qui sont dans son voisinage grâce à notre structure QuadTree et notre partitionnement de l'espace.
+            </p>
+
+            <p>
+              Premièrement, à chaque instant de notre simulation, nous allons construire un QuadTree. Vous verrez par vous même dans la <a href="#demo3">démo suivante</a> que cette opération ne <strong>coûte rien</strong>, et qu'elle résiste très
+              bien à la
+              montée en charge du
+              nombre de particules à insérer. Ce n'est pas surprenant car <code>insert</code> réalise des opérations très primitives. Les évaluations ne coûtent pas grand chose, l'accès à la mémoire oui ! Parcourir <code>n<sup>2</sup></code> éléments
+              d'un
+              tableau, déférencer le contenu du pointeur, accèder à ses propriétés (ou attributs) ça, ça coûte cher.
+            </p>
+            <p>
+              J'insère donc mon tableau de particules <code>particules</code>, élément par élément, dans mon QuadTree en m'adressant au noeud racine <code>rootNode</code> :
+            </p>
+            <div>
+              <pre class="language-javascript line-numbers">
+    <code>particules.forEach( particule => {
+      rootNode.insert( new Point(particule.x, particule.y, particule));
+    });</code></pre>
+            </div>
+            <p>
+              Maintenant que le QuadTree est construit, il me suffit de parcourir toutes mes particules une par une. Pour chaque particule je n'ai plus besoin d'interroger <em>toutes les autres</em>, il me suffit de faire une requête au QuadTree,
+              avec ma
+              zone d'inspection, centrée sur la position de ma particule ! Exactement comme dans la <a href="#demo1">démo 1</a>, lorsque je déplace mon curseur. Je peux alors récupérer toutes les particules voisines de ma particule considérée :
+            </p>
+            <div>
+              <pre class="language-javascript">
+    <code>probe(particule.x, particule.y);
+    let neighbors = rootNode.query(probe);</code></pre>
+            </div>
+            <p>
+              où <code>probe</code> est une zone d'inspection circulaire positionnée exactement au centre de la particule courante.
+            </p>
+            <p>
+              La zone d'inspection doit cependant avoir une taille souvenez vous, un rayon, que l'on appellera <code>R</code>. Quelle valeur de <code>R</code> doit-on choisir ? Si on veut être sûr de ne rater aucune particule dans le voisinage de la
+              particule
+              considérée, il faut que cette taille soit suffisament grande. Au moins supérieure à la taille <code>r</code> de la particule, soit <code>R > r</code>. Mais pas trop grande non plus, car sinon on considérerait trop de particules qui
+              <em>ne
+                peuvent
+                pas</em> être en collision avec cette particule car elles sont trop loin ! Dans le cas où les particules ont toutes une taille différente, c'est à dire que notre échantillon de particules est <em>poly-disperse</em>, il me suffit de
+              connaître
+              la
+              taille de la particule la plus grande <code>r<sub>max</sub></code>. Je peux facilement la déterminer avant de commencer ma simulation, ou le recalculer si les tailles des particules changent au cours du temps. C'est la distance minimale
+              nécessaire d'inspection pour pouvoir affirmer ne rien rater </p>
+
+            <p>
+              Une fois <code>r<sub>max</sub></code> connue alors il me suffit de regarder dans un rayon de <code>r + r<sub>max</sub> </code> autour du centre de ma particule pour être sûr de ne rater aucune collision. Voilà la taille de ma zone
+              d'inspection
+              : <code>R = r + r<sub>max</sub> </code>. Notez qu'ici cette taille doit être recalculée pour chaque particule. Il est également possible d'y aller de manière plus forte, mais qui ne nécessite pas une mise à jour de la taille, en
+              définissant une
+              fois pour toute <code>R</code> = <code>2r<sub>max</sub></code>.
+            </p>
+            <p>
+              Notre tableau de voisins <code>neighbors</code> contient donc toutes les particules dans le voisinage de la particule considérée, c'est à dire dans un rayon <code>2r<sub>max</sub></code> autour d'elle. Il n'y a plus qu'à les parcourir,
+              à
+              appliquer notre fonction <code>overlap</code> pour savoir si elles se chevauchent, et voilà ! Vous n'avez plus qu'à faire le traitement qui vous convient en cas de collision.
+            </p>
+
+            <h3>Qu'avons-nous gagné ?</h3>
+            <p>
+              Qu'avons nous gagné dans cette histoire ? Nous héritons toujours de la complexité minimum en <code>O(n)</code>. Souvenez-vous, je dois toujours parcourir <em>au moins une fois</em> toutes mes particules. Très bien, quel complexité à
+              présent
+              pour trouver les voisins ? Lorsque nous avons analysé la complexité de
+              recherche
+              dans le QuadTree, la méthode <code>query</code>, nous avions vu qu'il était difficile de la définir avec certitude. À défaut de la définir nous avons été capable de la borner, ce qui est déjà pas trop mal. Nous pouvions au moins donner
+              les
+              bornes min et max de cette complexité.</p>
+            <p>
+              Au minimum, une requête au QuadTree est proportionnelle à la profondeur
+              <code>p</code> de
+              l'arbre, soit <code>O(p)</code>. Cette profondeur, vous avez pu l'expérimenter dans la <a href="#demo2">démo précédente</a>, reste assez insensible au <em>nombre</em> de points présents dans le QuadTree, elle est uniquement sensible à
+              <em>la
+                densité</em> de points. Vous
+              avez pu voir qu'il était difficile de dépasser une profondeur de <code>10</code> par exemple, même en insérant beaucoup de points (car la résolution de l'espace n'est pas suffisament grande). Le point important ici c'est que <strong>la
+                profondeur à laquelle une feuille se trouve n'est
+                pas fonction du nombre de points total</strong>. Ce sont là <em>deux choses</em> différentes. Évidemment, en moyenne, dans un espace fini, la densité augmente avec le nombre de points. Mais <em>localement</em> cette propriété n'est
+              pas
+              nécessairement vraie. Autrement dit, on peut faire l'approximation suivante : la complexité en temps minimale d'une requête au QuadTree, <code>O(p)</code> est équivalente à une complexité constante, c'est à dire <code>O(1)</code>. Elle
+              n'est
+              pas fonction du nombre de
+              particules, elle n'est pas <code>O(n)</code>.
+            </p>
+
+            <p> Concernant la borne maximale, justement, lorsque la densité des points est très importante, quand tous vos points sont agglutinés au même endroit, vous retombez nécessairement sur une complexité
+              <code>O(n)</code>, car tous les points sont là, vous devez les considérer !</p>
+            <p>
+              On en revient donc à cette conclusion minimale sur les performances de notre QuadTree dans le cas de la détection de collisions. La complexité de la détection des collisions est comprise entre <code>O(n)</code> et
+              <code>O(n<sup>2</sup>)</code>.
+              La majorité du temps, sauf cas de densité immense (et là aucun algorithme sans <em>a priori</em> sur vos données ne pourra faire mieux), la complexité sera plus proche de la borne inférieure que supérieure. On peut donc dire qu'on a
+              gagné, en
+              moyenne, un
+              facteur <code>n</code> dans notre complexité. Ce qui n'est pas rien !
+            </p>
+
+            <h3>Démo interactive : détection de collisions et analyse des apports du QuadTree face à la méthode <i>naïve</i></h3>
+
+            <p>
+              La démo ci-dessous est là pour vous convaincre que tout ce travail préalable n'a pas été fait en vain, et que ces analyses de complexité <em>sont visualisables et se ressentent</em>. La démo fait vivre un ensemble de particules
+              circulaires, de
+              tailles
+              différentes, qui rebondissent sur les parois d'une boîte. Lorsque deux particules se chevauchent elles changent de couleur pour témoigner d'une collision. Vous pouvez modifier le nombre de particules et choisir la méthode de détection
+              des
+              collisions : <em>naïve</em> ou avec l'utilisation du QuadTree.
+            </p>
+            <p>
+              Pour les deux méthodes vous avez accès au temps nécessaire pour calculer toutes les détections de collisions, ainsi qu'au <em>FrameRate</em>, une mesure de performance quantitative. Elle mesure la fluidité de <em>l'animation</em> et
+              donc
+              indirectement le temps de calcul des collisions.
+            </p>
+            <p>
+              Dans le cas où vous utilisez le QuadTree vous avez accès à son temps de construction en temps réel. Ce temps est le temps nécessaire pour insérer tous les points dans le noeud racine. Ceci est pour vous convaincre que construire le
+              QuadTree, à
+              chaque frame, car les particules changent de position, <em>ne coûte rien</em> comparé au temps nécessaire pour parcourir toutes les particules.
+            </p>
+            <div id="demo03">
+              <div>
+                <div id="radioContainer-demo03">
+
+                  <input type="radio" id="quadtree" name="algorithme" value="quadtree" checked="checked">
+                  <label for="quadtree"><acronym title="Utiliser le quadtree">Quadtree</acronym></label>
+
+                  <input type="radio" id="naive" name="algorithme" value="naive">
+                  <label for="naive"><acronym title="Utiliser l'algorithme naïf qui parcourt toutes les paires">Approche naïve</acronym></label>
+
+
+
+                  <label for="nbParticules">Nombre de particules</label>
+                  <input type="range" id="nbParticulesRange" name="nbParticules" value="200" min="2" max="1500">
+                  <output id="output-nbParticules"></output>
+                </div>
+              </div>
+
+              <h4>Infos</h4>
+              <table class="table table-striped table-hover table-sm table-dark">
+                <tbody>
+                  <tr>
+                    <th scope="row"> <label for="timeToBuildQuadtree" <acronym title="Temps d'éxecution nécessaire à la construction du quadtree uniquement">Temps construction du Quadtree (ms) : </label></th>
+                    <td class="candidats">  <span id="timeToBuildQuadtree" name="timeToBuildQuadtree"></span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">   <label for="timeToComputeInteractions" <abbr
+                        title="Temps d'execution nécessaire au calcul de toutes les interactions. Dans le cas de l'approche naive le calcul mesure le temps nécessaire pour parcourir toutes les paires de particules. Dans le cas du Quadtree, le calcul comprend le temps de construction du Quadtree et des querry.">Temps
+                        total du calcul de toutes les interactions (ms) :</label></th>
+                    <td class="candidats">  <span id="timeToComputeInteractions" name="timeToComputeInteractions"></span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><label for="pourcentage" <abbr title="Rapport (en %) du temps nécessaire à la construction du Quadtree par rapport au temps nécessaire au calcul des interactions">Rapport du temps de
+                        construction du Quadtree au temps du calcul des interactions (%):</label></th>
+                    <td class="candidats">    <span id="pourcentage" name="pourcentage"></span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">  <label for="frameRate">FrameRate (frames/s): </label></th>
+                    <td class="candidats">   <span id="frameRate">0</span></td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+              <div>
+                <input type="checkbox" name="showQuadTreeCheckbox" id="showQuadTreeCheckbox">
+                <label for="showQuadTreeCheckbox">Afficher quadtree</label>
+                <input type="checkbox" name="showDetectionZoneCheckbox" id="showDetectionZoneCheckbox">
+                <label for="showDetectionZoneCheckbox">Afficher zones de détection</label>
+              </div>
+
+              <div>Naviguer vers la démo: <a href="#demo01">1</a> - <a href="#demo02">2</a> - <a href="#demo03">3</a></div>
+
+              <div class="resetButtonContainer">
+                <!-- <input type="button" value="reset"> -->
+                <button type="button" class="btn btn-primary btn-sm" id="resetButton-demo03">Réinitialiser</button>
+                <input id="switch-demo03" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="sm" class="switch-demo">
+              </div>
+
+              <div id="canvas-demo03-collisions" class="myCanvas">
+              </div>
+            </div>
+
+            <h4>Notes sur la démo</h4>
+            <p>
+              Les mesures absolues affichées ici n'ont pas d'intérêt en soi, les performances dépendront de votre navigateur, de votre machine. La seule chose qui est objectivement intéressante ici sont les mesures relatives : le rapport du temps de
+              construction de l'arbre au temps de calcul des interactions, ou entre la méthode <em>naïve</em> et la méthode <em>QuadTree</em>. D'autre part, étant donné l'objectif de cette démo, il n'y a pas d'implémentation d'une réelle <a
+                href="https://developer.mozilla.org/en-US/docs/Games/Anatomy">gameloop</a> : la fréquence de calcul des interactions est la même que la fréquence d'affichage (imposée par défaut à 60 frames par seconde) . Gardez donc à l'esprit que
+              les
+              mesures
+              et les performances de chaque méthode présentées ici ne sont pas <em>en soi</em> pertinentes. Cette démo a pour but de montrer qualitativement en quoi le QuadTree est plus performant qu'une approche <em>naïve</em>.
+            </p>
+
+
+            <h2>Conclusions</h2>
+            <p>
+              Dans cet article nous avons vu ce qu'était un QuadTree, à quoi il pouvait servir et à quel genre de questions il pouvait répondre. Le QuadTree est une généralisation du <a href="https://en.wikipedia.org/wiki/Binary_tree">BinaryTree</a>
+              à deux
+              dimensions. Il est également possible de généraliser les mécanismes du QuadTree à trois dimensions, c'est ce qu'on appelle un <a href="https://fr.wikipedia.org/wiki/Octree">OctTree</a>. Ces trois structures de données sont
+              fondamentalement les
+              mêmes : ce sont des arbres et ils fonctionnent par partition récursive de l'espace en 1, 2 ou 3 dimensions. Tout ce que vous avez appris sur les QuadTrees est transférable aux arbres de dimension inférieure ou supérieure. C'est la bonne
+              nouvelle.
+            </p>
+            <p>
+              Nous avons également mis en place une implémentation du QuadTree en JavaScript. Nous avons vu comment cet arbre se construisait, et nous avons abordé les différents types de noeuds de l'arbre: les feuilles et les branches. Enfin, nous
+              nous en
+              sommes servis pour un cas d'application concret: la détection de collisions en deux dimensions.
+            </p>
+            <p>
+              Cet article est une longue introduction aux QuadTrees et abordent ses composantes fondamentales. Il est possible d'aller beaucoup plus loin, notamment dans les possibilités d'amélioration et d'optimisation de notre implémentation. Des
+              liens
+              vous sont proposés dans la section suivante. Il est également possible de se servir du QuadTree pour poser beaucoup plus de questions que celles évoquées ici. Par exemple, il peut permettre de trouver les voisins les plus proches, de
+              compresser des images etc.
+            </p>
+            <p>
+              Il y a encore beaucoup de choses à découvrir sur les QuadTrees ! J'espère que cet article vous aura donné les armes pour aller plus loin et mieux appréhender ces structures en arbre qui offrent de nombreux possibles dans la manipulation
+              et le
+              traitement des données. Ces structures en arbre sont présentes dans de nombreux algorithmes et il est intéressant d'apprendre à les connaître et à les utiliser.
+            </p>
+
+            <h2>Code source de l'implémentation du QuadTree</h2>
+            <p>Le code source de l'implémentation discutée et présentée dans cet article est disponible <a href="">ici</a>.</p>
+            <p>Les démos interactives ont été développées avec la librairie <a href="https://p5js.org/">p5js</a>.</p>
+            <h2>Sources : aller plus loin</h2>
+
+            <dl>
+              <dt>Introduction aux QuadTrees</dt>
+              <p>L'inénarrable <a href="https://shiffman.net/">Daniel Shiffman</a> qui m'a intéressé aux QuadTrees et m'a inspiré pour écrire cet article. Vous pouvez voir sa série de trois vidéos sur sa chaîne The Coding Train dédiée au sujet :</p>
+              <dd>
+                <ul>
+                  <li><a href="https://www.youtube.com/watch?v=OJxEcs0w_kE">partie 1</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=QQx_NmCIuCY">partie 2</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=z0YFFg_nBjw">partie 3</a></li>
+                </ul>
+              </dd>
+              <dd><a href="https://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374">Quick Tip: Use Quadtrees to Detect Likely Collisions in 2D Space</a>, par Steven Lambert</dd>
+              <dt>Visualisation</dt>
+              <dd><a href="https://jimkang.com/quadtreevis/">An interactive explanation of quadtrees</a>, par Jim Kang. Une très belle démo interactive où l'on peut se déplacer de l'espace aux noeuds de l'arbre.</dd>
+              <dt>Optimisation</dt>
+              <dd>
+                <a href="https://dev.solita.fi/2015/08/06/quad-tree.html">Is there an optimal quad tree out there?</a> par Paavo Toivanen
+              </dd>
+              <dd>
+                <a href="https://stackoverflow.com/questions/41946007/efficient-and-well-explained-implementation-of-a-quadtree-for-2d-collision-det/48330314#48330314">Efficient QuadTree on StackOverflow</a> par Dragon Energy
+              </dd>
+
+            </dl>
+
+
+
+            <!-- Fin -->
         </div>
       </div>
     </div>
