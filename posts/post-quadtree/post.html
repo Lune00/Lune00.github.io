@@ -19,8 +19,11 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
   <!-- Custom styles for this template -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
   <link href="/css/clean-blog.css" rel="stylesheet">
   <link href="/css/perso.css" rel="stylesheet">
+  <link href="post.css" rel="stylesheet">
+  <link href="/vendor/prism/prism.css" rel="stylesheet" />
 
 </head>
 
@@ -76,10 +79,14 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <h1>Introduction</h1>
+
+
+          <h1>Quadtree</h1>
+
+          <h2>Introduction</h2>
 
           <p>
-            Les <a href="https://fr.wikipedia.org/wiki/Quadtree">Quadtrees</a> sont des structures de données qui peuvent être très utiles pour résoudre certains types de problèmes. Précisons d'emblée que cet article ne cherche pas à couvrir de
+            Les <a href="https://fr.wikipedia.org/wiki/Quadtree">Quadtree</a> sont des structures de données qui peuvent être très utiles pour résoudre certains types de problèmes. Précisons d'emblée que cet article ne cherche pas à couvrir de
             manière
             exhaustive tous les usages et les contextes d'application des Quadtrees. Nous nous nous restreindrons à son usage principal, celui du partitionnement d'un espace à deux dimensions.
             Au lieu de partir de considérations théoriques et générales nous allons plutôt aborder les Quadtrees d'un point de vue pratique en tachant de répondre à ces questions : à quoi un Quadtree peut-il servir ? Qu'est ce qu'un Quadtree ?
@@ -91,10 +98,12 @@
 
           </p>
 
+
+
           <h3>Dans quel cas les Quadtrees sont-ils utiles?</h3>
 
           <p>
-           Avant même de définir ce qu'est un Quadtree, il paraît intéressant de voir à quoi il peut servir et à quels types de questions il permet de répondre.
+            Avant même de définir ce qu'est un Quadtree, il paraît intéressant de voir à quoi il peut servir et à quels types de questions il permet de répondre.
           </p>
 
           <p>
@@ -115,6 +124,409 @@
             entre des mots ou
             des phrases par exemple. On pourrait également représenter des points dans un espace où une dimension mesure la position et l'autre le temps etc.
           </p>
+
+          <p>
+            Mais prenons l'exemple classique d'un espace à deux dimensions peuplé d'objets, représenté chacun par un point. Pour des raisons pratiques nous appelerons <strong>point</strong> la représentation de l'objet dans notre espace par ses
+            coordonnées.
+
+          <div class="row justify-content-center">
+            <figure class="figure">
+              <img src="img/figure01.png" class="figure-img img-fluid rounded" alt="un espace bidimensionnel peuplé d'objets représentés par des points" title="un espace bidimensionnel peuplé d'objets représentés par des points" width="452"
+                height="328" />
+              <figcaption class="figure-caption text-center">Figure 1 : un espace bidimensionnel peuplé d'objets</figcaption>
+            </figure>
+          </div>
+
+          Supposons que nous voulions interroger les propriétés de voisinage de ces objets. Par exemple, nous aimerions savoir combien de voisins possède chaque objet dans une zone définie autour de celui-ci? Ces voisins possèdent-ils des propriétés
+          analogues ou différentes? Quel
+          est le voisin le plus proche de chaque point ? Ou non finalement, qui sont les trois voisins les plus proches ? Ou, tout simplement, combien y'a-t-il d'objets présents dans une zone définie autour d'un point quelconque? La liste n'est pas
+          exhaustive, mais toutes ces questions ont ceci en commun :
+          elles trouvent leurs réponses dans les mesures des distances entre les points. Elles ont un caractère <i>géometrique</i>.
+          </p>
+
+          <div class="row justify-content-center" id="figure02">
+            <figure class="figure">
+              <img src="img/figure02.png" class="figure-img img-fluid rounded" alt="un espace bidimensionnel peuplé d'objets représentés par des points. Un cercle rouge défini un sous-espace"
+                title="Combien de points se trouvent dans le sous-espace défini par le cercle rouge?" width="452" height="328" />
+              <figcaption class="figure-caption text-center">Figure 2 : combien de points se trouvent dans <br />le sous-espace défini par le cercle rouge? </figcaption>
+            </figure>
+          </div>
+          <p>
+            Reprenons l'une des questions précédentes sur le voisinage : quels sont les objets présents dans une zone bien délimitée de mon espace? Comme nous pouvons le voir sur la <a href="#figure02">figure 2</a>, nous retrouvons notre ensemble
+            d'objets
+            dans
+            un espace
+            bidimensionnel, où chaque objet est repéré par ses coordonnées et représenté par un point blanc. Nous voulons savoir quels sont les objets présents à l'interieur du cercle rouge. Nous voulons, par exemple, sélectionner ces points et leur
+            appliquer un traitement particulier. Comment allons-nous nous y prendre? La solution <i>naïve</i> consisterait à parcourir tous les points et à tester s'ils se trouvent à l'intérieur du domaine délimité par le cercle rouge. Cette
+            solution demanderait un temps d'execution propotionnel au nombre de points à traiter, on dit qu'elle est <code>O(n)</code>, où <code>n</code> représente le nombre de
+            points à parcourir. La <a href="https://fr.wikipedia.org/wiki/Analyse_de_la_complexit%C3%A9_des_algorithmes">complexité</a> d'un algorithme, ou d'une fonction, est une mesure de la quantité de ressources (temps ou mémoire) nécessaire à
+            son
+            éxecution : <code>O(n)</code> signifie que les ressources demandées sont proportionnelles à n. Si nous avons un million de points et que notre cercle rouge ne contient que deux points alors nous devrons faire un million d'opérations pour
+            n'en
+            sélectionner que deux !
+          </p>
+          <p>
+            Et ce n'est pas tout. Là encore c'est une complexité tolérable. Supposons que nous cherchions à savoir quel est le point le plus proche de chaque point. Pour y arriver nous devrions, pour chaque point, regarder les n - 1 points restants,
+            mesurer
+            la distance entre les deux et garder le point pour lequel la distance est la plus courte. Et nous devrions répeter cette opération n fois, pour chaque point. Cela veut dire qu'il faudrait n * (n -1) opérations pour obtenir notre résultat.
+            Il
+            serait possible de réduire le coût en ne considérant les paires qu'une fois. Comme chaque paire compte double dans le décompte précédent il est encore possible de diviser par 2 le nombre d'opérations, pour le ramener à n *( n - 1 ) / 2.
+            Néanmoins, on
+            voit toujours apparaitre un facteur n<sup>2</sup>. La complexité de notre calcul est donc ici en <code>0(n<sup>2</sup>)</code>. Si nous avions un million de points il faudrait faire un billion (1 000 000 000 000) d'opérations pour obtenir
+            notre
+            résultat ! Ce n'est
+            pas sérieux. La complexité
+            <code>0(n<sup>2</sup>)</code> est une complexité qu'il faut éviter à chaque fois que cela est possible, sa mise à l'échelle avec la taille de l'échantillon est trop vertigineuse, et elle indique souvent qu'il y'a <i>un autre chemin</i>.
+          </p>
+
+          <p>
+            Pou réduire cette complexité l'une des premières choses à faire est de repenser notre structure de données, celle dans laquelle sont rangés nos points. De nombreuses structures de données existent
+            et permettent d'organiser les données de manière à faciliter leur traitement. Chaque structure de données possède des avantages et des inconvénients vis à vis du traitement que l'on
+            souhaite réaliser. Réduire la complexité et augmenter les performances d'un programme en charge de la réalisation d'un traitement de données passe d'abord par le choix d'une structure de données adaptée.
+          </p>
+
+          <p>
+            Pour le moment, nos objets sont stockés sous la forme d'un tableau, ou d'une liste, comme il est courant de le faire. Nous devons parcourir le tableau de points et tester pour chacun d'entre eux s'il est à l'interieur de la zone
+            circulaire rouge.
+            Mais c'est embêtant, car nous devons tester tous les points, même ceux à l'autre bout de l'espace, loin, si loin de notre zone. Il doit y avoir une meilleure solution. Pouvons-nous mieux faire? Oui, nous pouvons mieux faire ! Et pour
+            mieux faire
+            nous avons besoin d'une
+            structure de données adaptée à ce genre de problème : le Quadtree.
+          </p>
+
+
+          <p>
+            Le Quadtree est une structure de données où l'on va ranger les points dans des petites boîtes. Ces boîtes seront définies en appliquant une décomposition de l'espace en quatre sous-espaces égaux de manière <a
+              href="https://fr.wikipedia.org/wiki/R%C3%A9cursivit%C3%A9">récursive</a>. L'espace sera ainsi divisé <i>sur lui même</i> jusqu'à ce qu'aucune boite ne contienne plus de quatre points. C'est son aspect récursif qui
+            lui donne la forme d'un arbre (<i>tree</i>). Le <i>quad</i> vient lui du fait qu'on découpe l'espace toujours en quatre. Même si cette définition parait pour le moment très insatisfaisante, nous allons voir que le but du Quadtree est
+            d'organiser
+            autrement les points (sans toucher à leur coordonnées bien entendu) pour optimiser drastiquement le coût de nos investigations. Pour reprendre la
+            question que nous nous posons, à savoir combien de points sont compris dans le cercle rouge, le problème de la solution naïve vient du fait qu'elle nous force à interroger tout l'espace (et donc tous les points !). Le Quadtree va nous
+            permettre
+            d'affiner
+            notre requête et d'interroger une partie de l'espace. Mais inutile de bavarder plus longtemps, et rentrons dans le vif du sujet.
+          </p>
+
+
+          <dl>
+            <dt>
+              Ce qu'il faut retenir
+            </dt>
+            <dd>
+              <p class="togo">
+                Les Quadtrees sont des structures de données qui permettent de traiter efficacement des données existantes dans un espace bidimensionnel. L'utilisation d'un Quadtree pour réaliser ces
+                traitements offre un gain de performance considérable par rapport à l'approche <i>naïve</i>. Ce bénéfice provient du fait que le Quadtree partitionne l'espace de manière récursive pour ré-organiser les données.
+              </p>
+            </dd>
+          </dl>
+
+
+
+
+          <h2>Définitions</h2>
+
+          <p>
+            Mettons nous d'accord sur le vocabulaire et quelques définitions afin de ne laisser place à aucune ambiguité. En effet, il n'y a pas de définition standard du Quadtree, plusieurs implémentations existent et ont chacune leur intérêt et
+            leur
+            défaut. Il existe plusieurs stratégies pour le construire et la structure possède plusieurs paramètres (capacité, profondeur...) ajustables par l'utilisateur en fonction de ses besoins. Néanmoins, tous les Quadtrees partagent une
+            définition
+            commune : ce sont des structures de type arbre (récursives) dans laquelle chaque noeud a jusqu'à quatre enfants. La suite de cet article s'appuiera sur l'ensemble des défintions suivantes.
+          </p>
+
+          <p>
+
+          </p>
+
+          <dl>
+            <dt>
+              Noeud
+            </dt>
+            <dd>
+              le composant fondamental du Quadtree. Le Quadtree est une association de noeuds, et il commence toujours par un noeud initial, un noeud racine. Les points insérés dans un Quadtree finissent toujours attachés à <strong>un et un seul
+                noeud</strong>.
+              Un noeud peut avoir jusqu'à 4 enfants. Le Quadtree possède deux types de noeuds : les branches et les feuilles.
+            </dd>
+            <dt>
+              Branche
+            </dt>
+            <dd>
+              un noeud qui ne peut porter (avoir pour enfant direct) que des noeuds, branche ou feuille, mais jamais de points.
+            </dd>
+            <dt>
+              Feuille
+            </dt>
+            <dd>
+              un noeud qui ne peut porter que des points, mais jamais d'autres noeuds. Lorsque la capacité de la feuille est dépassée elle se transforme en branche.
+            </dd>
+            <dt>
+              Enfant
+            </dt>
+            <dd>
+              un enfant est un élément du Quadtree qui est porté par son noeud parent. Un enfant peut-être un noeud ou un point. Seul un noeud peut être parent. Par exemple, sur la <a href="#figure3"> figure 3</a>, la feuille <i>b</i> est l'enfant de
+              la
+              branche <i>a</i>. On dit que <i>a</i> porte <i>b</i>. De même, le point <i>c</i> est l'enfant de la feuille <i>b</i>, mais <i>c</i> n'est pas l'enfant de <i>a</i>, car <i>a</i> ne porte pas directement <i>b</i>.
+            </dd>
+            <dt>
+              Capacité
+            </dt>
+            <dd>
+              le nombre maximal d'enfants qu'une feuille peut porter. Par défaut la capacité est de quatre. Ainsi on conserve une certaine homogénéité dans notre définition : une branche a la même capacité qu'une feuille. Si la capacité d'une branche
+              est par
+              définition de 4 (<i>quad</i>tree) la capacité d'une feuille pourrait être supérieure ou inférieure (chaque feuille ne pourrait porter qu'un point par exemple).
+            </dd>
+            <dt>
+              Profondeur
+            </dt>
+            <dd>
+              le niveau auquel se trouve un noeud. La racine a une profondeur de référence arbitraire p définie par l'utilisateur. Les enfants auront une profondeur p + 1. Ici on a défini la profondeur de la racine à 0.
+            </dd>
+          </dl>
+
+
+          <div class="row justify-content-center" id="figure03">
+            <figure class="figure">
+              <img src="img/quadtree.svg" class="figure-img img-fluid rounded" alt="" title="" width="700" />
+              <figcaption class="figure-caption text-center">Figure 3 : Exemple d'un Quadtree. Les feuilles portent les points. Notez qu'une branche ne peut porter que des branches ou des feuilles mais jamais directement des points.
+                Chaque noeud peut porter jusqu'à quatre enfants maximum. </figcaption>
+            </figure>
+          </div>
+
+          <p>
+            La <a href="#figure3"> figure 3</a> montre un exemple de Quatree où les points sont répartis sur des feuilles. Ces points sont ceux qui existent dans notre espace bidimensionnel et que nous avons organisés suivant cette étrange structure,
+            au lieu
+            de les garder sous forme de liste.
+
+          </p>
+          <p>
+            Voyons maintenant comment construire un Quatree comme celui-ci et son rapport à notre espace bidimensionnel. Nous verrons également pourquoi nous distinguons les noeuds en branches
+            et en feuilles.
+          </p>
+
+          <p>
+
+          </p>
+
+
+
+          <h2>Construction</h2>
+
+
+          <p>Dans le principe, la construction d'un Quadtree est très simple. Prenez une feuille de papier, elle définira notre espace. Placez-y des points où bon vous semble. A présent, donnez vous une capacité, par exemple 2. Divisez la feuille en
+            4
+            rectangles égaux. Comptez le nombre de points dans chaque rectangle. Si un rectangle en contient plus que 2, divisez le en 4 rectangles égaux. Recommencez l'opération jusqu'à ce que chaque rectangle contienne au maximum 2 points. Et voilà
+            ! Sur
+            le papier, rien de bien compliqué. Evidemment, pour ce qui est de le programmer les choses se corsent un peu. </p>
+
+          <p>
+            Nous allons voir, pas à pas, comment construire une structure de données Quadtree à partir de nos points. Nous allons d'abord insister sur les principes de construction, plutôt que sur les détails de l'implémentation.
+            L'objectif premier est d'obtenir un pseudo-code, les détails de l'algorithme sont discutés dans la partie <a href="implementation">implémentation</a>. L'implémentation proposée dans cet article est une suggestion, et n'est évidemment pas
+            la seule
+            possible, libre à vous de l'adapter à vos besoins ou de l'améliorer.
+          </p>
+
+
+          <h3>Le point de départ de l'arbre : la racine</h3>
+          <p>
+            Nous allons commencer par définir la racine de notre Quadtree, le premier noeud. La racine n'a pas de noeud parent par définition et c'est une feuille. A présent il faut faire la connexion entre notre arbre et
+            l'espace géometrique : <strong>chaque noeud aura la responsabilité d'une région de l'espace. La racine a
+              sous sa responsabilité l'intégralité de l'espace</strong>. Elle sera
+            responsable de tout ce
+            qu'il se trouve à l'intérieur. C'est ce que l'on peut voir sur la <a href="#figure04">figure 4a</a>, où la racine a la charge de tout le rectangle noir.
+          </p>
+
+          <h3>Insérer des points dans le Quadtree</h3>
+
+          <p>
+            Nous allons insérer nos points un à un dans l'arbre. Pour chaque point allons interroger la racine de l'arbre :
+          <ul style="list-style-type: '&mdash; '">
+            <li>
+              Est-ce que ce point se trouve dans ta région ?
+            </li>
+            <li>
+              Bien sûr, par définition, tous les points se trouvent dans ma région !
+            </li>
+          </ul>
+          En effet, la racine recouvre tout l'espace disponible. Le point est donc
+          attaché à la racine. Nous allons continuer ainsi jusqu'à ce que le noeud racine porte quatre points, comme nous pouvons le voir sur les images <i>b)</i> à <i>e)</i> de la <a href="#figure04">figure 4</a>.
+          </p>
+
+          <div class="row justify-content-center" id="figure04">
+            <figure class="figure">
+              <img src="img/construction.svg" class="figure-img img-fluid rounded" alt="" title="" width="1200" />
+              <figcaption class="figure-caption text-center">Figure 4 : Etapes de construction d'un Quadtree par insertions successives de points. A l'étape f) la feuille originale porte 5 enfants. Ayant dépassé sa capacité de 4, elle se
+                transforme en
+                branche et pousse les points sur leurs feuilles respectives. Le prochain point sera porté par l'une des feuilles de profondeur 1 et le processus se répètera.</figcaption>
+            </figure>
+          </div>
+
+          <h3>Mécanisme de division</h3>
+
+          <p>
+            Le noeud racine porte à présent 4 enfants et nous insérons un nouveau point de notre collection. La feuille se retrouve à présent en surcapacité, elle a un point de trop : elle se transforme en branche. D'après notre définition, une
+            branche ne
+            peut avoir pour enfant que d'autres noeuds. Elle divise donc la région dont elle a la responsabilité en trois sous-régions égales (la dernière sous-région ne contenant aucun point n'est pas définie). Ces sous-régions sont chacune mises
+            sous la
+            responsabilité de nouveaux enfants, des feuilles. Chaque feuille prend
+            la charge des points qui se trouvent dans sa région. Chaque point, originellement porté par la branche, se trouve alors poussé sur sa feuille et la structure est de nouveau à l'équilibre. Sur la <a href="figure04">figure 4f</a> on peut
+            voir que 3
+            feuilles ont poussé sur l'arbre. Elles contiennent les 5 points insérés. Chacune d'entre elle porte les points qui se trouvent dans la région dont elle est responsable. Enfin, la racine est à présent une branche et elle n'a pour enfant
+            que des
+            feuilles.
+          </p>
+
+          <p>
+            Afin de couvrir l'intégralité du processus de division, il nous reste à discuter de deux cas possibles à la prochaine insertion. Supposons que nous voudrions insérer un point dans le quadrant sud-ouest(2) de notre arbre. Demandons à la
+            racine :
+          <ul style="list-style-type: '&mdash; '">
+            <li>
+              Est-ce que ce point se trouve dans ta région ?
+            </li>
+            <li>
+              Bien sûr, par définition, tous les points se trouvent dans ma région ! Cela dit, celui-ci se trouve aussi dans la région de l'un de mes enfants, c'est donc à lui que revient la responsabilité de s'en occuper. Moi je suis une branche, je
+              ne
+              m'occupe plus des points, ce n'est plus mon problème. Demandez donc à ma feuille 2.
+            </li>
+          </ul>
+          Nous allons demander à la feuille 2 :
+          <ul style="list-style-type: '&mdash; '">
+            <li>
+              Est-ce que ce point se trouve dans ta région ?
+            </li>
+            <li>
+              Oui, cette région m'appartient désormais, donnez moi votre point, je m'en charge.
+            </li>
+          </ul>
+
+          Et nous pouvons ajouter un point à la feuille 2, comme montré sur la <a href="#figure05">figure 5g</a>.
+          </p>
+          <div class="row justify-content-center" id="figure05">
+            <figure class="figure">
+              <img src="img/construction_suite.svg" class="figure-img img-fluid rounded" alt="" title="" width="800" />
+              <figcaption class="figure-caption text-center">Figure 5 : Deux points (en rouge) sont insérés sur l'arbre : la branche délègue la responsabilité à son enfant s'il existe déjà g), <br />ou met à disposition une nouvelle feuille s'il
+                n'existe pas
+                encore h)</figcaption>
+            </figure>
+          </div>
+          <p>
+            A présent, regardons un deuxième cas de figure, supposons que nous voudrions insérer un point dans la quadrant sud-est(3) de notre arbre. Comme d'habitude, demandons à la racine:
+          <ul style="list-style-type: '&mdash; '">
+            <li>
+              Est-ce que ce point se trouve dans ta région ?
+            </li>
+            <li>
+              Bien sûr, par définition, tous les points se trouvent dans ma région ! Cela dit, celui-ci se trouve dans une sous-région qui n'est sous la responsabilité d'aucun de mes enfants. Cette région est encore sous ma responsabilité mais comme
+              je l'ai
+              dit, je ne m'occupe plus personnellement des points, je suis une branche ! Voici, je vais faire pousser une feuille et celle-ci s'en chargera.
+            </li>
+          </ul>
+          Sur la <a href="#figure05">figure 5h</a> une feuille 3 a poussé. Nous pouvons aller lui demander, comme précédemment, si elle veut de notre point, et comme celui-ci se trouve dans la région dont elle a la responsabilité elle le portera.
+          </p>
+
+          <p>
+            En guise d'exercice, vous pouvez essayer de continuer de construire cet arbre avec des points choisis arbitrairement, en appliquant ces règles. Vous verrez les feuilles se transformer en branches, les branches créer des feuilles, et vos
+            points se
+            répartir d'une feuille à l'autre au gré de la construction.
+          </p>
+
+          <p>
+            <a href="#demo01">Une démo interactive</a> de création et d'inspection du Quadtree est disponbile dans l'article. Vous pouvez y expérimentez la construction d'un Quadtree point par point, par un simple clic sur le canvas. Le nombre de
+            branches et
+            de feuilles de l'arbre sont affichés pour vous permettre de savoir si vous avez bien compris les mécanismes de division.
+          </p>
+
+
+          <h3>Pseudo-code</h3>
+
+          <p>
+            Maintenant que nous avons bien défini le comportement de notre arbre et de ses composants, nous pouvons écrire un pseudo-code de l'algorithme de construction de notre arbre. La construction n'est rien d'autre qu'une succession d'insertion
+            de point au niveau de
+            la racine. Voici à quoi le pseudo-code de la fonction d'insertion pourrait ressembler:
+          </p>
+
+          <div>
+            <pre class="language-javascript"><code><span class="variable">racine</span>.<span class="function">inserer</span>(point){
+  <span class="if-else">if</span> <span class="statement">le point n'est pas dans mon domaine</span>
+    quitter;
+
+  <span class="if-else">if</span> <span class="statement">le point est dans le domaine d'un de mes enfants</span>
+    <span class="variable">enfant</span>.<span class="function">inserer</span>(point);
+  <span class="if-else">else</span>
+    <span class="if-else">if</span> <span class="statement">je suis une branche</span>
+      creer un nouvel enfant feuille
+      <span class="variable">enfant</span>.<span class="function">inserer</span>(point)
+    <span class="if-else">else</span>
+      <span class="function">porter</span>(point)
+        <span class="if-else">if</span> <span class="statement">j'ai plus de 4 enfants</span>
+          se transformer en <span class="variable">branche</span>
+          creer autant de feuilles que nécessaire : <span class="variable">mes_feuilles</span>
+          recuperer tous mes points : <span class="variable">mes_points</span>
+          <span class="variable">mes_feuilles</span>.<span class="function">inserer</span>(<span class="variable">mes_points</span>)
+}</code></pre>
+          </div>
+
+          <h2 id="implementation">Implémentation</h2>
+
+          <p>
+            Cette partie portera sur l'implémentation (en JavaScript) d'un Quadtree. Nous allons implémenter le composant <i>noeud</i> et la fonctionalité d'insertion. Tous les détails de l'implémentation ne sont pas mentionnés, notamment le code
+            concernant
+            les fonctions auxiliaires. Il est cependant accessible dans le <a href="#">code-source</a>.
+          </p>
+
+
+          <h3>Implémentation du noeud : <code>class Node</code> </h3>
+
+          <p>
+            Un noeud est la structure fondamentale de l'arbre. Elle possède une région, un espace géometrique, dont elle a la responsabilité. Cette région est rectangulaire et est entièrement définie par les variables <code>x,y,w,h</code> où
+            <code>(x,y)</code> représentent <strong>le centre</strong> du rectangle et <code>(w,h)</code> sa <strong>demi-largeur et
+              demi-longueur</strong>.
+
+          </p>
+          <p>
+            Un noeud a en pratique toujours 4 enfants, donc <code>children</code> est un tableau de 4 éléments, un pour chaque enfant. Les enfants sont initialisés sous la forme d'un tableau vide. Chaque indice du tableau
+            <code>children</code> correspond à une sous-région de l'espace détenu par le noeud, comme représenté sur <a href="figure04">la figure 4</a>. On peut voir que l'espace est virtuellement pré-découpé en 4 sous-regions
+            par des traits pointillés blancs. L'indice, allant de 0 à 3 sert d'identité à chaque sous-région. Ainsi <code>children[0]</code> retourne soit l'ensemble des points contenus dans la sous-région <code>0</code> du noeud si le noeud est une
+            feuille,
+            soit une feuille si le noeud est une branche.
+          </p>
+
+          <p>
+            Un attribut <code>capacity</code> définit la capacité de chaque feuille, égale par convention au nombre d'enfants max, soit 4. Un noeud nouvellement crée est par défaut une feuille, et sa profondeur est initialisée à
+            partir de celle de son parent, où à 0 dans le cas de la racine.
+          </p>
+
+
+          <div>
+            <pre class="language-javascript line-numbers"><code >class Node {
+  constructor(x, y, w, h, depth = 0) {
+
+  //Region sous responsabilité : (x,y) position du centre,
+  // (w,h) demi largeur/hauteur
+  this.x = x;
+  this.y = y;
+  this.w = w;
+  this.h = h;
+  //                 0   1   2   3
+  this.children = [ [], [], [], [] ];
+
+  this.isBranch = false;
+
+  //Capacité
+  this.capacity = this.children.length;
+
+  //taille
+  this.length = 1;
+
+  //profondeur
+  this.depth = depth;
+}
+//Methodes a implementer
+insert(point){}
+query(zoneInspection){}
+}</code></pre>
+          </div>
+
+
+          <!-- Fin -->
         </div>
       </div>
     </div>
@@ -154,9 +566,16 @@
   <!-- Bootstrap core JavaScript -->
   <script src="/vendor/jquery/jquery.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/prism/prism.js"></script>
 
   <!-- Custom scripts for this template -->
   <script src="/js/clean-blog.min.js"></script>
+
+  <script type="module" src="js/main.js">
+  </script>
+
+  <script type="text/javascript" src="/vendor/p5/p5.js">
+  </script>
 
 </body>
 
