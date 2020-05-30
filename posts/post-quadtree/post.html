@@ -939,10 +939,10 @@ query(zoneInspection){}
           </div>
 
           <p>
-            Ainsi, l'arbre aura une taille maximale qu'il ne peut pas dépasser, et les feuilles a la profondeur maximale porteront un nombre indeterminé de points (au delà de leur capacité), ceux-ci <em>s'entasseront au fond</em> de l'arbre.
+            Ainsi, l'arbre aura une taille maximale qu'il ne peut pas dépasser, et les feuilles à la profondeur maximale porteront un nombre indeterminé de points (au delà de leur capacité), ceux-ci <em>s'entasseront au fond</em> de l'arbre.
           </p>
           <p>
-            Y'a-t-il un intérêt à définir une profondeur maximale ? Cela dépend des cas mais c'est un choix judicieux lorsqu'on souhaite avoir un peu de contrôle sur les appeles récursifs. Par exemple, dans le cas où vous avez une scène remplie de
+            Y'a-t-il un intérêt à définir une profondeur maximale ? Cela dépend des cas mais c'est un choix judicieux lorsqu'on souhaite avoir un peu de contrôle sur les appels récursifs. Par exemple, dans le cas où vous avez une scène remplie de
             points
             infinement proches (séparés de quelques pixels). Ces points très proches pourraient être le centre d'objets superposés. Sans profondeur maximale imposée votre Quadtree risque d'avoir des profondeurs localisées très importantes là où les
             points
@@ -1039,11 +1039,6 @@ query(zoneInspection){}
             </div>
 
           </div>
-
-          <p>
-            Comme vous pouvez le constater, dans cette application ci la profondeur maximale se stabilise assez rapidement autour de 8, et il n'est pas nécessaire d'implémenter une profondeur maximale.
-          </p>
-
 
           <h2>Lier notre QuadTree à nos données réelles ou comment attacher des données aux feuilles</h2>
 
