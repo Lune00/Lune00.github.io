@@ -1,3 +1,5 @@
+<!-- TODO : corriger la mise en page, chaque démo devrait avoir tout d'affiché en meme temps (controle, canvas etc..), responsive, figures tronquées, faire un sommaire ancrée a la page sur le coté gauche pour pouvoir naviguer plus facilement. -->
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,8 +7,11 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <meta name="description" content="">
   <meta name="author" content="Paul Schuhmacher">
+
+
 
   <title>StepByStep</title>
 
@@ -77,10 +82,9 @@
 
   <!-- Post Content -->
   <article>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-
+        <div class="col-sm-12 col-lg-8 col-md-10 mx-auto">
 
           <h1>Quadtree</h1>
 
@@ -681,14 +685,10 @@ query(zoneInspection){}
                   <label for="nbPointsTotal">Nombre de points insérés :</label>
                   <span id="nbPointsTotal" name="nbPointsTotal">0</span>
                 </div>
-
               </div>
-              <div class="container-informations">
-                <div class="title">
-                  <h4>Informations</h4>
-                </div>
 
-                <div class="left">
+              <div class="container-informations">
+                  <h4>Informations</h4>
                   <table class="table table-striped table-hover table-sm table-dark">
                     <tbody>
                       <tr>
@@ -703,7 +703,6 @@ query(zoneInspection){}
                       <tr>
                         <th scope="row"><label for="nbLeaf">Nombre de feuilles</label></th>
                         <td><span id="nbLeaf" name="nbLeaf"></span></td>
-
                       </tr>
                       <tr>
                         <th <label for="nbBranch">Nombre de branches</label></th>
@@ -711,7 +710,6 @@ query(zoneInspection){}
                       </tr>
                     </tbody>
                   </table>
-                </div>
               </div>
             </div>
 
@@ -719,21 +717,22 @@ query(zoneInspection){}
               <!-- <input type="button" value="reset"> -->
               <button type="button" class="btn btn-primary btn-sm resetButton" id="resetButton">Réinitialiser</button>
 
-              <input id="switch-demo01" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="xs" class="switch-demo">
+              <input id="switch-demo01" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" class="switch-demo">
 
             </div>
 
             <div class="navigation">Naviguer vers la démo : <a class="link-demo" href="#demo01">1</a> - <a class="link-demo" href="#demo02">2</a> - <a class="link-demo" href="#demo03">3</a></div>
 
-            <div class="container-canvas">
-              <div id="canvas-demo01-insert-querry" class="myCanvas"></div>
-            </div>
+
+            <div id="canvas-demo01-insert-querry" class="myCanvas"></div>
+
 
           </div>
 
           <br />
 
           <p>
+
             Nous avons à présent construit notre Quadtree. Notre structure de données est enfin prête. La partie intéressante peut commencer, nous allons à présent nous servir de notre Quadtree pour obtenir des réponses aux questions que
             nous nous posions !
           </p>
@@ -1034,9 +1033,7 @@ query(zoneInspection){}
             </div>
 
             <div>Naviguer vers la démo: <a href="#demo01">1</a> - <a href="#demo02">2</a> - <a href="#demo03">3</a></div>
-            <div id="canvas-demo02-depth" class="myCanvas">
-
-            </div>
+            <div id="canvas-demo02-depth" class="myCanvas"></div>
 
           </div>
 
@@ -1306,22 +1303,22 @@ query(zoneInspection){}
                 <tbody>
                   <tr>
                     <th scope="row"> <label for="timeToBuildQuadtree" <acronym title="Temps d'éxecution nécessaire à la construction du quadtree uniquement">Temps construction du Quadtree (ms) : </label></th>
-                    <td class="candidats">  <span id="timeToBuildQuadtree" name="timeToBuildQuadtree"></span></td>
+                    <td class="candidats"> <span id="timeToBuildQuadtree" name="timeToBuildQuadtree"></span></td>
                   </tr>
                   <tr>
-                    <th scope="row">   <label for="timeToComputeInteractions" <abbr
+                    <th scope="row"> <label for="timeToComputeInteractions" <abbr
                         title="Temps d'execution nécessaire au calcul de toutes les interactions. Dans le cas de l'approche naive le calcul mesure le temps nécessaire pour parcourir toutes les paires de particules. Dans le cas du Quadtree, le calcul comprend le temps de construction du Quadtree et des querry.">Temps
                         total du calcul de toutes les interactions (ms) :</label></th>
-                    <td class="candidats">  <span id="timeToComputeInteractions" name="timeToComputeInteractions"></span></td>
+                    <td class="candidats"> <span id="timeToComputeInteractions" name="timeToComputeInteractions"></span></td>
                   </tr>
                   <tr>
                     <th scope="row"><label for="pourcentage" <abbr title="Rapport (en %) du temps nécessaire à la construction du Quadtree par rapport au temps nécessaire au calcul des interactions">Rapport du temps de
                         construction du Quadtree au temps du calcul des interactions (%):</label></th>
-                    <td class="candidats">    <span id="pourcentage" name="pourcentage"></span></td>
+                    <td class="candidats"> <span id="pourcentage" name="pourcentage"></span></td>
                   </tr>
                   <tr>
-                    <th scope="row">  <label for="frameRate">FrameRate (frames/s): </label></th>
-                    <td class="candidats">   <span id="frameRate">0</span></td>
+                    <th scope="row"> <label for="frameRate">FrameRate (frames/s): </label></th>
+                    <td class="candidats"> <span id="frameRate">0</span></td>
                   </tr>
 
                 </tbody>
@@ -1342,8 +1339,7 @@ query(zoneInspection){}
                 <input id="switch-demo03" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="sm" class="switch-demo">
               </div>
 
-              <div id="canvas-demo03-collisions" class="myCanvas">
-              </div>
+              <div id="canvas-demo03-collisions" class="myCanvas"></div>
             </div>
 
             <h4>Notes sur la démo</h4>

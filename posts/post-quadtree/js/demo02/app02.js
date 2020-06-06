@@ -14,8 +14,10 @@ export default function demo02(sketch){
   sketch.setup = function() {
 
     console.log('setup demo02');
+    const width = 800 ; //sketch.displayWidth ;
+    const height = 600 ; //width / 1.5 ;
 
-    sketch.createCanvas(800, 600);
+    sketch.createCanvas(width, height);
     sketch.background(0);
 
     rootNode = new NodePedagogic(sketch.width / 2, sketch.height / 2, sketch.width / 2, sketch.height / 2);

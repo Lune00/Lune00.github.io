@@ -29,6 +29,7 @@ export default function demo03(sketch){
   sketch.setup = function() {
 
     console.log('setup demo03');
+
     sketch.createCanvas(800, 600);
     sketch.background(0);
 

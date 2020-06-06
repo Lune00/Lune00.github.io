@@ -1,11 +1,17 @@
 import demo01 from './demo01/app01.js';
-import {uiApp01} from './demo01/ui_app01.js';
+import {
+  uiApp01
+} from './demo01/ui_app01.js';
 
 import demo02 from './demo02/app02.js';
-import {uiApp02} from './demo02/ui_app02.js';
+import {
+  uiApp02
+} from './demo02/ui_app02.js';
 
 import demo03 from './demo03/app03.js';
-import {uiApp03} from './demo03/ui_app03.js';
+import {
+  uiApp03
+} from './demo03/ui_app03.js';
 
 //Main
 export const main = (() => {
@@ -22,9 +28,8 @@ export const main = (() => {
   })();
 
   main.start = function() {
+
     console.log('start app');
-    //Start demo01 and init its UI
-    // main.p5demo01 = new p5(demo01, 'canvas-demo01-insert-querry');
     main.p5demo01 = new p5(demo01, 'canvas-demo01-insert-querry');
     uiApp01.init();
 
