@@ -1,12 +1,12 @@
-import getComplementaryColor from './rgb2hsv.js'
 
 const circles = [];
 const ncircles = 500;
 const R = 70;
 const D = 2 * R;
+const p5_ = new p5();
 
-var randomColor = [255, 255, 255];
-var complementaryColor = [100, 100, 100];
+let randomColor = [255, 255, 255];
+let complementaryColor = [100, 100, 100];
 
 class Circle {
   constructor(x = 0, y = 0, d, sketch) {
@@ -47,8 +47,8 @@ function buildPattern(sketch) {
   let colIndex = 0;
   let x = 0;
   let y = -200;
-  const dx = R * sketch.cos(sketch.PI / 3);
-  const dy = R * sketch.sin(sketch.PI / 3);
+  const dx = R * Math.cos(sketch.PI / 3);
+  const dy = R * Math.sin(sketch.PI / 3);
 
   for (let i = 0; i < circles.length; i++) {
     //Even row
@@ -122,18 +122,10 @@ function rotatePattern(orientation, sketch) {
   }
 }
 
-function changeColors(sketch) {
-  randomColor = [sketch.random(0, 255), sketch.random(0, 255), sketch.random(0, 255)];
-  complementaryColor = getComplementaryColor(randomColor);
-  console.log('change done')
-}
+
 
 export default function demoVariation(sketch) {
 
-  sketch.mousePressed = function(sketch) {
-    changeColors(sketch);
-    buildPattern(sketch);
-  }
 
   sketch.setup = function() {
     sketch.createCanvas(900, 600);
