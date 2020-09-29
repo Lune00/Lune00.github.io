@@ -82,10 +82,10 @@ h2 {
 }
 
 .container-insertion {
-  display: flex;
+  /* display: flex;
   flex-flow: column wrap;
   padding: 10px;
-  margin-right: 20px;
+  margin-right: 20px; */
   /* flex: 0 0 0%; */
 }
 
@@ -114,7 +114,9 @@ h2 {
   margin-right: 10px;
 }
 
-.switch-demo {}
+.switch-demo {
+padding: 0px;
+}
 
 .navigation {
   display: flex;
@@ -142,4 +144,8 @@ h2 {
 .inclus {
   color: #FF5733;
   font-weight: bold;
+}
+
+.resetButtonContainer{
+  display: flex;
 }

@@ -688,34 +688,34 @@ query(zoneInspection){}
               </div>
 
               <div class="container-informations">
-                  <h4>Informations</h4>
-                  <table class="table table-striped table-hover table-sm table-dark">
-                    <tbody>
-                      <tr>
-                        <th scope="row" class="candidats"><label for="nbPoitnsEvaluated" <abbr title="Nombre total de points évalués lors de la requête (présence ou non dans la zone d'inspection)"><b>Points candidats (% Total)</b> : </label></th>
-                        <td class="candidats"> <span id="nbPoitnsEvaluated" name="nbPoitnsEvaluated"></span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row" class="inclus"><label for="nbPoitnsSelected" <abbr title="Nombre total de points évalués et retournés par la reqûete (présents ou non dans la zone d'inspection)"><b>Points inclus dans la zone d'inspection (%
-                              Total) : </b></label></th>
-                        <td class="inclus"> <span id="nbPoitnsSelected" name="nbPoitnsSelected"></span></td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><label for="nbLeaf">Nombre de feuilles</label></th>
-                        <td><span id="nbLeaf" name="nbLeaf"></span></td>
-                      </tr>
-                      <tr>
-                        <th <label for="nbBranch">Nombre de branches</label></th>
-                        <td><span id="nbBranch" name="nbBranch"></span></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <h4>Informations</h4>
+                <table class="table table-striped table-hover table-sm table-dark">
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="candidats"><label for="nbPoitnsEvaluated" <abbr title="Nombre total de points évalués lors de la requête (présence ou non dans la zone d'inspection)"><b>Points candidats (% Total)</b> : </label></th>
+                      <td class="candidats"> <span id="nbPoitnsEvaluated" name="nbPoitnsEvaluated"></span></td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="inclus"><label for="nbPoitnsSelected" <abbr title="Nombre total de points évalués et retournés par la reqûete (présents ou non dans la zone d'inspection)"><b>Points inclus dans la zone d'inspection (%
+                            Total) : </b></label></th>
+                      <td class="inclus"> <span id="nbPoitnsSelected" name="nbPoitnsSelected"></span></td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><label for="nbLeaf">Nombre de feuilles</label></th>
+                      <td><span id="nbLeaf" name="nbLeaf"></span></td>
+                    </tr>
+                    <tr>
+                      <th <label for="nbBranch">Nombre de branches</label></th>
+                      <td><span id="nbBranch" name="nbBranch"></span></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            <div class="container-buttons">
+            <div class="resetButtonContainer">
               <!-- <input type="button" value="reset"> -->
-              <button type="button" class="btn btn-primary btn-sm resetButton" id="resetButton">Réinitialiser</button>
+              <button type="button" class="btn btn-primary resetButton" id="resetButton">Réinitialiser</button>
 
               <input id="switch-demo01" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" class="switch-demo">
 
@@ -1026,9 +1026,9 @@ query(zoneInspection){}
               </div>
 
             </div>
-            <div class="resetButtonContainer_demo02">
+            <div class="resetButtonContainer">
               <!-- <input type="button" value="reset"> -->
-              <button type="button" class="btn btn-primary btn-sm" id="resetButton-demo02" disabled>Réinitialiser</button>
+              <button type="button" class="btn btn-primary btn-sm resetButton" id="resetButton-demo02" disabled>Réinitialiser</button>
               <input id="switch-demo02" type="checkbox" data-toggle="toggle" data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="sm" class="switch-demo">
             </div>
 
@@ -1255,8 +1255,7 @@ query(zoneInspection){}
               On en revient donc à cette conclusion minimale sur les performances de notre QuadTree dans le cas de la détection de collisions. La complexité de la détection des collisions est comprise entre <code>O(n)</code> et
               <code>O(n<sup>2</sup>)</code>.
               La majorité du temps, sauf cas de densité immense (et là aucun algorithme sans <em>a priori</em> sur vos données ne pourra faire mieux), la complexité sera plus proche de la borne inférieure que supérieure. On peut donc dire qu'on a
-              gagné, en
-              moyenne, un
+              gagné, aux mieux, un
               facteur <code>n</code> dans notre complexité. Ce qui n'est pas rien !
             </p>
 
@@ -1280,17 +1279,52 @@ query(zoneInspection){}
               QuadTree, à
               chaque frame, car les particules changent de position, <em>ne coûte rien</em> comparé au temps nécessaire pour parcourir toutes les particules.
             </p>
+
+
+
+            <h4>Infos</h4>
+            <table class="table table-striped table-hover table-sm table-dark">
+              <tbody>
+                <tr>
+                  <th scope="row"> <label for="timeToBuildQuadtree" <acronym title="Temps d'éxecution nécessaire à la construction du quadtree uniquement">Temps construction du Quadtree (ms) : </label></th>
+                  <td class="candidats"> <span id="timeToBuildQuadtree" name="timeToBuildQuadtree"></span></td>
+                </tr>
+                <tr>
+                  <th scope="row"> <label for="timeToComputeInteractions" <abbr
+                      title="Temps d'execution nécessaire au calcul de toutes les interactions. Dans le cas de l'approche naive le calcul mesure le temps nécessaire pour parcourir toutes les paires de particules. Dans le cas du Quadtree, le calcul comprend le temps de construction du Quadtree et des querry.">Temps
+                      total du calcul de toutes les interactions (ms) :</label></th>
+                  <td class="candidats"> <span id="timeToComputeInteractions" name="timeToComputeInteractions"></span></td>
+                </tr>
+                <tr>
+                  <th scope="row" hidden><label for="pourcentage" <abbr title="Rapport (en %) du temps nécessaire à la construction du Quadtree par rapport au temps nécessaire au calcul des interactions">Rapport du temps de
+                      construction du Quadtree au temps du calcul des interactions (%):</label></th>
+                  <td class="candidats" hidden> <span id="pourcentage" name="pourcentage"></span></td>
+                </tr>
+                <tr>
+                  <th scope="row"> <label for="frameRate">FrameRate (frames/s): </label></th>
+                  <td class="candidats"> <span id="frameRate">0</span></td>
+                </tr>
+
+              </tbody>
+            </table>
+
+
+
+
+
             <div id="demo03">
               <div>
                 <div id="radioContainer-demo03">
 
-                  <input type="radio" id="quadtree" name="algorithme" value="quadtree" checked="checked">
-                  <label for="quadtree"><acronym title="Utiliser le quadtree">Quadtree</acronym></label>
+                  <div>
+                    <input type="radio" id="quadtree" name="algorithme" value="quadtree" checked="checked">
+                    <label for="quadtree"><acronym title="Utiliser le quadtree">Quadtree</acronym></label>
+                  </div>
 
-                  <input type="radio" id="naive" name="algorithme" value="naive">
-                  <label for="naive"><acronym title="Utiliser l'algorithme naïf qui parcourt toutes les paires">Approche naïve</acronym></label>
-
-
+                  <div>
+                    <input type="radio" id="naive" name="algorithme" value="naive">
+                    <label for="naive"><acronym title="Utiliser l'algorithme naïf qui parcourt toutes les paires">Approche naïve</acronym></label>
+                  </div>
 
                   <label for="nbParticules">Nombre de particules</label>
                   <input type="range" id="nbParticulesRange" name="nbParticules" value="200" min="2" max="1500">
@@ -1298,31 +1332,7 @@ query(zoneInspection){}
                 </div>
               </div>
 
-              <h4>Infos</h4>
-              <table class="table table-striped table-hover table-sm table-dark">
-                <tbody>
-                  <tr>
-                    <th scope="row"> <label for="timeToBuildQuadtree" <acronym title="Temps d'éxecution nécessaire à la construction du quadtree uniquement">Temps construction du Quadtree (ms) : </label></th>
-                    <td class="candidats"> <span id="timeToBuildQuadtree" name="timeToBuildQuadtree"></span></td>
-                  </tr>
-                  <tr>
-                    <th scope="row"> <label for="timeToComputeInteractions" <abbr
-                        title="Temps d'execution nécessaire au calcul de toutes les interactions. Dans le cas de l'approche naive le calcul mesure le temps nécessaire pour parcourir toutes les paires de particules. Dans le cas du Quadtree, le calcul comprend le temps de construction du Quadtree et des querry.">Temps
-                        total du calcul de toutes les interactions (ms) :</label></th>
-                    <td class="candidats"> <span id="timeToComputeInteractions" name="timeToComputeInteractions"></span></td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><label for="pourcentage" <abbr title="Rapport (en %) du temps nécessaire à la construction du Quadtree par rapport au temps nécessaire au calcul des interactions">Rapport du temps de
-                        construction du Quadtree au temps du calcul des interactions (%):</label></th>
-                    <td class="candidats"> <span id="pourcentage" name="pourcentage"></span></td>
-                  </tr>
-                  <tr>
-                    <th scope="row"> <label for="frameRate">FrameRate (frames/s): </label></th>
-                    <td class="candidats"> <span id="frameRate">0</span></td>
-                  </tr>
 
-                </tbody>
-              </table>
 
               <div>
                 <input type="checkbox" name="showQuadTreeCheckbox" id="showQuadTreeCheckbox">
@@ -1335,8 +1345,8 @@ query(zoneInspection){}
 
               <div class="resetButtonContainer">
                 <!-- <input type="button" value="reset"> -->
-                <button type="button" class="btn btn-primary btn-sm" id="resetButton-demo03">Réinitialiser</button>
-                <input id="switch-demo03" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="sm" class="switch-demo">
+                <button type="button" class="btn btn-primary btn-sm" id="resetButton-demo03" hidden>Réinitialiser</button>
+                <input id="switch-demo03" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" class="switch-demo">
               </div>
 
               <div id="canvas-demo03-collisions" class="myCanvas"></div>
@@ -1344,12 +1354,13 @@ query(zoneInspection){}
 
             <h4>Notes sur la démo</h4>
             <p>
-              Les mesures absolues affichées ici n'ont pas d'intérêt en soi, les performances dépendront de votre navigateur, de votre machine. La seule chose qui est objectivement intéressante ici sont les mesures relatives : le rapport du temps de
-              construction de l'arbre au temps de calcul des interactions, ou entre la méthode <em>naïve</em> et la méthode <em>QuadTree</em>. D'autre part, étant donné l'objectif de cette démo, il n'y a pas d'implémentation d'une réelle <a
-                href="https://developer.mozilla.org/en-US/docs/Games/Anatomy">gameloop</a> : la fréquence de calcul des interactions est la même que la fréquence d'affichage (imposée par défaut à 60 frames par seconde) . Gardez donc à l'esprit que
-              les
+              Les
               mesures
-              et les performances de chaque méthode présentées ici ne sont pas <em>en soi</em> pertinentes. Cette démo a pour but de montrer qualitativement en quoi le QuadTree est plus performant qu'une approche <em>naïve</em>.
+              et les performances de chaque méthode présentées ici ne sont pas <em>en soi</em> pertinentes. Les mesures absolues affichées ici n'ont pas d'intérêt en soi, les performances dépendront de votre navigateur, de votre machine. La seule
+              chose qui est objectivement intéressante ici sont les mesures relatives : le rapport du temps de
+              construction de l'arbre au temps de calcul des interactions, et le temps de calcul des interactions de la méthode <em>naïve</em> par rapport à la méthode <em>QuadTree</em>. Jouez notamment avec le nombre de particules dans la boîte et
+              voyez l'effet désastreux de la complexité <code>O(n<sup>2</sup>)</code>.
+              Cette démo a pour but de montrer qualitativement en quoi le QuadTree est plus performant qu'une approche <em>naïve</em>.
             </p>
 
 
