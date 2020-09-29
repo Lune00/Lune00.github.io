@@ -13,10 +13,7 @@ export default function demo01(sketch){
 
   sketch.setup = function() {
 
-    console.log('setup demo01');
-
-
-    const width = 800 ; //sketch.displayWidth ;
+    const width = 1200 ; //sketch.displayWidth ;
     const height = 600 ; //width / 1.5 ;
     //Trouver la bonne largeur ici
     sketch.createCanvas(width, height);

@@ -46,6 +46,7 @@ export const uiApp03 = {
   },
 
   init: function() {
+
     document.getElementById('resetButton-demo03').addEventListener('click', () => {
       main.p5demo03.reset();
       this.update();
