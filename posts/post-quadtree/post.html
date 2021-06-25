@@ -12,7 +12,6 @@
   <meta name="author" content="Paul Schuhmacher">
 
 
-
   <title>StepByStep</title>
 
   <!-- Bootstrap core CSS -->
@@ -132,7 +131,7 @@
             Mais prenons l'exemple classique d'un espace à deux dimensions peuplé d'objets, représenté chacun par un point. Pour des raisons pratiques nous appelerons <strong>point</strong> la représentation de l'objet dans notre espace par ses
             coordonnées.
 
-          <div>
+          <div class="row justify-content-center">
             <figure class="figure">
               <img src="img/figure01.png" class="figure-img img-fluid rounded" alt="un espace bidimensionnel peuplé d'objets représentés par des points" title="un espace bidimensionnel peuplé d'objets représentés par des points" width="452"
                 height="328" />
@@ -147,7 +146,7 @@
           elles trouvent leurs réponses dans les mesures des distances entre les points. Elles ont un caractère <i>géometrique</i>.
           </p>
 
-          <div id="figure02">
+          <div id="figure02"  class="row justify-content-center">
             <figure class="figure">
               <img src="img/figure02.png" class="figure-img img-fluid rounded" alt="un espace bidimensionnel peuplé d'objets représentés par des points. Un cercle rouge défini un sous-espace"
                 title="Combien de points se trouvent dans le sous-espace défini par le cercle rouge?" width="452" height="328" />
@@ -284,12 +283,11 @@
               le niveau auquel se trouve un noeud. La racine a une profondeur de référence arbitraire p définie par l'utilisateur. Les enfants auront une profondeur p + 1. Ici on a défini la profondeur de la racine à 0.
             </dd>
           </dl>
-
-
-          <div class="row justify-content-center" id="figure03">
+         
+          <div id="figure03">
             <figure class="figure">
-              <img src="img/quadtree.svg" class="figure-img img-fluid rounded" alt="" title="" width="700" />
-              <figcaption class="figure-caption text-center">Figure 3 : Exemple d'un Quadtree. Les feuilles portent les points. Notez qu'une branche ne peut porter que des branches ou des feuilles mais jamais directement des points.
+              <img src="img/quadtree.svg" class="figure-img img-fluid rounded" alt="" title="" style="display: block; margin: auto;"/>
+              <figcaption class="figure-caption">Figure 3 : Exemple d'un Quadtree. Les feuilles portent les points. Notez qu'une branche ne peut porter que des branches ou des feuilles mais jamais directement des points.
                 Chaque noeud peut porter jusqu'à quatre enfants maximum. </figcaption>
             </figure>
           </div>
@@ -713,14 +711,14 @@ query(zoneInspection){}
               </div>
             </div>
 
-            <div class="resetButtonContainer">
+
+          
               <!-- <input type="button" value="reset"> -->
-              <button type="button" class="btn btn-primary resetButton" id="resetButton">Réinitialiser</button>
 
-              <input id="switch-demo01" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" class="switch-demo">
-
-            </div>
-
+              <div class="btn-container data-toggle="buttons">
+                <button type="button" class="btn btn-primary resetButton" id="resetButton">Réinitialiser</button>
+              </div>
+           
             <div class="navigation">Naviguer vers la démo : <a class="link-demo" href="#demo01">1</a> - <a class="link-demo" href="#demo02">2</a> - <a class="link-demo" href="#demo03">3</a></div>
 
 
@@ -1026,10 +1024,8 @@ query(zoneInspection){}
               </div>
 
             </div>
-            <div class="resetButtonContainer">
-              <!-- <input type="button" value="reset"> -->
-              <button type="button" class="btn btn-primary btn-sm resetButton" id="resetButton-demo02" disabled>Réinitialiser</button>
-              <input id="switch-demo02" type="checkbox" data-toggle="toggle" data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" data-size="sm" class="switch-demo">
+            <div class="btn-container">
+              <button type="button" class="btn btn-primary btn-sm resetButton" id="resetButton-demo02">Réinitialiser</button>
             </div>
 
             <div>Naviguer vers la démo: <a href="#demo01">1</a> - <a href="#demo02">2</a> - <a href="#demo03">3</a></div>
@@ -1343,10 +1339,9 @@ query(zoneInspection){}
 
               <div>Naviguer vers la démo: <a href="#demo01">1</a> - <a href="#demo02">2</a> - <a href="#demo03">3</a></div>
 
-              <div class="resetButtonContainer">
+              <div class="btn-container">
                 <!-- <input type="button" value="reset"> -->
                 <button type="button" class="btn btn-primary btn-sm" id="resetButton-demo03" hidden>Réinitialiser</button>
-                <input id="switch-demo03" type="checkbox" data-toggle="toggle" checked data-on="En cours" data-off="En Pause" data-onstyle="success" data-offstyle="warning" class="switch-demo">
               </div>
 
               <div id="canvas-demo03-collisions" class="myCanvas"></div>
